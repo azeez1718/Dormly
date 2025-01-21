@@ -45,10 +45,15 @@ public class SecurityConfiguration {
                 )
                 /**
                  * when spring security intercepts the login request, the usernamepasswordfilter delegates
-                 * this to the auth manager in which that uses the provider manager impl to find the authprovider.
-                 * The authprovider is called to validate the credentials as it receives an auth object
-                 * Also ensure the jwt filter gets called before the usernamepass filter as we
+                 * this to the auth manager in which that uses the provider manager impl to find the auth provider.
+                 * The auth provider is called to validate the credentials as it receives an auth object
+                 * Also ensure the jwt filter gets called before the usernamepass filter
+                 * as we always need to check if a JWT is present, if not the request is passed to other filters
+                 * This way we handle requests for unauthenticated and authenticated users
+                 * not authenticated(meaning no jwt) -> UsernamePassFilter gets used
+                 * authenticated(has Jwt) -> jwtAuthFilter
                  */
+
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 

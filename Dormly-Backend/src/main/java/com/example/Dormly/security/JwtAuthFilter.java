@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -65,24 +66,21 @@ public class JwtAuthFilter extends OncePerRequestFilter {
              */
             if(jwtService.isTokenValid(jwt,userDetails)){
                 //we can now set up an authentication object for the user
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                UsernamePasswordAuthenticationToken authenticatedUser= new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
                         userDetails.getAuthorities()
                 );
+                //essentially we are saying here that the auth object is associated to this request
+                authenticatedUser.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                //set the security context
+                SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
 
             }
+            //pass the request and response to the next set of filters
+            filterChain.doFilter(request,response);
         }
-
-
-
-
-
-
-
-
-
-
 
     }
 }

@@ -2,18 +2,32 @@ package com.example.Dormly.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.security.Key;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.function.Function;
 
 @Service
 public class JwtService {
 
-    private final String SIGN_IN_KEY = "";
+    @Value("${jwt.secret}")
+    private String SIGN_IN_KEY;
 
     public String extractSubject(String jwt) {
         String userEmail = extractClaim(jwt, Claims::getSubject);
         return userEmail;
+        /**
+         * alternative
+         *    Claims claim = extractAllClaims(jwt);
+         *    return claims.getSubject();
+         *    however extract claim function makes it easier to return different things in the claims
+         */
 
     }
 
@@ -41,9 +55,36 @@ public class JwtService {
                 .getBody();
     }
 
-    private byte[] getSignKey() {
+    private Key getSignKey() {
+        /**
+         * Cryptographic algorithms expect keys to be in binary format
+         * the string was Base64 encoded meaning we encoded it from binary to string
+         * hence we need to decode this back to binary as SHA256 only works with binary data
+         * hence we hash the key and return it as a key type
+         */
+        byte[] key = Decoders.BASE64.decode(SIGN_IN_KEY);
+        return Keys.hmacShaKeyFor(key);
+
 
     }
+
+    public Boolean isTokenValid(String jwt, UserDetails userDetails){
+        String jwtSubject = extractSubject(jwt);
+        String userEmail =  userDetails.getUsername();
+
+        return jwtSubject.equals(userEmail) && !isTokenExpired(jwt);
+    }
+
+    public Boolean isTokenExpired(String jwt){
+        /**
+         * we want to see that the token has not yet been expired
+         * if the expiry date is before the current date then it is an invalid token
+         */
+        Date expirationDate = extractClaim(jwt, Claims::getExpiration);
+        return expirationDate.before(new Date());
+
+    }
+
 
 
 }

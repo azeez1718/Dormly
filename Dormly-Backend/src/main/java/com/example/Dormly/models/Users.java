@@ -1,4 +1,4 @@
-package com.example.Dormly.user;
+package com.example.Dormly.models;
 
 
 import com.example.Dormly.constants.Role;
@@ -18,7 +18,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "user_table")
-public class user implements UserDetails {
+public class Users implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

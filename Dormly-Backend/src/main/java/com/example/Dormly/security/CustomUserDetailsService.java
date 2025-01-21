@@ -1,2 +1,23 @@
-package com.example.Dormly.security;public class CustomUserDetailsService {
+package com.example.Dormly.security;
+
+import com.example.Dormly.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class CustomUserDetailsService implements UserDetailsService {
+
+    private final UserRepository userRepository;
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserDetails userDetails = userRepository.findByEmail(username)
+                .orElseThrow(()->new UsernameNotFoundException("This used does not exist"));
+
+        return userDetails;
+
+    }
 }

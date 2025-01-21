@@ -1,4 +1,4 @@
-package com.example.Dormly.models;
+package com.example.Dormly.security.model;
 
 
 import com.example.Dormly.constants.Role;

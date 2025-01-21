@@ -1,4 +1,4 @@
-package com.example.Dormly.security;
+package com.example.Dormly.security.service;
 
 import com.example.Dormly.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -27,11 +27,10 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.
+        httpSecurity.
                 csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(http->http.
-                        requestMatchers("").permitAll()
-                        .requestMatchers("").permitAll()
+                        requestMatchers("api/v1/Dormly/Sign-up").permitAll()
                         .anyRequest()
                         .authenticated()
                 )
@@ -55,9 +54,9 @@ public class SecurityConfiguration {
                  */
 
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-                .build();
+                return httpSecurity.build();
 
 
     }

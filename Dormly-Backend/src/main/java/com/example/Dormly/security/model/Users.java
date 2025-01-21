@@ -58,6 +58,11 @@ public class Users implements UserDetails {
      * we don't require an impl for returning password as lombok handles that with our getter of password field
      */
 
+    @Override
+    public String getPassword(){
+        return password;
+    }
+
 
     @Override
     public boolean isAccountNonExpired() {

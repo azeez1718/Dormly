@@ -4,6 +4,7 @@ import com.example.Dormly.constants.Role;
 import com.example.Dormly.repository.UserRepository;
 import com.example.Dormly.security.dto.RegisterDto;
 import com.example.Dormly.security.model.Users;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +18,10 @@ import java.util.concurrent.RejectedExecutionException;
 public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
     private final UserRepository userRepository;
+
+    @Transactional
     public String giveToken(RegisterDto registerDto) {
         /**
          * ensure the email is a valid university email by checking the domain name as Queens mary University
@@ -42,11 +46,14 @@ public class AuthService {
 
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         user.setRole(Role.USER);
+        userRepository.save(user);
 
-
-
-
-
+        //call the Jwt service to generate a token for the user based off of this information
+        String jwt = jwtService.generateToken(user);
+        return jwt;
 
     }
+
+
+
 }

@@ -1,17 +1,20 @@
 <app-home></app-home>
 
 <div class = "form-container">
+    <form (ngSubmit)="onSubmit()">
     <mat-form-field appearance="fill">
     <mat-label>Email</mat-label>
-    <input matInput type = "email" placeholder= "example@university.com">
+    <input matInput type = "email" required placeholder= "example@university.com">
+    </mat-form-field>
 
+    <mat-form-field>
     <mat-label>Password</mat-label>
     <input matInput type = "password" required placeholder="*******">
-
-
-    <button  mat-raised-button type = "button">Log in</button>
 </mat-form-field>
 
 
+    <button  mat-raised-button type = "button">Log in</button>
+
+</form>
     </div>
 

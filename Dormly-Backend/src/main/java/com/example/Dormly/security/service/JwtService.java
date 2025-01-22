@@ -44,11 +44,11 @@ public class JwtService {
     public String generateToken(UserDetails userDetails, HashMap<String, Object>extraClaims){
         return Jwts
                 .builder()
+                .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
-                .signWith(getSignKey(), SignatureAlgorithm.HS256)
-                .setClaims(extraClaims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
+                .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 

@@ -9,6 +9,7 @@ import com.example.Dormly.security.model.Users;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -63,16 +64,23 @@ public class AuthService {
 
 
     public AuthResponse userLogin(LoginDto loginDto) {
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                loginDto.getEmail(),
-                loginDto.getPassword()
-        );
-        /**
-         * we delegate the authentication to our DaoProvider which the provider manager handles
-         * the provider manager is an impl of the authentication manager in which it delegates the validation to the correct auth provier
-         * the daoprovider needs a usernamepass object in which it uses the userdetailsservice and passwordencoder
-         */
-         authenticationManager.authenticate(auth);
+       try {
+           UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                   loginDto.getEmail(),
+                   loginDto.getPassword()
+
+           );
+           authenticationManager.authenticate(auth);
+           /**
+            * we delegate the authentication to our DaoProvider which the provider manager handles
+            * the provider manager is an impl of the authentication manager in which it delegates the validation to the correct auth provier
+            * the daoprovider needs a usernamepass object in which it uses the userdetailsservice and passwordencoder
+            */
+       }catch (Exception e){
+           throw new BadCredentialsException("Please enter the correct credentials");
+       }
+
+       //if we reach this point, then the user credentials were correct.
          UserDetails userDetails = userRepository.findByEmail(loginDto.getEmail())
                  .orElseThrow(()-> new UsernameNotFoundException("user does not exist"));
 

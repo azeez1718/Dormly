@@ -30,7 +30,8 @@ public class SecurityConfiguration {
         httpSecurity.
                 csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(http->http.
-                        requestMatchers("api/v1/Dormly/Sign-up").permitAll()
+                        requestMatchers("api/v1/Dormly.com/Sign-up").permitAll()
+                        .requestMatchers("api/v1/Dormly.com/login").permitAll()
                         .anyRequest()
                         .authenticated()
                 )

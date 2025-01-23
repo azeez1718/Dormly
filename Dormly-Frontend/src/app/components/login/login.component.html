@@ -1,19 +1,29 @@
-<app-home></app-home>
+
 
 <div class = "form-container">
-    <form (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="fill">
+    <form [formGroup] ="userForm" (ngSubmit) = "onSubmit()">
+     <mat-form-field appearance="fill">
     <mat-label>Email</mat-label>
-    <input matInput type = "email" required placeholder= "example@university.com">
+    <input matInput 
+    type = "email" 
+    id = "email"
+    formControlName = "email"
+    placeholder= "example@university.com">
+    <mat-error *ngIf = "userForm.get('email')?.hasError('pattern')">
+        Please ensure you have a valid email at Queens Mary University.
+    </mat-error>
     </mat-form-field>
 
     <mat-form-field>
     <mat-label>Password</mat-label>
-    <input matInput type = "password" required placeholder="*******">
+    <input matInput type = "password" 
+    id = "password"
+    formControlName = "password"
+    placeholder="*******">
 </mat-form-field>
 
-
-    <button  mat-raised-button type = "button">Log in</button>
+    
+    <button mat-raised-button type = "submit" [disabled]= "!userForm.valid">Log in</button>
 
 </form>
     </div>

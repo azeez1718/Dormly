@@ -6,11 +6,12 @@ import { MatError } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormArray, ReactiveFormsModule, FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../service/auth.service';
+import { AuthService } from '../../service/auth/auth.service';
 import { RouterLink } from '@angular/router';
 import { LoginRequest } from '../../models/LoginRequest';
 import { AuthResponse } from '../../models/AuthResponse';
 import { Router } from '@angular/router';
+import { TokenService } from '../../service/token/token.service';
 
 @Component({
   selector: 'app-login',
@@ -41,7 +42,9 @@ export class LoginComponent {
    * The parametrs for the form controls are default value ->synchronous data -> asynchronous data
    *  
    */
-  constructor(private formBuilder : FormBuilder, private auth:AuthService, private route:Router){
+  constructor(private formBuilder : FormBuilder, private auth:AuthService, private route:Router,
+    private tokenservice:TokenService
+  ){
     this.userForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email, Validators.pattern(/@qmul\.ac\.uk$/)]],
       password: ['', [Validators.maxLength(15), Validators.required]]
@@ -49,14 +52,14 @@ export class LoginComponent {
   }
 
 
-  onSubmit():void{
+  login():void{
     /**
-     * when we submit the button, we can send the payload to the backend to save user info
+     * when we login, we can send the payload to the backend to save user info
      * for now as we know the button is only displayed when the form is valid(all fields are entered)
      * we can return the values of the form in the console
      */
     this.formSubmitted = true
-    console.log(this.userForm.value)
+  
 
     if(this.userForm.valid){
       /**
@@ -67,8 +70,12 @@ export class LoginComponent {
 
       this.loginRequest = this.userForm.value
       this.auth.login(this.loginRequest).subscribe({
-        next:(token: AuthResponse)=>{
-          console.log(token)
+        next:(response: AuthResponse)=>{
+          /**
+           * setter method to set the token in the browser of the client
+           * similar to tokenservice.setToken(response)
+           */
+          this.tokenservice.token = response.token as string
           this.route.navigate(['/home'])
         },
         error:(error:Error)=>{

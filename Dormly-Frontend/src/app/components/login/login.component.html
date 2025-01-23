@@ -1,7 +1,7 @@
 
 
 <div class = "form-container">
-    <form [formGroup] ="userForm" (ngSubmit) = "onSubmit()">
+    <form [formGroup] ="userForm" (ngSubmit) = "login()">
      <mat-form-field appearance="fill">
     <mat-label>Email</mat-label>
     <input matInput 
@@ -27,6 +27,7 @@
 </mat-error>
 
     <button mat-raised-button type = "submit">Log in</button>
+    <span>Dont have an account?</span>
     <span><a routerLink = "sign up">sign up</a></span>
 
 </form>

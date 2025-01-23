@@ -23,9 +23,11 @@
 
 <mat-error *ngIf = "formSubmitted && userForm.get('email')?.hasError('pattern')">
     Please ensure you have a valid email at Queens Mary University.
+    
 </mat-error>
 
     <button mat-raised-button type = "submit">Log in</button>
+    <span><a routerLink = "sign up">sign up</a></span>
 
 </form>
     </div>

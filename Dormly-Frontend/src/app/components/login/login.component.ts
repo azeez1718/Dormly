@@ -6,6 +6,10 @@ import { MatError } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormArray, ReactiveFormsModule, FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../service/auth.service';
+import { RouterLink } from '@angular/router';
+import { loginRequest } from '../../models/LoginRequest';
+import { AuthResponse } from '../../models/AuthResponse';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +19,8 @@ import { FormsModule } from '@angular/forms';
           MatButtonModule,
           ReactiveFormsModule,
           FormsModule,
-          MatError
+          MatError,
+          RouterLink
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -26,11 +31,12 @@ export class LoginComponent {
   formSubmitted: boolean = false
 
 
+
   /**
    * The parametrs for the form controls are default value ->synchronous data -> asynchronous data
    *  
    */
-  constructor(private formBuilder : FormBuilder){
+  constructor(private formBuilder : FormBuilder, private auth:AuthService){
     this.userForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email, Validators.pattern(/@qmul\.ac\.uk$/)]],
       password: ['', [Validators.maxLength(15), Validators.required]]
@@ -46,6 +52,17 @@ export class LoginComponent {
      */
     this.formSubmitted = true
     console.log(this.userForm.value)
+
+    if(this.userForm.valid){
+      this.auth.login(this.userForm.value).subscribe({
+        next:(token: AuthResponse)=>{
+          console.log(token)
+        }
+      })
+    }
+    
+    
+
   }
 
 }

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { AuthResponse } from '../models/AuthResponse';
+import { loginRequest } from '../models/LoginRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,9 @@ export class AuthService {
 
   constructor(private Http:HttpClient) { }
 
-  public login(userForm:FormGroup):Observable<AuthResponse>{
-    const loginUrl = '{this.url}/login'
-    return this.Http.post<AuthResponse>(loginUrl, userForm)
+  public login(login:loginRequest):Observable<AuthResponse>{
+    const loginUrl = `${this.url}/login`
+    return this.Http.post<AuthResponse>(loginUrl, login)
     
   }
 }

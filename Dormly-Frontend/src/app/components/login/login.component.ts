@@ -8,7 +8,7 @@ import { FormArray, ReactiveFormsModule, FormBuilder, FormGroup, Validator, Vali
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
 import { RouterLink } from '@angular/router';
-import { loginRequest } from '../../models/LoginRequest';
+import { LoginRequest, loginRequest } from '../../models/LoginRequest';
 import { AuthResponse } from '../../models/AuthResponse';
 
 @Component({
@@ -29,6 +29,10 @@ export class LoginComponent {
 
   userForm : FormGroup
   formSubmitted: boolean = false
+  loginRequest : LoginRequest = {
+    'email' : '',
+    'password': ''
+  }
 
 
 
@@ -54,9 +58,19 @@ export class LoginComponent {
     console.log(this.userForm.value)
 
     if(this.userForm.valid){
-      this.auth.login(this.userForm.value).subscribe({
+      /**
+       * if all validations are correct including pattern and required 
+       * we can then call the service class method and emit the data from the observable
+       * console.log the token just for demonstration purposes to see if we are returning the correct thing
+       */
+
+      this.loginRequest = this.userForm.value
+      this.auth.login(loginRequest).subscribe({
         next:(token: AuthResponse)=>{
           console.log(token)
+        },
+        error:(error:Error)=>{
+          console.log(error.message)
         }
       })
     }

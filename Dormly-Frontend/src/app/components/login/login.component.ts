@@ -8,8 +8,9 @@ import { FormArray, ReactiveFormsModule, FormBuilder, FormGroup, Validator, Vali
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
 import { RouterLink } from '@angular/router';
-import { LoginRequest, loginRequest } from '../../models/LoginRequest';
+import { LoginRequest } from '../../models/LoginRequest';
 import { AuthResponse } from '../../models/AuthResponse';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -40,7 +41,7 @@ export class LoginComponent {
    * The parametrs for the form controls are default value ->synchronous data -> asynchronous data
    *  
    */
-  constructor(private formBuilder : FormBuilder, private auth:AuthService){
+  constructor(private formBuilder : FormBuilder, private auth:AuthService, private route:Router){
     this.userForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email, Validators.pattern(/@qmul\.ac\.uk$/)]],
       password: ['', [Validators.maxLength(15), Validators.required]]
@@ -65,9 +66,10 @@ export class LoginComponent {
        */
 
       this.loginRequest = this.userForm.value
-      this.auth.login(loginRequest).subscribe({
+      this.auth.login(this.loginRequest).subscribe({
         next:(token: AuthResponse)=>{
           console.log(token)
+          this.route.navigate(['/home'])
         },
         error:(error:Error)=>{
           console.log(error.message)

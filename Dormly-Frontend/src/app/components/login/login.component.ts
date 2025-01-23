@@ -23,8 +23,13 @@ import { FormsModule } from '@angular/forms';
 export class LoginComponent {
 
   userForm : FormGroup
+  formSubmitted: boolean = false
 
 
+  /**
+   * The parametrs for the form controls are default value ->synchronous data -> asynchronous data
+   *  
+   */
   constructor(private formBuilder : FormBuilder){
     this.userForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email, Validators.pattern(/@qmul\.ac\.uk$/)]],
@@ -39,8 +44,8 @@ export class LoginComponent {
      * for now as we know the button is only displayed when the form is valid(all fields are entered)
      * we can return the values of the form in the console
      */
-    console.log(this.userForm.value, "submitted")
-
+    this.formSubmitted = true
+    console.log(this.userForm.value)
   }
 
 }

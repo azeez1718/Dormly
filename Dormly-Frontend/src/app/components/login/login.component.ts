@@ -74,6 +74,7 @@ export class LoginComponent {
           /**
            * setter method to set the token in the browser of the client
            * similar to tokenservice.setToken(response)
+           * the token will be stored in the browser with (key,value)
            */
           this.tokenservice.token = response.token as string
           this.route.navigate(['/home'])

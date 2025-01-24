@@ -11,13 +11,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,12 +56,22 @@ public class AuthService {
         );
 
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-        user.setRole(Role.USER);
+        user.setRole(List.of(Role.USER));
         userRepository.save(user);
 
         //call the Jwt service to generate a token for the user based off of this information
-        String jwt = jwtService.generateToken(user);
+
+        HashMap<String,Object> roles = setAdditionalClaims(user);
+        String jwt = jwtService.generateToken(user, roles);
         return new AuthResponse(jwt);
+
+    }
+
+
+    private HashMap<String,Object> setAdditionalClaims(UserDetails userDetails){
+        HashMap<String,Object> roles = new HashMap<>();
+        roles.put("roles", userDetails.getAuthorities());
+        return roles;
 
     }
 
@@ -84,7 +97,11 @@ public class AuthService {
          UserDetails userDetails = userRepository.findByEmail(loginDto.getEmail())
                  .orElseThrow(()-> new UsernameNotFoundException("user does not exist"));
 
-         String jwt = jwtService.generateToken(userDetails);
+
+       //Helper method to set extra claims
+       HashMap<String,Object> roles = setAdditionalClaims(userDetails);
+
+         String jwt = jwtService.generateToken(userDetails,roles);
          return new AuthResponse(jwt);
     }
 }

@@ -15,7 +15,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry corsRegistry) {
         corsRegistry.addMapping("/**") //our client side can send requests to all endpoints
-                .allowedOrigins("http://localhost:55556")
+                .allowedOrigins("http://localhost:55567")
                 .allowedMethods("GET", "PUT", "POST", "DELETE")
                 .allowedHeaders("*") //allow client to have request include headers like Authorizaiton which includes the token
                 .allowCredentials(true);//allow cookies

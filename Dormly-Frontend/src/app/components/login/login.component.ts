@@ -12,6 +12,8 @@ import { LoginRequest } from '../../models/LoginRequest';
 import { AuthResponse } from '../../models/AuthResponse';
 import { Router } from '@angular/router';
 import { TokenService } from '../../service/token/token.service';
+import { MatIcon } from '@angular/material/icon';
+
 
 @Component({
   selector: 'app-login',
@@ -22,12 +24,14 @@ import { TokenService } from '../../service/token/token.service';
           ReactiveFormsModule,
           FormsModule,
           MatError,
-          RouterLink
+          RouterLink,
+          MatIcon
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+
 
   userForm : FormGroup
   formSubmitted: boolean = false
@@ -77,7 +81,8 @@ export class LoginComponent {
            * the token will be stored in the browser with (key,value)
            */
           this.tokenservice.token = response.token as string
-          this.route.navigate(['/home'])
+
+          this.route.navigate(['/my-home'])
         },
         error:(error:Error)=>{
           console.log(error.message)
@@ -89,4 +94,5 @@ export class LoginComponent {
 
   }
 
+ 
 }

@@ -13,7 +13,7 @@ export const customInterceptor: HttpInterceptorFn = (req, next) => {
    * as all apis dont need a jwt like sign up or login we can ensure these are skipped from the interceptor
    */ 
 
-  if(req.url=== 'http://localhost/55567/login' || 'http://localhost/55567/sign-up'){
+  if(req.url=== 'http://localhost/55567/login' || req.url === 'http://localhost/55567/sign-up'){
     return next(req);
 
   }

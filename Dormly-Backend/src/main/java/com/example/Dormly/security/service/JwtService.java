@@ -42,6 +42,9 @@ public class JwtService {
 
 
     public String generateToken(UserDetails userDetails, HashMap<String, Object>extraClaims){
+        System.out.println("-------------entered function");
+        System.out.println(extraClaims);
+        System.out.println("roles above?");
         return Jwts
                 .builder()
                 .setClaims(extraClaims)

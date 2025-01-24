@@ -69,9 +69,20 @@ public class AuthService {
 
 
     private HashMap<String,Object> setAdditionalClaims(UserDetails userDetails){
-        HashMap<String,Object> roles = new HashMap<>();
-        roles.put("roles", userDetails.getAuthorities());
-        return roles;
+
+        /**
+         * getAuthorities() returns a collection of granted authrotities
+         * simplegrantedauthority is an impl of granted authority hence why the return type is GrantedAuthority
+         * when a class impl an interface the type is always the interface
+         * so when we iterate over a collection of grantedauthorities which just contain roles,  we call the getAuthority method
+         * the get authority method returns the role as a string from each object
+         */
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        HashMap<String,Object> userRoles = new HashMap<>();
+        userRoles.put("roles", roles);
+        return userRoles;
 
     }
 

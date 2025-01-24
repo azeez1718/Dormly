@@ -39,14 +39,14 @@ public class Users implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Role> role;
-
-
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        System.out.println("in get authority");
+        System.out.println("roles" + role);
+        System.out.println("finished getauthority");
         return role.stream()
                 .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toList());

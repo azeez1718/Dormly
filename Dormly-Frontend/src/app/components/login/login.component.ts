@@ -81,6 +81,7 @@ export class LoginComponent {
            * the token will be stored in the browser with (key,value)
            */
           this.tokenservice.token = response.token as string
+          console.log("login page-token returned", response)
 
           this.route.navigate(['/my-home'])
         },

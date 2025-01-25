@@ -23,6 +23,6 @@ export class AuthService {
 
   protectedapi():Observable<any> {
     const privateUrl = `${this.url}/dashboard`
-    return this.http.get<any>(privateUrl)
+    return this.http.get(privateUrl)
   }
 }

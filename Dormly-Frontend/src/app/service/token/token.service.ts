@@ -9,6 +9,7 @@ export class TokenService {
 
   set token(token:string){
     localStorage.setItem('token', token)
+    console.log("token being set in the localstorage", token)
   }
 
   get token(){

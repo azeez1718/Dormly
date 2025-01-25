@@ -26,13 +26,16 @@ export class HomeComponent implements OnInit{
   protectedEndpoint(){
     this.authService.protectedapi().subscribe({
       next:(res : any)=>{
+        console.log('the response returned is',res)
         this.returned = true
         this.message = res
+        console.log("nice you sent a jwt with the request")
         
       },
 
       error:(error:Error)=>{
-        console.log(error.message)
+        console.log("there is no jwt sent with this request", error.message)
+       
       }
       
     })

@@ -49,7 +49,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
         //the token is now present
         //At the 7th index is where the token begins after 'Bearer'
+
+        if(authHeader.substring(9).equals("")){
+            throw new RuntimeException("the token we received is not of the right format");
+        }
         String jwt = authHeader.substring(7);
+
 
         /**
          * extract claims from the Jwt to access the username

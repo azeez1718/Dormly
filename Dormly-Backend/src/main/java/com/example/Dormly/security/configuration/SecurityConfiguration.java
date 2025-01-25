@@ -76,14 +76,16 @@ public class SecurityConfiguration {
      * the bean returns an instance of a corsconfigsource impl
      * the urlbased instance is used by spring and it invokes the getconfigurationmethod
      * the getconfig method compares the request url vs the patterns we defined and checks the headers
-     *
+     * the max age allows us to cache the options request for the same origin
+     * this is to prevent the server cross checking the same request again and again
      */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://localhost:55567"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:55567"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setMaxAge(3600L);//cache requests for one hour
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

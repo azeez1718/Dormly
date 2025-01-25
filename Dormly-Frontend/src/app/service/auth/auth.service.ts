@@ -9,6 +9,7 @@ import { LoginRequest } from '../../models/LoginRequest';
   providedIn: 'root'
 })
 export class AuthService {
+ 
 
     url:string = "http://localhost:8099/api/v1/Dormly.com"
 
@@ -18,5 +19,10 @@ export class AuthService {
     const loginUrl = `${this.url}/login`
     return this.http.post<AuthResponse>(loginUrl, login)
     
+  }
+
+  protectedapi():Observable<any> {
+    const privateUrl = `${this.url}/dashboard`
+    return this.http.get<any>(privateUrl)
   }
 }

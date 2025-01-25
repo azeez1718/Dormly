@@ -5,11 +5,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -28,7 +35,8 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.
-                csrf(csrf->csrf.disable())
+        cors(Customizer.withDefaults())
+                .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(http->http.
                         requestMatchers("api/v1/Dormly.com/Sign-up").permitAll()
                         .requestMatchers("api/v1/Dormly.com/login").permitAll()
@@ -60,5 +68,24 @@ public class SecurityConfiguration {
                 return httpSecurity.build();
 
 
+    }
+
+    /***
+     * spring security by default overrides the global cors config
+     * when a request is made to a secure api, spring security intercepts it and checks if there is a cors config defined
+     * the bean returns an instance of a corsconfigsource impl
+     * the urlbased instance is used by spring and it invokes the getconfigurationmethod
+     * the getconfig method compares the request url vs the patterns we defined and checks the headers
+     *
+     */
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("https://localhost:55567"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardComponent } from '../../shared/dashboard/dashboard.component';
-import { AuthService } from '../../service/auth/auth.service';
+import { DashboardComponent } from '../dashboard/dashboard.component';
+import { AuthService } from '../service/auth/auth.service';
 import { CommonModule } from '@angular/common';
 
 
@@ -13,6 +13,8 @@ import { CommonModule } from '@angular/common';
 export class HomeComponent implements OnInit{
   returned:Boolean = false
   message : string = ''
+  time : any
+  protectBoolean:boolean = false
 
 
   constructor(private authService:AuthService){}
@@ -40,6 +42,8 @@ export class HomeComponent implements OnInit{
       
     })
   }
+
+  
 
 
 

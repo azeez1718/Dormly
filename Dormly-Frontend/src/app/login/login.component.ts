@@ -1,17 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
-import { HomeComponent } from "../home/home.component";
+import { HomeComponent } from "../user-home/home.component";
 import {MatInputModule} from '@angular/material/input';
 import { MatError } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormArray, ReactiveFormsModule, FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../service/auth/auth.service';
+import { AuthService } from '../service/auth/auth.service';
 import { RouterLink } from '@angular/router';
-import { LoginRequest } from '../../models/LoginRequest';
-import { AuthResponse } from '../../models/AuthResponse';
+import { LoginRequest } from '../models/LoginRequest';
+import { AuthResponse } from '../models/AuthResponse';
 import { Router } from '@angular/router';
-import { TokenService } from '../../service/token/token.service';
+import { TokenService } from '../service/token/token.service';
 import { MatIcon } from '@angular/material/icon';
 
 

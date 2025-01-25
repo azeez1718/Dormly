@@ -37,7 +37,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
          */
 
         final String authHeader = request.getHeader("Authorization");
-        if(authHeader == null || !authHeader.startsWith("Bearer")){
+        if(authHeader == null || !authHeader.startsWith("Bearer ")){
             /**
              * we still allow for other filters to be checked, assuming the client
              * is logging in (which permits authentication) then they will not have a jwt initially

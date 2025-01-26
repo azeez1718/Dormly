@@ -2,6 +2,7 @@ package com.example.Dormly.controller;
 
 import com.example.Dormly.dto.ProfileDto;
 import com.example.Dormly.security.service.JwtService;
+import com.example.Dormly.service.ProfileService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

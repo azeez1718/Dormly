@@ -90,4 +90,11 @@ public class Users implements UserDetails {
         this.lastname = lastname;
         this.email = email;
     }
+
+    public Users(String firstname, String lastname, String email, List<Role> role) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.role = role;
+    }
 }

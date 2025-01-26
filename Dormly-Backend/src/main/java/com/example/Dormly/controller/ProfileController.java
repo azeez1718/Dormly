@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/profile")
+@RequestMapping(path = "/api/v1/Dormly.com/profile")
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -26,6 +26,7 @@ public class ProfileController {
      * @return ProfileDto - which is used to hide internals when sending back profile information
      *
      */
+
     @GetMapping("my-account")
     public ResponseEntity<ProfileDto> fetchUserProfile(HttpServletRequest request){
        final String authHeader = request.getHeader("Authorization");

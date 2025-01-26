@@ -1,9 +1,23 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Profile } from '../../models/Profile';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
 
-  constructor() { }
+   url:string = "http://localhost:8099/api/v1/Dormly.com/profile"
+
+  constructor(private Http:HttpClient) { }
+
+
+
+  public fetchUserProfile():Observable<Profile>{
+    const profileEndpoint = `${this.url}/my-account`
+    return this.Http.get<Profile>(profileEndpoint);
+  }
+  
+
 }

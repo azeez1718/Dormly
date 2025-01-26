@@ -3,6 +3,8 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './user-home/home.component';
 import { combineLatest } from 'rxjs';
 import { SignupComponent } from './signup/signup.component';
+import { computed } from '@angular/core';
+import { ProfileComponent } from './profile/profile.component';
 ;
 
 export const routes: Routes = [
@@ -20,5 +22,9 @@ export const routes: Routes = [
     {
         path: "sign-up",
         component : SignupComponent
+    },
+    {
+    path:"profile",
+    component:ProfileComponent
     }
 ];

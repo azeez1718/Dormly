@@ -1,1 +1,11 @@
-<p>profile works!</p>
+
+<div *ngIf= "!hasError">
+    <h3>{{userProfile.image}}</h3>
+    <h1>{{userProfile.firstname}}  {{userProfile.lastname}}</h1>
+    <h1>{{userProfile.email}}</h1>
+    <h1>{{userProfile.location}}</h1>
+    <h1>{{userProfile.bio}}</h1>
+    <button mat-raised-button>create new listing</button>
+    <button mat-raised-button>view favourites</button>
+   
+</div>

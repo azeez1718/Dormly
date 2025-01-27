@@ -1,29 +1,38 @@
-package com.example.Dormly.models;
+package com.example.Dormly.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Listing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private String id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name="profile_id", nullable = false)
     private Profile profile;
+
+    @OneToMany(mappedBy = "listing", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Photos> photos = new ArrayList<>();
+
 
     @Column(name = "Title", nullable = false)
     private String title;
@@ -41,6 +50,8 @@ public class Listing {
     @Column(nullable = false)
     private String Location;
 
+    @Column(name = "is_sold", nullable = false)
+    private boolean isSold;
     private String brand;
 
     @Column(name = "listed_date", nullable = false)

@@ -2,7 +2,7 @@ package com.example.Dormly.dataConfig;
 
 
 import com.example.Dormly.constants.Role;
-import com.example.Dormly.models.Profile;
+import com.example.Dormly.entity.Profile;
 import com.example.Dormly.repository.ProfileRepository;
 import com.example.Dormly.repository.UserRepository;
 import com.example.Dormly.security.model.Users;
@@ -10,11 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.sql.Array;
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration

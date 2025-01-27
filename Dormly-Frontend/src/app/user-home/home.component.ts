@@ -21,10 +21,10 @@ export class HomeComponent implements OnInit{
   
   
   ngOnInit(): void {
-    this.protectedEndpoint();
+   
   }
 
-
+  /**Test function to see if token is set in the headers before api requests 
   protectedEndpoint(){
     this.authService.protectedapi().subscribe({
       next:(res : any)=>{
@@ -42,6 +42,8 @@ export class HomeComponent implements OnInit{
       
     })
   }
+  **/
+ 
 
   
 

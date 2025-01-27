@@ -1,13 +1,11 @@
 package com.example.Dormly.service;
 
-import ch.qos.logback.core.util.PropertySetterException;
 import com.example.Dormly.dto.ProfileDto;
 import com.example.Dormly.exceptions.ProfileNotFoundException;
-import com.example.Dormly.models.Profile;
+import com.example.Dormly.entity.Profile;
 import com.example.Dormly.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
 

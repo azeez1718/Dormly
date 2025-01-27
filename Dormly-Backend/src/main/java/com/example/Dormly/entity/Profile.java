@@ -1,4 +1,4 @@
-package com.example.Dormly.models;
+package com.example.Dormly.entity;
 
 
 import com.example.Dormly.security.model.Users;
@@ -37,7 +37,7 @@ public class Profile {
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Listing> listings = new ArrayList<>();
 

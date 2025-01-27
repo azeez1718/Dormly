@@ -4,7 +4,7 @@ import { Inject} from '@angular/core';
 
 export const customInterceptor: HttpInterceptorFn = (req, next) => {
 
-  console.log(req.url)
+
   /**
    * in the custom interceptor all HTTP requests are intercepted
    * the interceptor clones the incoming request and sets the authorization header to the token
@@ -15,7 +15,6 @@ export const customInterceptor: HttpInterceptorFn = (req, next) => {
    */ 
 
   if(req.url=== 'http://localhost:8099/api/v1/Dormly.com/login' || req.url ==='http://localhost:8099/api/v1/Dormly.com/sign-up'){
-    console.log("endpoint permitted")
     return next(req);
 
   }
@@ -23,11 +22,10 @@ export const customInterceptor: HttpInterceptorFn = (req, next) => {
   //inject our token service as there is no constructor 
   //const tokenservice = Inject(TokenService)
   const jwt = localStorage.getItem('token')?.trim() //call the getter that fetches the token from the local storage
-  console.log("the jwt token we fetched from the local storage", jwt)
+  
 
   
   req = req.clone({headers:req.headers.set('Authorization',`Bearer ${jwt}`)})
-  console.log(req.headers.get('Authorization'))
   //allow the request to be handled by the next handler
   return next(req);
   

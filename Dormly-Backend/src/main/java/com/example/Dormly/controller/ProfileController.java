@@ -29,11 +29,7 @@ public class ProfileController {
 
     @GetMapping("my-account")
     public ResponseEntity<ProfileDto> fetchUserProfile(HttpServletRequest request){
-       final String authHeader = request.getHeader("Authorization");
-       final String token = authHeader.substring(7);
-        System.out.println("the jwt token" + token);
-
-       String userEmail = jwtService.extractSubject(token);
+        String userEmail = jwtService.retrieveUserFromReq(request);
         System.out.println("the extracted email" +  userEmail);
        ProfileDto profileDto = profileService.fetchProfile(userEmail);
        return new ResponseEntity<>(profileDto, HttpStatus.OK);

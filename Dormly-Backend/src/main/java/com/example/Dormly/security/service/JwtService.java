@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -95,6 +96,20 @@ public class JwtService {
         byte[] key = Decoders.BASE64.decode(SIGN_IN_KEY);
         return Keys.hmacShaKeyFor(key);
 
+
+    }
+
+    /**
+     * utility function that allows for fetching the subject after token has been validated,
+     * to ensure every response is specific to the user
+     */
+
+
+    public String retrieveUserFromReq(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        //this allows us to retrieve the jwt which begins at the 7th index after bearer
+        String jwt = token.substring(7);
+        return extractSubject(jwt);
 
     }
 

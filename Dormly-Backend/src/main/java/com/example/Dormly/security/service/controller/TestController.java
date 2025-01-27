@@ -1,4 +1,4 @@
-package com.example.Dormly.controller;
+package com.example.Dormly.security.service.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

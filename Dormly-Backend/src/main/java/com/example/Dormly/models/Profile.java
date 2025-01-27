@@ -2,17 +2,23 @@ package com.example.Dormly.models;
 
 
 import com.example.Dormly.security.model.Users;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Profile {
 
     @Id
@@ -30,6 +36,10 @@ public class Profile {
     @OneToOne
     @JoinColumn(name = "user_id")
     private Users user;
+
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Listing> listings = new ArrayList<>();
 
     public Profile(String profilePicture, String bio, String location, Users user) {
         this.profilePicture = profilePicture;

@@ -1,4 +1,4 @@
-package com.example.Dormly.controller;
+package com.example.Dormly.security.service.controller;
 
 import com.example.Dormly.dto.ProfileDto;
 import com.example.Dormly.security.service.JwtService;
@@ -29,8 +29,8 @@ public class ProfileController {
 
     @GetMapping("my-account")
     public ResponseEntity<ProfileDto> fetchUserProfile(HttpServletRequest request){
-        String userEmail = jwtService.retrieveUserFromReq(request);
-        System.out.println("the extracted email" +  userEmail);
+        String userEmail = jwtService.retrieveUserFromRequest(request);
+        //System.out.println("the extracted email" +  userEmail);
        ProfileDto profileDto = profileService.fetchProfile(userEmail);
        return new ResponseEntity<>(profileDto, HttpStatus.OK);
 

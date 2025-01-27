@@ -105,7 +105,7 @@ public class JwtService {
      */
 
 
-    public String retrieveUserFromReq(HttpServletRequest request){
+    public String retrieveUserFromRequest(HttpServletRequest request){
         String token = request.getHeader("Authorization");
         //this allows us to retrieve the jwt which begins at the 7th index after bearer
         String jwt = token.substring(7);

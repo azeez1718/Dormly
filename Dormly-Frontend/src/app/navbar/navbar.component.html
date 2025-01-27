@@ -1,13 +1,39 @@
-<mat-toolbar class = "custom-toolbar">
-   
-   <span><a mat-button routerLink=""><mat-icon>eco</mat-icon>Dormly</a></span>
- 
- <div class = "spaces"></div>
-   <a mat-button routerLink="login">login</a>
- <a mat-button routerLink = "sign-up">Sign Up</a>
- <a mat-button routerLink = "About us">More on Dormly</a>
+<div class="navbar bg-base-100 border-2 bg-slate-400">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h7" />
+        </svg>
+      
+      </div>
+      <ul
+        tabindex="0"
+        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+        <li><a>More on Dormly</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="navbar-center">
+    <div class = "btn btn-ghost text-xl font-sans">
+    <a routerLink=""><mat-icon>eco</mat-icon>Dormly</a>
+    </div>
+  </div>
+  <div class="navbar-end space-x-4">
+    <a routerLink="login"><button class="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg font-sans">Log In</button></a>
+    <a routerLink="sign-up"><button class="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg font-sans">Sign up</button></a>
+    
+  </div>
 
-</mat-toolbar>
-
+</div>
 
 

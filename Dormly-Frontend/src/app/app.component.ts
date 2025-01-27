@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent implements OnInit {
   displayNavbar:Boolean = false
+  navbarRoutes:Array<string> = ['/', '/login', '/sign-up']
 
 
   constructor(private router:Router){}
@@ -38,7 +39,7 @@ showNavbar(){
   // TODO bug remains in here
   //the router.url only shows the path after the port number, like '/dashboard' or /home
   console.log("we need to remove navbar")
-  if(this.router.url=="/"){
+  if(this.navbarRoutes.includes(this.router.url)){
     this.displayNavbar = true
   }
 }

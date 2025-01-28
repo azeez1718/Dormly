@@ -1,6 +1,7 @@
 package com.example.Dormly.aws;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -13,7 +14,7 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-public class s3Service {
+public class S3Service {
 
     /**
      * Api requests being made to my Aws s3 storage provider
@@ -21,6 +22,8 @@ public class s3Service {
 
     //injecting our bean s3Client
     private final S3Client s3Client;
+
+
 
     public void putObject(String bucket, String key, byte[] file){
        //allows us to store our file as an object within our bucket
@@ -56,6 +59,8 @@ public class s3Service {
             throw new RuntimeException(e);
         }
     }
+
+
 
 
 }

@@ -26,7 +26,6 @@ public class Config {
      *The dao provider always call the matches function in the Bcrypt class
      */
 
-
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -36,6 +35,7 @@ public class Config {
 
 
     }
+
 
 
     /**

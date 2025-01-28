@@ -5,10 +5,7 @@ import com.example.Dormly.security.model.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 @Getter
+@Builder
+@ToString
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Profile {
@@ -47,4 +46,6 @@ public class Profile {
         Location = location;
         this.user = user;
     }
+
+
 }

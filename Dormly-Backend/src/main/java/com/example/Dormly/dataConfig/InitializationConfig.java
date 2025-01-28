@@ -33,10 +33,12 @@ public class InitializationConfig {
             user.setPassword(passwordEncoder.encode("abasjama"));
             userRepository.save(user);
 
-            //default location will be set to the university location
-            Profile p1 = new Profile("image.png","Computer Engineer at QMUL 25'", "Queen Mary University",
-                    user);
-
+            Profile p1 = Profile.builder().
+                    profilePicture("image.png")
+                    .bio("Computer Engineer at QMUL 25")
+                    .Location("London, kensington")
+                    .user(user)
+                    .build();
             profileRepository.save(p1);
 
 

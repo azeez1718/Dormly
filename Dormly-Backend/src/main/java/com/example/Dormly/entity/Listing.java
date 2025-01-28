@@ -4,10 +4,7 @@ package com.example.Dormly.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,8 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
+@Builder
+@ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Entity
 public class Listing {
 
     @Id

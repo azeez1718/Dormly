@@ -5,10 +5,10 @@ import { MatButton } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-dashboard-navbar',
   imports: [MatToolbar, RouterLink, MatIconModule],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  templateUrl: './dashboard-navbar.component.html',
+  styleUrl: './dashboard-navbar.component.css'
 })
 export class DashboardComponent {
 

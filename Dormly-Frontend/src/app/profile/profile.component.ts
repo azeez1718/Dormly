@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule, MatButtonModule],
+  imports: [],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -25,7 +25,8 @@ export class ProfileComponent implements OnInit{
    * we run the ngoninit to immediatley fetch the user associated with the profile
    */
   ngOnInit(): void {
-    this.fetchProfile()
+    //this.fetchProfile()//fetch json
+                      //fetch image
    
   }
 
@@ -43,6 +44,7 @@ export class ProfileComponent implements OnInit{
     .subscribe(data=>{
       this.userProfile = data
       console.log(this.userProfile.image)
+      //as soon as this 
     });
 
 

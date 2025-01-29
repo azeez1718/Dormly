@@ -1,19 +1,32 @@
 package com.example.Dormly.service;
 
+import com.example.Dormly.aws.S3Service;
 import com.example.Dormly.dto.ProfileDto;
 import com.example.Dormly.exceptions.ProfileNotFoundException;
 import com.example.Dormly.entity.Profile;
 import com.example.Dormly.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
 
+    @Value("${aws.bucket.profiles}")
+    private String profileBucket;
     private final ProfileRepository profileRepository;
+    private final S3Service s3Service;
+
+
+
+
     public ProfileDto fetchProfile(String userEmail) {
         Optional<Profile> userProfile = profileRepository.findByEmail(userEmail);
 
@@ -39,6 +52,45 @@ public class ProfileService {
         );
 
         return profileDto;
+
+    }
+
+    public byte[] fetchProfilePicture(String userEmail) {
+        return null;
+    }
+
+    public void uploadProfilePicture(String userEmail, MultipartFile multipartFile) {
+        /**
+         * Ensure the User making this request exists
+         * Make an API call to s3 to put the object in our specified bucket
+         */
+        //we need to retrieve the profile to set the unique identifier within the key to the profile Id
+        Profile userProfile = profileRepository.findByEmail(userEmail).
+                orElseThrow(()-> new ProfileNotFoundException("user with email " + userEmail + " does not exist"));
+
+        Long profileId = userProfile.getId();
+        try {
+            byte[] file = multipartFile.getBytes();
+            s3Service.putObject(
+                    profileBucket,
+                    "uploads/profile/%s/%s".formatted(profileId, UUID.randomUUID().toString()),
+                    file);
+        }catch(IOException e){
+            //TODO add custom exceptions
+            throw new RuntimeException("unable to upload file", e);
+
+        }
+
+        /**
+         * Aws structure - the Key represents the unique file that identifies our object
+         * Bucket
+         *      uploads
+         *          profile
+         *              1  ->profile id
+         *                      22 -> the random number
+         *                      32
+         *
+         */
 
     }
 }

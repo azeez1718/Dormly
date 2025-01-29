@@ -29,7 +29,6 @@ public class Listing {
     private Profile profile;
 
     @OneToMany(mappedBy = "listing", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Photos> photos = new ArrayList<>();
 
 

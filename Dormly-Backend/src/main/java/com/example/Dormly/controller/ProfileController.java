@@ -30,7 +30,7 @@ public class ProfileController {
 
     }
     @GetMapping(path = "upload-photo")
-    public <T> T fetchProfilePicture(@AuthenticationPrincipal UserDetails userDetails){
+    public byte[] fetchProfilePicture(@AuthenticationPrincipal UserDetails userDetails){
         String userEmail = userDetails.getUsername();
         return profileService.fetchProfilePicture(userEmail);
     }

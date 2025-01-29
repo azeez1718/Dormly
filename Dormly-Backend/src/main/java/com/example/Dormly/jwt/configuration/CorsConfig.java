@@ -1,4 +1,4 @@
-package com.example.Dormly.security.configuration;
+package com.example.Dormly.jwt.configuration;
 
 import lombok.NonNull;
 import org.springframework.context.annotation.Bean;

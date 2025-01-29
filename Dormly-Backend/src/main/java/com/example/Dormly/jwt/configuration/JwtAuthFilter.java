@@ -1,7 +1,7 @@
-package com.example.Dormly.security.configuration;
+package com.example.Dormly.jwt.configuration;
 
-import com.example.Dormly.security.service.CustomUserDetailsService;
-import com.example.Dormly.security.service.JwtService;
+import com.example.Dormly.jwt.service.CustomUserDetailsService;
+import com.example.Dormly.jwt.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

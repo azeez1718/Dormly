@@ -1,4 +1,4 @@
-package com.example.Dormly.security.dto;
+package com.example.Dormly.jwt.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

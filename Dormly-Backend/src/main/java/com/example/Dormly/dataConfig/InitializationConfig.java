@@ -6,7 +6,7 @@ import com.example.Dormly.constants.Role;
 import com.example.Dormly.entity.Profile;
 import com.example.Dormly.repository.ProfileRepository;
 import com.example.Dormly.repository.UserRepository;
-import com.example.Dormly.security.model.Users;
+import com.example.Dormly.jwt.model.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;

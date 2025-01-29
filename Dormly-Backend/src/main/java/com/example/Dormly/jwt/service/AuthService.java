@@ -1,25 +1,23 @@
-package com.example.Dormly.security.service;
+package com.example.Dormly.jwt.service;
 
 import com.example.Dormly.constants.Role;
 import com.example.Dormly.repository.UserRepository;
-import com.example.Dormly.security.dto.AuthResponse;
-import com.example.Dormly.security.dto.LoginDto;
-import com.example.Dormly.security.dto.RegisterDto;
-import com.example.Dormly.security.model.Users;
+import com.example.Dormly.jwt.dto.AuthResponse;
+import com.example.Dormly.jwt.dto.LoginDto;
+import com.example.Dormly.jwt.dto.RegisterDto;
+import com.example.Dormly.jwt.model.Users;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.stream.Collectors;
 
 @Service

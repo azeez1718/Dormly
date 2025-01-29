@@ -1,9 +1,9 @@
-package com.example.Dormly.security.controller;
+package com.example.Dormly.jwt.controller;
 
-import com.example.Dormly.security.dto.AuthResponse;
-import com.example.Dormly.security.dto.LoginDto;
-import com.example.Dormly.security.dto.RegisterDto;
-import com.example.Dormly.security.service.AuthService;
+import com.example.Dormly.jwt.dto.AuthResponse;
+import com.example.Dormly.jwt.dto.LoginDto;
+import com.example.Dormly.jwt.dto.RegisterDto;
+import com.example.Dormly.jwt.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

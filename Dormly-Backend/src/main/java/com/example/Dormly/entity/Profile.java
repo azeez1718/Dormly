@@ -1,7 +1,7 @@
 package com.example.Dormly.entity;
 
 
-import com.example.Dormly.security.model.Users;
+import com.example.Dormly.jwt.model.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;

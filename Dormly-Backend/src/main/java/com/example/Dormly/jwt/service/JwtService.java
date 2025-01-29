@@ -1,4 +1,4 @@
-package com.example.Dormly.security.service;
+package com.example.Dormly.jwt.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

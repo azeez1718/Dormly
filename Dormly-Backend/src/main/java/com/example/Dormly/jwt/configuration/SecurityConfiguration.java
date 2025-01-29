@@ -1,6 +1,5 @@
-package com.example.Dormly.security.configuration;
+package com.example.Dormly.jwt.configuration;
 
-import com.example.Dormly.security.configuration.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

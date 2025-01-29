@@ -1,6 +1,6 @@
-package com.example.Dormly.security.configuration;
+package com.example.Dormly.jwt.configuration;
 
-import com.example.Dormly.security.service.CustomUserDetailsService;
+import com.example.Dormly.jwt.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

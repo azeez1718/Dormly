@@ -56,7 +56,22 @@ public class ProfileService {
     }
 
     public byte[] fetchProfilePicture(String userEmail) {
-        return null;
+        Profile userProfile = profileRepository.findByEmail(userEmail).
+                orElseThrow(()-> new ProfileNotFoundException("user with email " +
+                        userEmail + " does not exist"));
+
+        String profileImageId  = userProfile.getProfilePictureId();
+        Long profileId = userProfile.getId();
+
+        byte[]  bytes = s3Service.getObject(profileBucket, "uploads/profile/%s/%s".
+                formatted(profileId, profileImageId));
+
+        //generate preseigned urls??
+
+
+
+
+
     }
 
     public void uploadProfilePicture(String userEmail, MultipartFile multipartFile) {
@@ -69,17 +84,22 @@ public class ProfileService {
                 orElseThrow(()-> new ProfileNotFoundException("user with email " + userEmail + " does not exist"));
 
         Long profileId = userProfile.getId();
+        String profilePictureId = UUID.randomUUID().toString();
         try {
             byte[] file = multipartFile.getBytes();
             s3Service.putObject(
                     profileBucket,
-                    "uploads/profile/%s/%s".formatted(profileId, UUID.randomUUID().toString()),
+                    "uploads/profile/%s/%s".formatted(profileId, profilePictureId),
                     file);
         }catch(IOException e){
             //TODO add custom exceptions
             throw new RuntimeException("unable to upload file", e);
 
         }
+        //save the Users image Id, so that we can always retrieve it
+        userProfile.setProfilePictureId(profilePictureId);
+        profileRepository.save(userProfile);
+
 
         /**
          * Aws structure - the Key represents the unique file that identifies our object
@@ -93,4 +113,5 @@ public class ProfileService {
          */
 
     }
+
 }

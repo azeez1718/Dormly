@@ -9,6 +9,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,8 +25,8 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "profile_pic")
-    private String profilePicture;
+    @Column(name = "profile_picture_id", unique = true)
+    private String profilePictureId;
 
     private String bio;
 
@@ -40,12 +41,6 @@ public class Profile {
     @JsonIgnore
     private List<Listing> listings = new ArrayList<>();
 
-    public Profile(String profilePicture, String bio, String location, Users user) {
-        this.profilePicture = profilePicture;
-        this.bio = bio;
-        Location = location;
-        this.user = user;
-    }
 
 
 }

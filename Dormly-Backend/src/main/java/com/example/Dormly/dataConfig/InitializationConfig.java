@@ -38,8 +38,7 @@ public class InitializationConfig {
             user.setPassword(passwordEncoder.encode("abasjama"));
             userRepository.save(user);
 
-            Profile p1 = Profile.builder().
-                    profilePicture("image.png")
+            Profile p1 = Profile.builder()
                     .bio("Computer Engineer at QMUL 25")
                     .Location("London, kensington")
                     .user(user)

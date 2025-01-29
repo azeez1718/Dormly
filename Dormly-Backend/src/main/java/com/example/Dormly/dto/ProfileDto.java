@@ -3,13 +3,15 @@ package com.example.Dormly.dto;
 
 import lombok.*;
 
+import java.net.URL;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class ProfileDto {
 
-    private byte[] image;
+    private URL image;
     private String bio;
     private String location;
     private String email;

@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,6 +39,8 @@ public class ProfileService {
 
         Profile profile = userProfile.get();
 
+        //return the image URL from the presigned url we generate for the user, and set it in DTO to return to client
+        URL imageUrl = generatePreSignedUrl(userEmail);
 
 
 
@@ -45,7 +48,7 @@ public class ProfileService {
          * convert the profile object we return to a DTO to hide internals
          */
         ProfileDto profileDto = new ProfileDto(
-                image,
+                imageUrl,
                 profile.getBio(),
                 profile.getLocation(),
                 profile.getUser().getEmail(),
@@ -58,26 +61,25 @@ public class ProfileService {
 
     }
 
-    public byte[] fetchProfilePicture(String userEmail) {
+    public URL generatePreSignedUrl(String userEmail) {
         Profile userProfile = profileRepository.findByEmail(userEmail).
-                orElseThrow(()-> new ProfileNotFoundException("user with email " +
+                orElseThrow(() -> new ProfileNotFoundException("user with email " +
                         userEmail + " does not exist"));
 
-        String profileImageId  = userProfile.getProfilePictureId();
+        String profileImageId = userProfile.getProfilePictureId();
         String profileId = userProfile.getProfilePictureId();
 
         //ensure an empty key path to s3 isnt being sent
-        if(profileId.isEmpty()){
+        if (profileId.isEmpty()) {
             //TODO: add exception with more clarity
             throw new ProfileNotFoundException("profile with id : " + profileId + " does not have a profile picture");
 
-
         }
-        //s3 returns the image as bytes, we'll need to transform it
-        byte[]  image = s3Service.getObject(profileBucket, "uploads/profile/%s/%s".
-                formatted(profileId, profileImageId));
+        //the key is the unique identifier so the location of the path, which was created using Profileid and generated image id
+        String key = "upload/profile/%s/%s".formatted(profileId, profileImageId);
 
-        return image;
+       return s3Service.generatePreSignedUrls(profileBucket, key);
+
     }
 
     public void uploadProfilePicture(String userEmail, MultipartFile multipartFile) {

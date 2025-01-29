@@ -42,7 +42,7 @@ public class ProfileService {
          * convert the profile object we return to a DTO to hide internals
          */
         ProfileDto profileDto = new ProfileDto(
-                profile.getProfilePicture(),
+                profile.getProfilePictureId(),
                 profile.getBio(),
                 profile.getLocation(),
                 profile.getUser().getEmail(),
@@ -61,17 +61,20 @@ public class ProfileService {
                         userEmail + " does not exist"));
 
         String profileImageId  = userProfile.getProfilePictureId();
-        Long profileId = userProfile.getId();
+        String profileId = userProfile.getProfilePictureId();
 
-        byte[]  bytes = s3Service.getObject(profileBucket, "uploads/profile/%s/%s".
+        //ensure an empty key path to s3 isnt being sent
+        if(profileId.isEmpty()){
+            //TODO: add exception with more clarity
+            throw new ProfileNotFoundException("profile with id : " + profileId + " does not have a profile picture");
+
+
+        }
+        //s3 returns the image as bytes, we'll need to transform it
+        byte[]  image = s3Service.getObject(profileBucket, "uploads/profile/%s/%s".
                 formatted(profileId, profileImageId));
 
-        //generate preseigned urls??
-
-
-
-
-
+        return image;
     }
 
     public void uploadProfilePicture(String userEmail, MultipartFile multipartFile) {

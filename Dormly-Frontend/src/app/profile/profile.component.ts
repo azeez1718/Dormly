@@ -7,14 +7,15 @@ import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-profile',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit{
   //abstracts away from typescripts strict property initialization
-  userProfile!:Profile
+  userProfile:Array<Profile> = []
   hasError:boolean = false
+  hasloaded:boolean = false
 
 
   constructor(private profileService:ProfileService){}
@@ -25,8 +26,8 @@ export class ProfileComponent implements OnInit{
    * we run the ngoninit to immediatley fetch the user associated with the profile
    */
   ngOnInit(): void {
-    //this.fetchProfile()//fetch json
-                      //fetch image
+    this.fetchProfile()
+    //the returning json includes the image and the user info
    
   }
 
@@ -42,8 +43,9 @@ export class ProfileComponent implements OnInit{
     })
     )
     .subscribe(data=>{
-      this.userProfile = data
-      console.log(this.userProfile.image)
+      this.userProfile.push(data)
+      this.hasloaded = true
+      
       //as soon as this 
     });
 

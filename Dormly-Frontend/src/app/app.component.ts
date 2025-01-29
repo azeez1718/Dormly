@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
    * we can then check for every new route we go to, we run the showNavbar to see if its the '' route
    */
   ngOnInit() {
+    
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.showNavbar();

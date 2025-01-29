@@ -1,23 +1,27 @@
 
 <!--card Component that allows the user to view their profile and upload a photo. -->
 
+<div *ngFor = "let users of userProfile">
+  
+
 <div class = "flex justify-center items-center ">
 <div class="card bg-base-100 w-96 shadow-xl">
   <figure class="px-10 pt-10">
-    
     <img
-      src="https://media.istockphoto.com/id/1438185814/photo/college-student-asian-man-and-studying-on-laptop-at-campus-research-and-education-test-exam.jpg?s=612x612&w=0&k=20&c=YmnXshbaBxyRc4Nj43_hLdLD5FLPTbP0p_3-uC7sjik="
+      src={{users.image}}
       alt="Shoes"
       class="rounded-xl" />
   </figure>
   <div class="card-body items-center text-center">
-    <h2 class="card-title">Sean Evans</h2>
-    <p>SeanEvansqmul.ac.uk</p>
-    <p>Computer Engineer at QMUL 25'</p>
+    <h2 class="card-title">{{users.firstname}} {{users.lastname}}</h2>
+    <p>{{users.email}}</p>
+    <p>{{users.bio}}</p>
     <div class="card-actions">
       <button class="btn btn-primary">view my listings</button>
       <button class = "btn btn-primary">View my orders</button>
     </div>
+    
+</div>
   </div>
 </div>
 </div>

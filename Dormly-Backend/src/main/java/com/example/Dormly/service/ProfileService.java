@@ -27,6 +27,7 @@ public class ProfileService {
 
 
 
+
     public ProfileDto fetchProfile(String userEmail) {
         Optional<Profile> userProfile = profileRepository.findByEmail(userEmail);
 
@@ -38,11 +39,13 @@ public class ProfileService {
         Profile profile = userProfile.get();
 
 
+
+
         /**
          * convert the profile object we return to a DTO to hide internals
          */
         ProfileDto profileDto = new ProfileDto(
-                profile.getProfilePictureId(),
+                image,
                 profile.getBio(),
                 profile.getLocation(),
                 profile.getUser().getEmail(),

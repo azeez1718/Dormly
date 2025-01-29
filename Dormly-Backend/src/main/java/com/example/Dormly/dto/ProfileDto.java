@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 public class ProfileDto {
 
-    private String profilePic;
+    private byte[] image;
     private String bio;
     private String location;
     private String email;

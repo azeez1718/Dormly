@@ -2,6 +2,7 @@ package com.example.Dormly.aws;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -9,8 +10,12 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 
 import java.io.IOException;
+import java.net.URL;
+import java.time.Duration;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -43,21 +48,37 @@ public class S3Service {
      * download the File as a byte array from the bucket
      */
 
-    public byte[] getObject(String bucket, String key){
-        GetObjectRequest objectRequest = GetObjectRequest
+    public GetObjectRequest getObject(String bucket, String key){
+        return GetObjectRequest
                 .builder()
                 .bucket(bucket)
                 .key(key)
                 .build();
-        ResponseInputStream<GetObjectResponse> res = s3Client.getObject(objectRequest);
-        try {
-            //the return type of the function is ResponseInputStream<T>
-            // it allows us to return the file of the image in bytes
-            byte[] bytes  = res.readAllBytes();
-            return bytes;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        //this is our object that we use retrieve the file by passing in our bucket and key
+    }
+
+    public String generatePreSignedUrls(String bucket, String key){
+        /**
+         * use Presigned urls which are generated from aws that allow users to view their images directly from our bucket
+         * however the credentials to our bucket are hidden
+         * instead of returning bytes from the image recieved from AWS..
+         * every time a user makes a request we generate a signed url, this means everytime they view their profile we refresh the url
+         * url expiration time is set to x hours
+         * This function will be called in our profile service, as we set the key path from profile id and UUID
+         */
+
+        GetObjectRequest objectRequest = getObject(bucket, key);
+        // you can change expiration time here
+        GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+                .signatureDuration(Duration.ofMinutes(3600)) //24 hours
+                .getObjectRequest(objectRequest)
+                .build();
+
+
+
+
+
     }
 
 

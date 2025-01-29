@@ -4,13 +4,12 @@ import com.example.Dormly.dto.ProfileDto;
 import com.example.Dormly.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RequiredArgsConstructor
@@ -30,9 +29,29 @@ public class ProfileController {
         return new ResponseEntity<>(profileService.fetchProfile(userDetails.getUsername()), HttpStatus.OK);
 
     }
+    @GetMapping(path = "upload-photo")
+    public <T> T fetchProfilePicture(@AuthenticationPrincipal UserDetails userDetails){
+        String userEmail = userDetails.getUsername();
+        return profileService.fetchProfilePicture(userEmail);
+    }
 
     //allow users to upload images to our s3 bucket
-    //profile pictures are se
-    @PostMapping(path = "upload-photo")
-    public ResponseEntity<Void> uploadProfilePicture(@AuthenticationPrincipal )
+    //profile pictures are sent to the profile bucket
+
+    /**
+     *
+     * @param userDetails - represents the currently authenticated user
+     * @param multipartFile - client side will include the file in the params
+     * @return - void, nothing to return to the user, however a status code to see successful request
+     */
+    @PostMapping(path = "upload-photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> uploadProfilePicture(@AuthenticationPrincipal UserDetails userDetails,
+                                                     @RequestParam("file")MultipartFile multipartFile){
+        String userEmail = userDetails.getUsername();
+        profileService.uploadProfilePicture(userEmail, multipartFile);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
+
+    }
+  
 }

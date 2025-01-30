@@ -66,11 +66,12 @@ public class ProfileService {
                 orElseThrow(() -> new ProfileNotFoundException("user with email " +
                         userEmail + " does not exist"));
 
+        Long profileId = userProfile.getId();
         String profileImageId = userProfile.getProfilePictureId();
-        String profileId = userProfile.getProfilePictureId();
+
 
         //ensure an empty key path to s3 isnt being sent
-        if (profileId.isEmpty()) {
+        if (profileImageId.isEmpty()) {
             //TODO: add exception with more clarity
             throw new ProfileNotFoundException("profile with id : " + profileId + " does not have a profile picture");
 
@@ -81,7 +82,6 @@ public class ProfileService {
        return s3Service.generatePreSignedUrls(profileBucket, key);
 
     }
-
     public void uploadProfilePicture(String userEmail, MultipartFile multipartFile) {
         /**
          * Ensure the User making this request exists
@@ -95,6 +95,7 @@ public class ProfileService {
         String profilePictureId = UUID.randomUUID().toString();
         try {
             byte[] file = multipartFile.getBytes();
+            //api request to store the object into our aws bucket based on our credentials defined in the s3 client
             s3Service.putObject(
                     profileBucket,
                     "uploads/profile/%s/%s".formatted(profileId, profilePictureId),

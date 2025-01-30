@@ -22,17 +22,12 @@ public class ProfileController {
      * the user sends a request, the filters validate the token
      * we set an authentication object of the user before the dispatcher servlet delegates request to the controller
      * @return ProfileDto - which is used to hide internals when sending back profile information
-     *
+     *The presigned Url that the user uses to view their profile picture is sent as a url alongside the JSON
+     * this is more optimal than sending 2 separate responses one being a byte and the other a json
      */
     @GetMapping(path = "my-account")
     public ResponseEntity<ProfileDto> fetchUserProfile(@AuthenticationPrincipal UserDetails userDetails){
         return new ResponseEntity<>(profileService.fetchProfile(userDetails.getUsername()), HttpStatus.OK);
-
-    }
-    @GetMapping(path = "upload-photo")
-    public byte[] fetchProfilePicture(@AuthenticationPrincipal UserDetails userDetails){
-        String userEmail = userDetails.getUsername();
-        return profileService.fetchProfilePicture(userEmail);
     }
 
     //allow users to upload images to our s3 bucket

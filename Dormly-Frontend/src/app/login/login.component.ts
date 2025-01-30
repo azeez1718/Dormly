@@ -6,12 +6,12 @@ import { MatError } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormArray, ReactiveFormsModule, FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../service/auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { RouterLink } from '@angular/router';
 import { LoginRequest } from '../models/LoginRequest';
 import { AuthResponse } from '../models/AuthResponse';
 import { Router } from '@angular/router';
-import { TokenService } from '../service/token/token.service';
+import { TokenService } from '../auth/token/token.service';
 import { MatIcon } from '@angular/material/icon';
 
 

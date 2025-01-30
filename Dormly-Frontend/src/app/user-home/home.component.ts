@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardComponent } from '../dashboard-navbar/dashboard-navbar.component';
-import { AuthService } from '../service/auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { CommonModule } from '@angular/common';
 
 

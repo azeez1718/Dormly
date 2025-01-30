@@ -1,5 +1,5 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { TokenService } from '../token/token.service';
+import { TokenService } from './token/token.service';
 import { Inject} from '@angular/core';
 
 export const customInterceptor: HttpInterceptorFn = (req, next) => {

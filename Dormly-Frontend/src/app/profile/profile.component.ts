@@ -4,6 +4,7 @@ import { Profile } from '../models/Profile';
 import { catchError, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { FileuploadService } from '../service/fileuploads/fileupload.service';
 
 @Component({
   selector: 'app-profile',
@@ -12,13 +13,15 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit{
+
   //abstracts away from typescripts strict property initialization
   userProfile:Array<Profile> = []
   hasError:boolean = false
   hasloaded:boolean = false
+  file!: File
 
 
-  constructor(private profileService:ProfileService){}
+  constructor(private profileService:ProfileService, private fileService : FileuploadService){}
   
   /**
    * The component gets rendered when a user clicks on view profile button in the dormly-home
@@ -26,10 +29,17 @@ export class ProfileComponent implements OnInit{
    * we run the ngoninit to immediatley fetch the user associated with the profile
    */
   ngOnInit(): void {
-    this.fetchProfile()
+    //this.fetchProfile()
     //the returning json includes the image and the user info
    
   }
+
+  uploadProfile(event: Event) {
+    //the event parameter represents the  input field that triggered the event
+    //pass the delegation of logic to the file service
+    this.fileService.uploadFile(event)
+
+    }
 
   fetchProfile(){
     this.profileService.fetchUserProfile()
@@ -43,8 +53,10 @@ export class ProfileComponent implements OnInit{
     })
     )
     .subscribe(data=>{
-      this.userProfile.push(data)
+  
       this.hasloaded = true
+      //wrap it an array as we only return a single object, and ngFor requires an iterable
+      this.userProfile = [data]
       
       //as soon as this 
     });

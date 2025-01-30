@@ -18,16 +18,11 @@ export class ProfileComponent implements OnInit{
   userProfile:Array<Profile> = []
   hasError:boolean = false
   hasloaded:boolean = false
-  file!: File
 
 
   constructor(private profileService:ProfileService, private fileService : FileuploadService){}
   
-  /**
-   * The component gets rendered when a user clicks on view profile button in the dormly-home
-   * as soon as the component constructor gets initialized
-   * we run the ngoninit to immediatley fetch the user associated with the profile
-   */
+ 
   ngOnInit(): void {
     //this.fetchProfile()
     //the returning json includes the image and the user info
@@ -36,8 +31,9 @@ export class ProfileComponent implements OnInit{
 
   uploadProfile(event: Event) {
     //the event parameter represents the  input field that triggered the event
-    //pass the delegation of logic to the file service
-    this.fileService.uploadFile(event)
+    //we return a formdata which represents the key and value, the key binds to the backend request param
+    const file = this.fileService.uploadFile(event)
+    this.profileService.uploadProfilePicture(file)
 
     }
 

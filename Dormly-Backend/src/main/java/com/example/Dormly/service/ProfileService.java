@@ -93,12 +93,22 @@ public class ProfileService {
 
         Long profileId = userProfile.getId();
         String profilePictureId = UUID.randomUUID().toString();
+        // Infer the file extension
+        String originalFilename = multipartFile.getOriginalFilename();
+        String extension = "";
+
+        if (originalFilename != null && originalFilename.contains(".")) {
+            extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        } else {
+            throw new IllegalArgumentException("Invalid file format");
+        }
+
         try {
             byte[] file = multipartFile.getBytes();
             //api request to store the object into our aws bucket based on our credentials defined in the s3 client
             s3Service.putObject(
                     profileBucket,
-                    "uploads/profile/%s/%s".formatted(profileId, profilePictureId),
+                    "uploads/profile/%s/%s%s".formatted(profileId, profilePictureId, extension),
                     file);
         }catch(IOException e){
             //TODO add custom exceptions
@@ -106,7 +116,7 @@ public class ProfileService {
 
         }
         //save the Users image Id, so that we can always retrieve it
-        userProfile.setProfilePictureId(profilePictureId);
+        userProfile.setProfilePictureId(profilePictureId + extension);
         profileRepository.save(userProfile);
 
 

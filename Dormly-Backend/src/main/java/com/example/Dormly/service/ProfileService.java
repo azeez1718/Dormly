@@ -77,7 +77,8 @@ public class ProfileService {
 
         }
         //the key is the unique identifier so the location of the path, which was created using Profileid and generated image id
-        String key = "upload/profile/%s/%s".formatted(profileId, profileImageId);
+        //the profile image Id automatically includes the extension
+        String key = "uploads/profile/%s/%s".formatted(profileId, profileImageId);
 
        return s3Service.generatePreSignedUrls(profileBucket, key);
 
@@ -115,9 +116,10 @@ public class ProfileService {
             throw new RuntimeException("unable to upload file", e);
 
         }
-        //save the Users image Id, so that we can always retrieve it
+        //save the Users image Id, so that we can always retrieve it -image.extension
         userProfile.setProfilePictureId(profilePictureId + extension);
         profileRepository.save(userProfile);
+
 
 
         /**

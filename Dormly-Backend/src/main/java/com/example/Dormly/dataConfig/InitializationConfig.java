@@ -23,28 +23,26 @@ public class InitializationConfig {
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final S3Service s3;
-    @Value("{aws.bucket}")
-    private String bucket;
+
 
     @Bean
     CommandLineRunner commandLineRunner(ProfileRepository profileRepository,
-                                        UserRepository userRepository, S3Service s3){
+                                        UserRepository userRepository){
         return args -> {
 
             //find the first user in the database and set the user field of the profile entity
 
-            Users user = new Users("abas", "jama", "abas@qmul.ac.uk", List.of(Role.USER));
-            user.setPassword(passwordEncoder.encode("abasjama"));
-            userRepository.save(user);
-
-            Profile p1 = Profile.builder()
-                    .bio("Computer Engineer at QMUL 25")
-                    .Location("London, kensington")
-                    .user(user)
-                    .build();
-            profileRepository.save(p1);
-
+//            Users user = new Users("abas", "jama", "abas@qmul.ac.uk", List.of(Role.USER));
+//            user.setPassword(passwordEncoder.encode("abasjama"));
+//            userRepository.save(user);
+//
+//            Profile p1 = Profile.builder()
+//                    .bio("Computer Engineer at QMUL 25")
+//                    .Location("London, kensington")
+//                    .user(user)
+//                    .build();
+//            profileRepository.save(p1);
+//
 
 
 

@@ -25,7 +25,7 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "profile_picture_id", unique = true)
+    @Column(name = "profile_picture_id", unique = true, nullable = true)
     private String profilePictureId;
 
     private String bio;

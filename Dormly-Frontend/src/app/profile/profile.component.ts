@@ -24,7 +24,7 @@ export class ProfileComponent implements OnInit{
   
  
   ngOnInit(): void {
-    //this.fetchProfile()
+    this.fetchProfile()
     //the returning json includes the image and the user info
    
   }
@@ -32,7 +32,9 @@ export class ProfileComponent implements OnInit{
   uploadProfile(event: Event) {
     //the event parameter represents the  input field that triggered the event
     //we return a formdata which represents the key and value, the key binds to the backend request param
+    console.log("calling the upload file function")
     const file = this.fileService.uploadFile(event)
+    console.log("we returned a form data object")
     this.profileService.uploadProfilePicture(file)
 
     }
@@ -53,6 +55,7 @@ export class ProfileComponent implements OnInit{
       this.hasloaded = true
       //wrap it an array as we only return a single object, and ngFor requires an iterable
       this.userProfile = [data]
+      console.log(this.userProfile)
       
       //as soon as this 
     });

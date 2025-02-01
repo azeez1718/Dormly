@@ -21,8 +21,11 @@ export class ProfileService {
   }
 
   uploadProfilePicture(file: FormData):Observable<void>{
-    const uploadPicture = `${this.url}/upload-photo?${file}`
-    return this.Http.post<void>(uploadPicture, null)
+    const uploadPicture = `${this.url}/upload-photo`
+    console.log("about to make the api request")
+    console.log(Array.from(file.entries()));
+
+    return this.Http.post<void>(uploadPicture, file)
 
 
     

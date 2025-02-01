@@ -14,7 +14,7 @@ export const customInterceptor: HttpInterceptorFn = (req, next) => {
    * as all apis dont need a jwt like sign up or login we can ensure these are skipped from the interceptor
    */ 
 
-  if(req.url=== 'http://localhost:8099/api/v1/Dormly.com/login' || req.url ==='http://localhost:8099/api/v1/Dormly.com/sign-up'){
+  if(req.url=== 'http://localhost:8099/api/v1/Dormly.com/login' || req.url ==='http://localhost:8099api/v1/Dormly.com/sign-up'){
     return next(req);
 
   }

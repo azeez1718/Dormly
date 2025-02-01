@@ -2,9 +2,8 @@
 <!--card Component that allows the user to view their profile and upload a photo. -->
 
 
-<label for="myfile">Select a file:</label>
-<input type="file" id="myfile" name="myfile" (change)="uploadProfile($event)">
-<!-- 
+
+
 <div *ngIf = "hasloaded"></div>
 <div *ngFor = "let users of userProfile">
   
@@ -13,7 +12,7 @@
   <figure class="px-10 pt-10">
     <img
       [src]= "users.image"
-      alt="Shoes"
+      alt="profile"
       class="rounded-xl" />
   </figure>
   <div class="card-body items-center text-center">
@@ -28,4 +27,4 @@
 </div>
   </div>
 </div>
-</div> -->
+</div> 

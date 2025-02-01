@@ -1,5 +1,5 @@
 export interface Profile{
-    image :URL | null
+    image :URL
     bio:string
     location:string
     email:string

@@ -14,8 +14,7 @@ target/
 .sts4-cache
 
 
-# Ignore the application.properties file
-/src/main/resources/application.properties
+
 
 
 ### IntelliJ IDEA ###

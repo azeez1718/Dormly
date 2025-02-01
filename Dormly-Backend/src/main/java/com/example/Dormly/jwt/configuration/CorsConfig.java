@@ -22,7 +22,7 @@ public class CorsConfig{
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**") //our client side can send requests to all endpoints
-                        .allowedOrigins("http://localhost:49312")
+                        .allowedOrigins("http://localhost:49322")
                         .allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS")
                         .allowedHeaders("*") //allow client to have request include headers like Authorizaiton which includes the token
                         .allowCredentials(true);//allow cookies

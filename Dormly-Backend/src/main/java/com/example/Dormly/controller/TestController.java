@@ -27,6 +27,11 @@ public class TestController {
         return new ResponseEntity<>(time, HttpStatus.OK);
     }
 
+    @GetMapping(value = "hello")
+    public String hello(){
+        return "hello";
+    }
+
 
 
 

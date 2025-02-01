@@ -3,6 +3,7 @@ package com.example.Dormly.controller;
 import com.example.Dormly.dto.ProfileDto;
 import com.example.Dormly.service.ProfileService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("api/v1/Dormly.com/profile")
 @RestController
@@ -41,7 +43,8 @@ public class ProfileController {
      */
     @PostMapping(path = "upload-photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> uploadProfilePicture(@AuthenticationPrincipal UserDetails userDetails,
-                                                     @RequestParam("file")MultipartFile multipartFile){
+                                                     @RequestPart("file")MultipartFile multipartFile){
+        log.info("Uploading profile picture");
         String userEmail = userDetails.getUsername();
         profileService.uploadProfilePicture(userEmail, multipartFile);
         return new ResponseEntity<>(HttpStatus.CREATED);

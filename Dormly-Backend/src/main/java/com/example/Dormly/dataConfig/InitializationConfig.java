@@ -46,12 +46,7 @@ public class InitializationConfig {
             profileRepository.save(p1);
 
 
-//            s3.putObject(bucket, "test", "hello".getBytes());
-//
-//            //allows us to get the image stored in the bucket with its unique identifier 'test'
-//            byte[] bytes = s3.getObject(bucket, "test");
-//
-//            System.out.println("horray " + new String(bytes));
+
 
         };
     }

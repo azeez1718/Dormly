@@ -13,6 +13,7 @@ import { AuthResponse } from '../models/AuthResponse';
 import { Router } from '@angular/router';
 import { TokenService } from '../auth/token/token.service';
 import { MatIcon } from '@angular/material/icon';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 
 @Component({
@@ -25,7 +26,8 @@ import { MatIcon } from '@angular/material/icon';
           FormsModule,
           MatError,
           RouterLink,
-          MatIcon
+          MatIcon,
+          NavbarComponent
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'

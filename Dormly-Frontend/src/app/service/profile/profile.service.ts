@@ -7,8 +7,7 @@ import { Profile } from '../../models/Profile';
   providedIn: 'root'
 })
 export class ProfileService {
- 
-
+  
    url:string = "http://localhost:8099/api/v1/Dormly.com/profile"
 
   constructor(private Http:HttpClient) { }
@@ -27,8 +26,11 @@ export class ProfileService {
 
     return this.Http.post<void>(uploadPicture, file)
 
+  }
 
-    
+  getProfilePicture():Observable<URL>{
+    const getPicture = `${this.url}/home/profile-picture`
+    return this.Http.get<URL>(getPicture)
   }
   
 

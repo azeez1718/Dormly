@@ -5,6 +5,7 @@ import { combineLatest } from 'rxjs';
 import { SignupComponent } from './signup/signup.component';
 import { computed } from '@angular/core';
 import { ProfileComponent } from './profile/profile.component';
+import { MainComponent } from './main/main.component';
 ;
 
 export const routes: Routes = [
@@ -26,5 +27,11 @@ export const routes: Routes = [
     {
     path:"profile",
     component:ProfileComponent
+    },
+
+    {
+        path: '',  // Root route
+        component: MainComponent
+
     }
 ];

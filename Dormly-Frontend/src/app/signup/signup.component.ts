@@ -6,10 +6,11 @@ import { SignUp } from '../models/SignUp';
 import { AuthResponse } from '../models/AuthResponse';
 import { Router, RouterLink } from '@angular/router';
 import { TokenService } from '../auth/token/token.service';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-signup',
-  imports: [FormsModule, ReactiveFormsModule, CommonModule, RouterLink],//RouterLink],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, RouterLink, NavbarComponent],//RouterLink],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css'
 })

@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URL;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -51,5 +53,18 @@ public class ProfileController {
 
 
     }
+
+    /**
+     * return the profile image of the user, which will be set in the homepage
+     * @param userDetails
+     * @return
+     */
+    @GetMapping(value = "home/profile")
+    public ResponseEntity<URL>fetchHomeProfile(@AuthenticationPrincipal UserDetails userDetails){
+        String userEmail = userDetails.getUsername();
+        return new ResponseEntity<>(profileService.getProfilePicture(userEmail), HttpStatus.OK);
+
+    }
+
   
 }

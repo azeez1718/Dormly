@@ -28,6 +28,7 @@ public class Profile {
     @Column(name = "profile_picture_id", unique = true, nullable = true)
     private String profilePictureId;
 
+    @Column(name = "bio", nullable = true)
     private String bio;
 
     //default, will be set to university Location

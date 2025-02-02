@@ -31,7 +31,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     @Transactional
-    public AuthResponse giveToken(RegisterDto registerDto) {
+    public AuthResponse signUp(RegisterDto registerDto) {
         /**
          * ensure the email is a valid university email by checking the domain name as Queens mary University
          */

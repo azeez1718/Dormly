@@ -6,43 +6,37 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, CommonModule],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
   displayNavbar:Boolean = false
-  navbarRoutes:Array<string> = ['/', '/login', '/sign-up']
+ 
 
 
   constructor(private router:Router){}
 
 
-  /**
-   * ngoninit gets ran when the main component gets instantiated
-   * it remains active due to the subscribable listening to events being emitted
-   * the events function returns an observable of an event type whenever a route change occurs
-   * if the event is of type navigation end this means the new route has been activated
-   * we can then check for every new route we go to, we run the showNavbar to see if its the '' route
-   */
+  
   ngOnInit() {
-    
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.showNavbar();
-      }
-    });
+    //this.showNavbar();
+     
 
 
 }
 
-showNavbar(){
-  // TODO bug remains in here
-  //the router.url only shows the path after the port number, like '/dashboard' or /home
-  console.log("we need to remove navbar")
-  if(this.navbarRoutes.includes(this.router.url)){
-    this.displayNavbar = true
-  }
+// showNavbar():void{
+//   // TODO bug remains in here
+//   //the router.url only shows the path after the port number, like '/dashboard' or /home
+//   console.log(this.router.url)
+//   if (this.router.url === '/login' || this.router.url==='/sign-up' || this.router.url === '/'){
+//     this.displayNavbar = true
+//   }else{
+//     this.displayNavbar=false
+//   }
+
+  //}
 }
 
-}
+

@@ -26,13 +26,10 @@ public class ProfileService {
     private final S3Service s3Service;
 
 
-
-
-
     public ProfileDto fetchProfile(String userEmail) {
         Optional<Profile> userProfile = profileRepository.findByEmail(userEmail);
 
-        if(userProfile.isEmpty()){
+        if (userProfile.isEmpty()) {
             throw new ProfileNotFoundException("This user does not exist");
         }
         //if the user has a valid profile, we can then also get their email and firstname to return back to the client
@@ -41,7 +38,6 @@ public class ProfileService {
 
         //return the image URL from the presigned url we generate for the user, and set it in DTO to return to client
         URL imageUrl = generatePreSignedUrl(userEmail);
-
 
 
         /**
@@ -80,9 +76,10 @@ public class ProfileService {
         //the profile image Id automatically includes the extension
         String key = "uploads/profile/%s/%s".formatted(profileId, profileImageId);
 
-       return s3Service.generatePreSignedUrls(profileBucket, key);
+        return s3Service.generatePreSignedUrls(profileBucket, key);
 
     }
+
     public void uploadProfilePicture(String userEmail, MultipartFile multipartFile) {
         /**
          * Ensure the User making this request exists
@@ -90,7 +87,7 @@ public class ProfileService {
          */
         //we need to retrieve the profile to set the unique identifier within the key to the profile Id
         Profile userProfile = profileRepository.findByEmail(userEmail).
-                orElseThrow(()-> new ProfileNotFoundException("user with email " + userEmail + " does not exist"));
+                orElseThrow(() -> new ProfileNotFoundException("user with email " + userEmail + " does not exist"));
 
         Long profileId = userProfile.getId();
         String profilePictureId = UUID.randomUUID().toString();
@@ -111,7 +108,7 @@ public class ProfileService {
                     profileBucket,
                     "uploads/profile/%s/%s%s".formatted(profileId, profilePictureId, extension),
                     file);
-        }catch(IOException e){
+        } catch (IOException e) {
             //TODO add custom exceptions
             throw new RuntimeException("unable to upload file", e);
 
@@ -119,7 +116,6 @@ public class ProfileService {
         //save the Users image Id, so that we can always retrieve it -image.extension
         userProfile.setProfilePictureId(profilePictureId + extension);
         profileRepository.save(userProfile);
-
 
 
         /**
@@ -133,6 +129,20 @@ public class ProfileService {
          *
          */
 
+
     }
+
+
+    public URL getProfilePicture(String userEmail){
+        //will find the profile of the user
+        //we will pass the key and the bucket and call the presigned url function
+        //this returns a temporary signed URL allowing users to access our bucket whilst hiding credentials
+        return generatePreSignedUrl(userEmail);
+    }
+
+
+    //change password function
+
+
 
 }

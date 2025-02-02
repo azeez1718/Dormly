@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, NgModule } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { HomeComponent } from "../user-home/home.component";
 import {MatInputModule} from '@angular/material/input';
 import { MatError } from '@angular/material/input';
@@ -30,10 +30,10 @@ import { MatIcon } from '@angular/material/icon';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
 
-  userForm : FormGroup
+  userForm!: FormGroup
   formSubmitted: boolean = false
   loginRequest : LoginRequest = {
     'email' : '',
@@ -43,18 +43,22 @@ export class LoginComponent {
 
 
   /**
-   * The parametrs for the form controls are default value ->synchronous data -> asynchronous data
+   * The parameters for the form controls are default value ->synchronous data -> asynchronous data
    *  
    */
   constructor(private formBuilder : FormBuilder, private auth:AuthService, private route:Router,
-    private tokenservice:TokenService
-  ){
+    private tokenservice:TokenService){}
+  ngOnInit(): void {
+   this.formSetup()
+  }
+
+
+  formSetup():void{
     this.userForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email, Validators.pattern(/@qmul\.ac\.uk$/)]],
       password: ['', [Validators.maxLength(15), Validators.required]]
     })
   }
-
 
   login():void{
     /**

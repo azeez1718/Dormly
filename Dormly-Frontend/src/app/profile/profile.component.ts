@@ -60,7 +60,7 @@ export class ProfileComponent implements OnInit{
       //as soon as this 
     });
 
-
+    
       }
     
   }

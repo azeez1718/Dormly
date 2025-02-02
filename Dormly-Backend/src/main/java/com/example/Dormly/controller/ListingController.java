@@ -2,6 +2,7 @@ package com.example.Dormly.controller;
 
 
 import com.example.Dormly.dto.ListingDtoRequest;
+import com.example.Dormly.service.ListingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,21 +15,23 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/Dormly/listing")
 public class ListingController {
 
-    private final listingService ListingService;
+    private final ListingService listingService;
 
     @PostMapping(value = "create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void>createListing(@AuthenticationPrincipal UserDetails userDetails,
                                              @RequestPart("listing")ListingDtoRequest listingDtoRequest,
-                                             @RequestPart("file") MultipartFile file) {
+                                             @RequestPart("file") MultipartFile file) throws IOException {
 
         String userEmail = userDetails.getUsername();
-        return new ResponseEntity<>(listingService.createListing(userEmail, listingDtoRequest, file),
-                HttpStatus.CREATED);
+        listingService.createListing(userEmail, listingDtoRequest, file);
+        return ResponseEntity.status(HttpStatus.CREATED).body(null);
 
     }
 }

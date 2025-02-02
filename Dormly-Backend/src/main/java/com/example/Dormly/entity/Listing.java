@@ -31,6 +31,7 @@ public class Listing {
     @OneToMany(mappedBy = "listing", cascade = CascadeType.ALL)
     private List<Photos> photos = new ArrayList<>();
 
+    private int price;
 
     @Column(name = "Title", nullable = false)
     private String title;
@@ -66,7 +67,7 @@ public class Listing {
     @Column(name = "updated_at")
     //this will be set in the constructor, any persistence to the db will be seen as an update
     //i.e user may change listing information, may delete a listing or may create one
-    private String updatedAt;
+    private Date updatedAt;
 
 
 

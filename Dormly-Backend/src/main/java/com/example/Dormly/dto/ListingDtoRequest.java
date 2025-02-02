@@ -11,8 +11,8 @@ import lombok.*;
 public class ListingDtoRequest {
 
     private String title;
-    private String price;
-    private String bio;
+    private int price;
+    private String description;
     private String brand;
     private String condition;
     //by default isSold in the listing entity is going to be No;

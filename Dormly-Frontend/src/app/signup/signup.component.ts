@@ -35,9 +35,12 @@ export class SignupComponent implements OnInit{
 
 
   Register():void{
-    if(this.formgroup.valid && this.formgroup.controls['confirmPassword'].value == this.formgroup.controls['password'].value){
-    //call the authService to send the user 
-    this.registerForm = this.formgroup.value
+    if(this.formgroup.valid && this.formgroup.controls['confirmPassword'].value === this.formgroup.controls['password'].value){
+   
+      //because confirm password is used for frontend validations only, we need to extract confirm password from the formgroup before sending to backend..using destructions
+    const {confirmPassword , ...form} = this.formgroup.value;
+    this.registerForm = form
+
     this.authService.register(this.registerForm).subscribe({
       next:(response:AuthResponse)=>{
         //set the token returned to the local storage and redirect the user once signed up
@@ -45,6 +48,7 @@ export class SignupComponent implements OnInit{
         if(response.token){
         this.tokenService.token = response.token as string
         console.log("user successfully signed up")
+        //for now we'll redirect user to the homepage but later they will need to set up their profile
         this.router.navigate(["/my-home"])
         }
       },

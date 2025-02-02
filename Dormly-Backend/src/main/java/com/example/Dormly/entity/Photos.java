@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Photos {
+public class Photos { //use later when the user can upload 3 images
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

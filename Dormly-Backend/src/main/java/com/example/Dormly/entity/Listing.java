@@ -50,11 +50,17 @@ public class Listing {
 
     @Column(name = "is_sold", nullable = false)
     private boolean isSold;
+
     private String brand;
 
     @Column(name = "listed_date", nullable = false)
     //set automatically by us
     private Date ListedDate;
+
+    @Column(nullable = false)
+    private String listingImageURL;
+
+    private String category;
 
 
     @Column(name = "updated_at")

@@ -59,7 +59,7 @@ public class ProfileController {
      * @param userDetails
      * @return
      */
-    @GetMapping(value = "home/profile")
+    @GetMapping(value = "home/profile-picture")
     public ResponseEntity<URL>fetchHomeProfile(@AuthenticationPrincipal UserDetails userDetails){
         String userEmail = userDetails.getUsername();
         return new ResponseEntity<>(profileService.getProfilePicture(userEmail), HttpStatus.OK);

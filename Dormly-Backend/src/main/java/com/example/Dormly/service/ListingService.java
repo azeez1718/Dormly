@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,7 +26,7 @@ public class ListingService {
     private final ListingRepository listingRepository;
     private final S3Service s3Service;
 
-    @Value("${aws.buckets.listings}")
+    @Value("${aws.bucket.listing}")
     private String bucketName;
 
     @Transactional
@@ -40,32 +42,43 @@ public class ListingService {
 
         Long profileId = profile.getId();
         String fileUUID = UUID.randomUUID().toString();
-        byte [] file = multipartFile.getBytes();
-        String key = "uploads/listings/%s/%s".formatted(profileId,fileUUID);
 
-        s3Service.putObject(bucketName, key, file);
+        try {
+            byte[] file = multipartFile.getBytes();
+            //get the extension of the image
+
+            //ensure file name isnt null
+            if(multipartFile.getOriginalFilename() == null){
+                throw new FileNotFoundException("File not found");
+            }
+            String extension = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
+            String key = "uploads/listings/%s/%s".formatted(profileId, fileUUID);
+            s3Service.putObject(bucketName, key + extension, file);
 
 
-        //convert the dto to a listing object using Builder
-        Listing listing = Listing.builder()
-                .brand(listingDtoRequest.getBrand())
-                .availability(listingDtoRequest.getAvailability())
-                .condition(listingDtoRequest.getCondition())
-                .category(listingDtoRequest.getCategory())
-                .Location(listingDtoRequest.getLocation())
-                .title(listingDtoRequest.getTitle())
-                .price(listingDtoRequest.getPrice())
-                .build();
+            //convert the dto to a listing object using Builder
+            Listing listing = Listing.builder()
+                    .brand(listingDtoRequest.getBrand())
+                    .availability(listingDtoRequest.getAvailability())
+                    .condition(listingDtoRequest.getCondition())
+                    .category(listingDtoRequest.getCategory())
+                    .Location(listingDtoRequest.getLocation())
+                    .title(listingDtoRequest.getTitle())
+                    .price(listingDtoRequest.getPrice())
+                    .build();
 
-        //we can set the values to save the entity, these will be set default in the backend
-        listing.setListedDate(new Date());
-        listing.setUpdatedAt(new Date());
-        listing.setProfile(profile);
+            //we can set the values to save the entity, these will be set default in the backend
+            listing.setListedDate(LocalDate.now());
+            listing.setUpdatedAt(LocalDate.now());
+            listing.setProfile(profile);
 
-        //set the fileUUID to the image url so we can fetch it when generating a presigned url
-        listing.setListingImageURL(fileUUID);
+            //set the fileUUID to the image url with extension so we can fetch it when generating a presigned url
+            listing.setListingImageURL(fileUUID + extension);
 
-        listingRepository.save(listing);
+            listingRepository.save(listing);
+        }catch(Exception e){
+            throw new RuntimeException("Error whilst creating listing", e);
+        }
 
     }
 }

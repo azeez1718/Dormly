@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,8 +29,8 @@ public class Listing {
     @JoinColumn(name="profile_id", nullable = false)
     private Profile profile;
 
-    @OneToMany(mappedBy = "listing", cascade = CascadeType.ALL)
-    private List<Photos> photos = new ArrayList<>();
+    //@OneToMany(mappedBy = "listing", cascade = CascadeType.ALL)
+   // private List<Photos> photos = new ArrayList<>();
 
     private int price;
 
@@ -56,7 +57,7 @@ public class Listing {
 
     @Column(name = "listed_date", nullable = false)
     //set automatically by us
-    private Date ListedDate;
+    private LocalDate ListedDate;
 
     @Column(nullable = false)
     private String listingImageURL;
@@ -64,10 +65,10 @@ public class Listing {
     private String category;
 
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_date")
     //this will be set in the constructor, any persistence to the db will be seen as an update
     //i.e user may change listing information, may delete a listing or may create one
-    private Date updatedAt;
+    private LocalDate updatedAt;
 
 
 

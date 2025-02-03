@@ -30,6 +30,7 @@ public class AuthController {
 
     @PostMapping(path = "/login")
     public ResponseEntity<AuthResponse> Login(@RequestBody LoginDto loginDto){
+       log.info("Login request received");
         return ResponseEntity.ok(authService.userLogin(loginDto));
     }
 

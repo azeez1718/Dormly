@@ -32,6 +32,7 @@ public class Listing {
     //@OneToMany(mappedBy = "listing", cascade = CascadeType.ALL)
    // private List<Photos> photos = new ArrayList<>();
 
+    @Column(nullable = false)
     private int price;
 
     @Column(name = "Title", nullable = false)
@@ -48,7 +49,7 @@ public class Listing {
     private String availability;
 
     @Column(nullable = false)
-    private String Location;
+    private String location;
 
     @Column(name = "is_sold", nullable = false)
     private boolean isSold;

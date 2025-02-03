@@ -62,15 +62,17 @@ public class ListingService {
                     .availability(listingDtoRequest.getAvailability())
                     .condition(listingDtoRequest.getCondition())
                     .category(listingDtoRequest.getCategory())
-                    .Location(listingDtoRequest.getLocation())
+                    .location(listingDtoRequest.getLocation())
                     .title(listingDtoRequest.getTitle())
                     .price(listingDtoRequest.getPrice())
+                    .description(listingDtoRequest.getDescription())
                     .build();
 
             //we can set the values to save the entity, these will be set default in the backend
             listing.setListedDate(LocalDate.now());
             listing.setUpdatedAt(LocalDate.now());
             listing.setProfile(profile);
+            listing.setSold(false);
 
             //set the fileUUID to the image url with extension so we can fetch it when generating a presigned url
             listing.setListingImageURL(fileUUID + extension);

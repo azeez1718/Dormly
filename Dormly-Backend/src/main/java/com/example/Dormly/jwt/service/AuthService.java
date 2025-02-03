@@ -86,6 +86,7 @@ public class AuthService {
 
 
     public AuthResponse userLogin(LoginDto loginDto) {
+        System.out.println("entering function");
        try {
            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                    loginDto.getEmail(),

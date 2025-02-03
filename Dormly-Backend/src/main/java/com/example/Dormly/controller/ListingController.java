@@ -5,6 +5,7 @@ import com.example.Dormly.dto.ListingDtoRequest;
 import com.example.Dormly.entity.Listing;
 import com.example.Dormly.service.ListingService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+@Slf4j
 @RequestMapping(value = "api/v1/Dormly.com/listing")
 @RestController
 public class ListingController {
@@ -34,6 +36,8 @@ public class ListingController {
                                              @RequestPart("file") MultipartFile file) throws IOException {
 
         String userEmail = userDetails.getUsername();
+        log.info("listing dto{}", listingDtoRequest.toString());
+        //log.info(file.getOriginalFilename() + "----------------------------------------");
         listingService.createListing(userEmail, listingDtoRequest, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
 

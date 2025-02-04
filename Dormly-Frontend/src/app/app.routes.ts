@@ -6,6 +6,7 @@ import { SignupComponent } from './signup/signup.component';
 import { computed } from '@angular/core';
 import { ProfileComponent } from './profile/profile.component';
 import { MainComponent } from './main/main.component';
+import { ListingComponent } from './listing/listing.component';
 ;
 
 export const routes: Routes = [
@@ -33,5 +34,9 @@ export const routes: Routes = [
         path: '',  // Root route
         component: MainComponent
 
+    },
+    {
+        path : 'listing',
+        component: ListingComponent
     }
 ];

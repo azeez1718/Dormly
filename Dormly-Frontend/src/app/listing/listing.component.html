@@ -3,3 +3,41 @@
 <input type = "file" id="file" class="justify-center" (change) = "uploadListing($event)">
 
 
+<form (ngSubmit)="">
+
+
+    <div>
+
+        <label for="title">title : </label>
+        <input type = "text" id = "title"  [(ngModel)]="listingDetails.title">
+
+        <label for="price">price : </label>
+        <input type = "text" id = "price" ([ngModel])="listingDetails.price">
+
+        <label for="description">description: </label>
+        <input type = "text" id = "description" ([ngModel])="listingDetails.description">
+
+        <label for="branch">brand : </label>
+        <input type = "text" id = "brand" ([ngModel])="listingDetails.brand">
+
+        <label for="condition">condition: </label>
+        <input type = "text" id = "condition" ([ngModel])="listingDetails.condition">
+
+        <label for="location">location: </label>
+        <input type = "text" id = "location" ([ngModel])="listingDetails.location">
+
+        <label for="category">category: </label>
+        <input type = "text" id = "category" ([ngModel])="listingDetails.category">
+
+        <label for="availability">availability: </label>
+        <input type = "text" id = "availability" ([ngModel])="listingDetails.availability">
+
+
+
+    </div>
+</form>
+
+
+
+
+

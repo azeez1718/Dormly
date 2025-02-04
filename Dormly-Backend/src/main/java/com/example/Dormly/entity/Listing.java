@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +34,7 @@ public class Listing {
    // private List<Photos> photos = new ArrayList<>();
 
     @Column(nullable = false)
-    private int price;
+    private BigDecimal price;
 
     @Column(name = "Title", nullable = false)
     private String title;
@@ -66,10 +67,10 @@ public class Listing {
     private String category;
 
 
-    @Column(name = "updated_date")
+
     //this will be set in the constructor, any persistence to the db will be seen as an update
     //i.e user may change listing information, may delete a listing or may create one
-    private LocalDate updatedAt;
+    private LocalDate updated_at;
 
 
 

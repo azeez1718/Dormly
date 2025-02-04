@@ -47,7 +47,7 @@ public class ListingService {
             byte[] file = multipartFile.getBytes();
             //get the extension of the image
 
-            //ensure file name isnt null
+            //ensure file name isn't null
             if(multipartFile.getOriginalFilename() == null){
                 throw new FileNotFoundException("File not found");
             }
@@ -70,10 +70,9 @@ public class ListingService {
 
             //we can set the values to save the entity, these will be set default in the backend
             listing.setListedDate(LocalDate.now());
-            listing.setUpdatedAt(LocalDate.now());
+            listing.setUpdated_at(LocalDate.now());
             listing.setProfile(profile);
             listing.setSold(false);
-
             //set the fileUUID to the image url with extension so we can fetch it when generating a presigned url
             listing.setListingImageURL(fileUUID + extension);
 

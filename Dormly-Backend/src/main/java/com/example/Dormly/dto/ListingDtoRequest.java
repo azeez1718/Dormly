@@ -2,6 +2,8 @@ package com.example.Dormly.dto;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @ToString
@@ -11,7 +13,7 @@ import lombok.*;
 public class ListingDtoRequest {
 
     private String title;
-    private int price;
+    private BigDecimal price;
     private String description;
     private String brand;
     private String condition;

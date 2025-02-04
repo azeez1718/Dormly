@@ -17,7 +17,7 @@ export class FileuploadService {
 
       //backend is expecting a multipart form data object 
       const formdata = new FormData()
-      formdata.append("form", file)
+      formdata.append("file", file)
       return formdata
     }else{
       throw new Error("there was no file found")

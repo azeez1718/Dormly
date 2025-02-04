@@ -12,26 +12,52 @@ import { FormsModule } from '@angular/forms';
 })
 export class ListingComponent implements OnInit{
   
-  listingDetails!: Listing;
+  
+    listingDetails: Listing = {
+      title: '',
+      price: undefined,  //overriden by the binding
+      description: '',
+      brand: '',
+      condition: '',
+      location: '',
+      category: '',
+      availability: ''
+
+    }
+  validForm:boolean = false
+  formdata :FormData = new FormData()
 
   constructor(private fileService:FileuploadService, private listingService:ListingService){}
   
   
   ngOnInit(): void {
-    this.uploadListing
   }
 
   uploadListing(event:Event):void{
-    //this will return the formdata that includes the file uploaded
+    //this will return the formdata that includes the file uploaded 
+    this.formdata = this.fileService.uploadFile(event)
+    console.log("file successfully added")
+    console.log(this.formdata.keys())
+  }
+
+
+  onSubmit():void{
+
     //the backend expects a json and a file 
     //multipart formdata allows us to send objects of different contents, the backend binds each key value to the method parameter
     //we will sent a json which is the listing information and the image of the item itself
-    const formdata = this.fileService.uploadFile(event)
+    if(!this.listingDetails || !this.formdata.has('file')){
+      throw new Error("error creating listing")
+
+    }
+    this.validForm = true
     //wrapping the json in a blob allows to explicity define the content-type
     const listingJson = new Blob([JSON.stringify(this.listingDetails)], {type:'application/json'})
-    formdata.append('listing', listingJson)
+    this.formdata.append('listing', listingJson)
 
-    this.listingService.uploadlistingItems().subscribe({
+    console.log("appended the form data")
+
+    this.listingService.uploadlistingItems(this.formdata).subscribe({
       next:(data:any)=>{
         console.log("items uploaded successfully")
       },
@@ -39,8 +65,8 @@ export class ListingComponent implements OnInit{
         console.log(error.message)
       }
     })
-    
-  
+      //reset form data
+      this.formdata = new FormData();
   }
 
 }

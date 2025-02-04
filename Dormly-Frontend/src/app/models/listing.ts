@@ -2,7 +2,7 @@ export interface Listing{
 
 
     title:string
-    price:number
+    price:number | undefined
     description: string
     brand :string
     condition:string

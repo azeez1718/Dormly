@@ -2,8 +2,10 @@ package com.example.Dormly.service;
 
 import com.example.Dormly.aws.S3Service;
 import com.example.Dormly.dto.ListingDtoRequest;
+import com.example.Dormly.dto.ListingDtoResponse;
 import com.example.Dormly.entity.Listing;
 import com.example.Dormly.entity.Profile;
+import com.example.Dormly.exceptions.ListingNotFoundException;
 import com.example.Dormly.exceptions.ProfileNotFoundException;
 import com.example.Dormly.repository.ListingRepository;
 import com.example.Dormly.repository.ProfileRepository;
@@ -15,9 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -80,6 +85,39 @@ public class ListingService {
         }catch(Exception e){
             throw new RuntimeException("Error whilst creating listing", e);
         }
+
+    }
+
+    public List<ListingDtoResponse> findAllListings() {
+        /**
+         *  we'll need to iterate through each listing items and convert them into a listingDTO
+         *  because Map returns a new object we'll first convert it to a dto then set the presigned url using peek
+         *
+         */
+
+        List<ListingDtoResponse> listingDto = listingRepository.findAll()
+                .stream()
+                .map(listing->ListingDtoResponse.DtoMapper(listing))
+                .map(dto-> dto.setImageUrl(generatePreSignedUrlListing()))
+
+
+                //one option pass in the id and query only by Id and add jsonignore to prevent serializing
+
+
+    }
+
+
+
+    public URL generatePreSignedUrlListing(Listing listing){
+        Listing retreiveListing = listingRepository.findById(listing.getId())
+                .orElseThrow(()-> new ListingNotFoundException("Listing not found"));
+
+        String imageUrl = retreiveListing.getListingImageURL();
+        /// were also going to need the profile id of the person who made each listing as that is in our key
+        Long profileId = retreiveListing.getProfile().getId();
+
+        String key = "uploads/listings/%s/%s".formatted(profileId, imageUrl);
+        return s3Service.generatePreSignedUrls(bucketName, key);
 
     }
 }

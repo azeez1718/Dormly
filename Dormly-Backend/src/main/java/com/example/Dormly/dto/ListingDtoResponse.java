@@ -1,11 +1,21 @@
 package com.example.Dormly.dto;
 
+import com.example.Dormly.entity.Listing;
 import com.example.Dormly.entity.Profile;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.net.URL;
-
-public class ListingDtoResponse {
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class  ListingDtoResponse {
     private String title;
     private BigDecimal price;
     private String description;
@@ -18,4 +28,21 @@ public class ListingDtoResponse {
     private URL imageUrl;
     private Boolean isSold;
     private Profile profile;
+
+
+    public static ListingDtoResponse DtoMapper(Listing listing){
+       return ListingDtoResponse.builder()
+                .title(listing.getTitle())
+                .price(listing.getPrice())
+                .description(listing.getDescription())
+                .brand(listing.getBrand())
+                .condition(listing.getCondition())
+                .location(listing.getLocation())
+                .category(listing.getCategory())
+                .availability(listing.getAvailability())
+                .isSold(listing.isSold())
+                .profile(listing.getProfile())
+               .build();
+
+    }
 }

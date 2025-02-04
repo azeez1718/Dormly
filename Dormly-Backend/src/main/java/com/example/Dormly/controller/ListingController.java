@@ -42,9 +42,16 @@ public class ListingController {
     }
 
 
+    /**
+     * we return all listings made in the application thus we do not need to use any individual user info
+     * users make a request to see all the listed items in Dormly
+     * there is another api that handles getting the individual listings for a user
+     * @return
+     */
     @GetMapping(path = "")
-    public ResponseEntity<ListingDtoResponse>findAllListings(@AuthenticationPrincipal UserDetails userDetails){
-        String userEmail = userDetails.getUsername();
+    public ResponseEntity<ListingDtoResponse>findAllListings(){
+        ListingDtoResponse dtoResponse = listingService.findAllListings();
+         return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
 
     }
 }

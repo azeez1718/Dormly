@@ -11,6 +11,5 @@ import java.util.List;
 public interface ListingRepository extends JpaRepository<Listing, Long> {
 
 
-    @Query('SELECT * FROM LISTING ')
-    List<Listing> findAllListings();
+
 }

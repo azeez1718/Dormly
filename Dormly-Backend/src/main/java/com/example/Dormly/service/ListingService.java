@@ -30,6 +30,7 @@ public class ListingService {
     private final ProfileRepository profileRepository;
     private final ListingRepository listingRepository;
     private final S3Service s3Service;
+    private final ProfileService profileService;
 
     @Value("${aws.bucket.listing}")
     private String bucketName;
@@ -100,7 +101,15 @@ public class ListingService {
                 .map(ListingDtoResponse::DtoMapper)
                 .toList();
 
-        listingDto.forEach(dto-> dto.setListingUrl(generatePreSignedUrlListing(dto.getId())));
+        /**
+         * so we first set the Listing presigned url to return when returning all listed items to the user
+         *we then for each dto need to return a pre-signed url of the profile picture,
+         * to see which user made the listing
+         */
+        listingDto.forEach(dto-> {
+            dto.setListingUrl(generatePreSignedUrlListing(dto.getListingId()));
+            dto.setProfileUrl(profileService.getProfilePictureById(dto.getProfileId()));
+        });
 
         return listingDto;
 
@@ -120,5 +129,7 @@ public class ListingService {
 
 
     }
+
+
 
 }

@@ -57,6 +57,7 @@ public class ProfileService {
 
     }
 
+    /// this function is for the specific user who wants to see his account when he logs in
     public URL generatePreSignedUrl(String userEmail) {
         Profile userProfile = profileRepository.findByEmail(userEmail).
                 orElseThrow(() -> new ProfileNotFoundException("user with email " +
@@ -141,7 +142,19 @@ public class ProfileService {
     }
 
 
-    //change password function
+    public URL getProfilePictureById(Long id){
+        Profile profile = profileRepository.findById(id).orElseThrow(()->
+                new ProfileNotFoundException("profile with id " + id + " does not exist"));
+
+        Long profileId = profile.getId();
+        String profilePictureId = profile.getProfilePictureId();
+        String key = "uploads/profile/%s/%s".formatted(profileId, profilePictureId);
+
+        return s3Service.generatePreSignedUrls(profileBucket, key);
+
+
+
+    }
 
 
 

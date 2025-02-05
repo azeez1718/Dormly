@@ -2,8 +2,15 @@ package com.example.Dormly.repository;
 
 import com.example.Dormly.entity.Listing;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface ListingRepository extends JpaRepository<Listing, Long> {
+
+
+    @Query('SELECT * FROM LISTING ')
+    List<Listing> findAllListings();
 }

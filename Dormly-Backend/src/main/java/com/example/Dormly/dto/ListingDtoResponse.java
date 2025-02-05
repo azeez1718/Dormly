@@ -2,6 +2,7 @@ package com.example.Dormly.dto;
 
 import com.example.Dormly.entity.Listing;
 import com.example.Dormly.entity.Profile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
 import lombok.*;
@@ -16,6 +17,8 @@ import java.net.URL;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class  ListingDtoResponse {
+    @JsonIgnore //dont serialize this to the response
+    private Long id;
     private String title;
     private BigDecimal price;
     private String description;
@@ -25,13 +28,19 @@ public class  ListingDtoResponse {
     private String location;
     private String category;
     private String availability;
-    private URL imageUrl;
+    private URL ListingUrl;
     private Boolean isSold;
-    private Profile profile;
+    /// these will be explicity set, as the listing object does not contain these properties
+    private String firstname; //person who made the listing
+    private String lastname;
+    private String profileUrl; //sellers profile picture
+
+
 
 
     public static ListingDtoResponse DtoMapper(Listing listing){
        return ListingDtoResponse.builder()
+               .id(listing.getId())
                 .title(listing.getTitle())
                 .price(listing.getPrice())
                 .description(listing.getDescription())
@@ -41,7 +50,9 @@ public class  ListingDtoResponse {
                 .category(listing.getCategory())
                 .availability(listing.getAvailability())
                 .isSold(listing.isSold())
-                .profile(listing.getProfile())
+               .firstname(listing.getProfile().getUser().getFirstname())
+               .lastname(listing.getProfile().getUser().getLastname())
+               .profileUrl(listing.getProfile().getProfilePictureId())
                .build();
 
     }

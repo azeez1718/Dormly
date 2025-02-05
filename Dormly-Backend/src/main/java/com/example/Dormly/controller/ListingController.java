@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @RequestMapping(value = "api/v1/Dormly.com/listing")
@@ -49,9 +50,11 @@ public class ListingController {
      * @return
      */
     @GetMapping(path = "")
-    public ResponseEntity<ListingDtoResponse>findAllListings(){
-        ListingDtoResponse dtoResponse = listingService.findAllListings();
+    public ResponseEntity<List<ListingDtoResponse>>findAllListings(){
+        List<ListingDtoResponse> dtoResponse = listingService.findAllListings();
          return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
+
+
 
     }
 }

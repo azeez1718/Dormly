@@ -92,24 +92,23 @@ public class ListingService {
         /**
          *  we'll need to iterate through each listing items and convert them into a listingDTO
          *  because Map returns a new object we'll first convert it to a dto then set the presigned url using peek
-         *
+         * peek works but it isn't the best solution to use
          */
 
         List<ListingDtoResponse> listingDto = listingRepository.findAll()
                 .stream()
-                .map(listing->ListingDtoResponse.DtoMapper(listing))
-                .map(dto-> dto.setImageUrl(generatePreSignedUrlListing()))
+                .map(ListingDtoResponse::DtoMapper)
+                .toList();
 
+        listingDto.forEach(dto-> dto.setListingUrl(generatePreSignedUrlListing(dto.getId())));
 
-                //one option pass in the id and query only by Id and add jsonignore to prevent serializing
+        return listingDto;
 
 
     }
 
-
-
-    public URL generatePreSignedUrlListing(Listing listing){
-        Listing retreiveListing = listingRepository.findById(listing.getId())
+    public URL generatePreSignedUrlListing(Long id){
+        Listing retreiveListing = listingRepository.findById(id)
                 .orElseThrow(()-> new ListingNotFoundException("Listing not found"));
 
         String imageUrl = retreiveListing.getListingImageURL();
@@ -119,5 +118,7 @@ public class ListingService {
         String key = "uploads/listings/%s/%s".formatted(profileId, imageUrl);
         return s3Service.generatePreSignedUrls(bucketName, key);
 
+
     }
+
 }

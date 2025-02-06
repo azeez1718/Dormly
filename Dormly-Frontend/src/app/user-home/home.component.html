@@ -1,7 +1,10 @@
 <app-dashboard-navbar></app-dashboard-navbar>
 
-<!--this will be later updated-->
-<app-listingcard></app-listingcard>
+<div *ngIf="hasLoaded"></div>
+<div  *ngFor = "let cards of cards"><!--pass the data of each object as an input to the child component-->
+<app-listingcard [card]="cards"></app-listingcard>
+
+</div>
 
 
 

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { listingCard } from '../../models/listingCard';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,11 @@ export class ListingService {
     return this.Http.post<void>(create,formdata)
 
     
+  }
+
+  fetchListings():Observable<Array<listingCard>>{
+    console.log('retrieving listings...')
+    return this.Http.get<Array<listingCard>>(this.url);
+
   }
 }

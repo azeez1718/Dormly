@@ -3,6 +3,8 @@ import { DashboardComponent } from '../dashboard-navbar/dashboard-navbar.compone
 import { AuthService } from '../auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { ListingcardComponent } from '../listingcard/listingcard.component';
+import { listingCard } from '../models/listingCard';
+import { ListingService } from '../service/listing/listing.service';
 
 
 @Component({
@@ -12,38 +14,38 @@ import { ListingcardComponent } from '../listingcard/listingcard.component';
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit{
-  returned:Boolean = false
-  message : string = ''
-  time : any
-  protectBoolean:boolean = false
+ cards!:Array<listingCard>
+ hasLoaded:boolean = false
 
 
-  constructor(private authService:AuthService){}
+
+  constructor(private listingService:ListingService){}
   
   
   ngOnInit(): void {
+    console.log("going to make call in ts class")
+    this.fetchAllListings()
    
   }
 
-  /**Test function to see if token is set in the headers before api requests 
-  protectedEndpoint(){
-    this.authService.protectedapi().subscribe({
-      next:(res : any)=>{
-        console.log('the response returned is',res)
-        this.returned = true
-        this.message = res
-        console.log("nice you sent a jwt with the request")
-        
-      },
 
-      error:(error:Error)=>{
-        console.log("there is no jwt sent with this request", error.message)
-       
-      }
-      
-    })
+  fetchAllListings():void{
+  this.listingService.fetchListings().subscribe({
+    next:(listingDTO:Array<listingCard>)=>{
+      console.log('returned data from subscribing')
+      this.cards = listingDTO
+      this.hasLoaded = true
+    },
+
+    error:(error:Error)=>{
+      console.log('unable to retrieve listings' , error.message)
+    }
+  })
+
   }
-  **/
+
+  
+ 
  
 
   

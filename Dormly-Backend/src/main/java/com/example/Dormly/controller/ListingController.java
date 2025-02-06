@@ -29,6 +29,16 @@ public class ListingController {
         this.listingService = listingService;
     }
 
+
+    /**
+     * Multipart form processes request by parts, it binds the values of the keys to the values in the method param
+     * we set content type in the client side allow smooth deserialization(json->obj)
+     * @param userDetails - currently authenticated user, we need to set the seller in our listing entity
+     * @param listingDtoRequest - dto to hide internals-sent as a blob obj as we set the content type to json
+     * @param file - the file the user uploads, we convert it to bytes before storing in aws
+     * @return
+     * @throws IOException
+     */
     @PostMapping(value = "create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ListingDtoResponse>createListing(@AuthenticationPrincipal UserDetails userDetails,
                                              @RequestPart("listing")ListingDtoRequest listingDtoRequest,

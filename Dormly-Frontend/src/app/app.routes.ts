@@ -7,6 +7,7 @@ import { computed } from '@angular/core';
 import { ProfileComponent } from './profile/profile.component';
 import { MainComponent } from './main/main.component';
 import { ListingComponent } from './listing/listing.component';
+import { ListingConfirmationComponent } from './listing-confirmation/listing-confirmation.component';
 ;
 
 export const routes: Routes = [
@@ -38,5 +39,9 @@ export const routes: Routes = [
     {
         path : 'listing',
         component: ListingComponent
+    },
+    {
+        path : 'listing-confirmation',
+        component:ListingConfirmationComponent
     }
 ];

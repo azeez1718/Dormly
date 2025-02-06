@@ -4,6 +4,8 @@ import { ListingService } from '../service/listing/listing.service';
 import { Listing } from '../models/listing';
 import { FormsModule } from '@angular/forms';
 import { listingCard, listingConfirmation } from '../models/listingCard';
+import { ListingstateService } from '../shared/listingstate.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listing',
@@ -29,7 +31,11 @@ export class ListingComponent implements OnInit{
   formdata :FormData = new FormData()
   listingConfirmation!:listingConfirmation
 
-  constructor(private fileService:FileuploadService, private listingService:ListingService){}
+  constructor(private fileService:FileuploadService, private listingService:ListingService, 
+    private listingStateService:ListingstateService,
+    private router:Router
+  
+  ){}
   
   
   ngOnInit(): void {
@@ -61,8 +67,10 @@ export class ListingComponent implements OnInit{
     this.listingService.uploadlistingItems(this.formdata).subscribe({
       next:(data:listingConfirmation)=>{
         console.log("items uploaded successfully")
-        this.listingConfirmation = data
+        this.listingConfirmation = data //this will be required by the listingconfirmation component
         console.log(this.listingConfirmation)
+        this.listingStateService.updateListingConfirmationState(data)
+
       
        
       },

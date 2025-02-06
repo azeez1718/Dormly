@@ -36,7 +36,7 @@ public class ListingService {
     private String bucketName;
 
     @Transactional
-    public void createListing(String userEmail, ListingDtoRequest listingDtoRequest, MultipartFile multipartFile) throws IOException {
+    public ListingDtoResponse createListing(String userEmail, ListingDtoRequest listingDtoRequest, MultipartFile multipartFile) throws IOException {
         //fetch the profile making that is trying to make a listing
         Profile profile = profileRepository.findByEmail(userEmail).
                 orElseThrow(()->new ProfileNotFoundException(userEmail));
@@ -83,6 +83,9 @@ public class ListingService {
             listing.setListingImageURL(fileUUID + extension);
 
             listingRepository.save(listing);
+            ///  returning listing info back to client as this is used to render the listing confirmation ui
+            return creationResponse(listing);
+
         }catch(Exception e){
             throw new RuntimeException("Error whilst creating listing", e);
         }
@@ -127,6 +130,19 @@ public class ListingService {
         String key = "uploads/listings/%s/%s".formatted(profileId, imageUrl);
         return s3Service.generatePreSignedUrls(bucketName, key);
 
+
+    }
+
+
+    public ListingDtoResponse creationResponse(Listing listing){
+       return ListingDtoResponse.builder()
+                .listingId(listing.getId())
+                .title(listing.getTitle())
+                .description(listing.getDescription())
+                .price(listing.getPrice())
+                .ListingUrl(generatePreSignedUrlListing(listing.getId()))
+                .createdDate(listing.getListedDate())
+                .build();
 
     }
 

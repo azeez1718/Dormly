@@ -10,6 +10,8 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -18,7 +20,6 @@ import java.net.URL;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class  ListingDtoResponse {
-    @JsonIgnore //dont serialize this to the response
     private Long listingId;
     private String title;
     private BigDecimal price;
@@ -37,9 +38,10 @@ public class  ListingDtoResponse {
     private URL profileUrl; //sellers profile picture
     @JsonIgnore
     private Long profileId;
+    private LocalDate createdDate;
 
-
-
+    /// TODO every sale reduces the quantity by one,
+    /// TODO so if the listing item does not have a quantity greater than 0 then we dont display it
 
     public static ListingDtoResponse DtoMapper(Listing listing){
        return ListingDtoResponse.builder()

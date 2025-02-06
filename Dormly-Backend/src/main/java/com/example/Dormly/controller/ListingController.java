@@ -30,15 +30,13 @@ public class ListingController {
     }
 
     @PostMapping(value = "create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void>createListing(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<ListingDtoResponse>createListing(@AuthenticationPrincipal UserDetails userDetails,
                                              @RequestPart("listing")ListingDtoRequest listingDtoRequest,
                                              @RequestPart("file") MultipartFile file) throws IOException {
 
         String userEmail = userDetails.getUsername();
-        log.info("listing dto{}", listingDtoRequest.toString());
-        log.info("{}----------------------------------------", file.getOriginalFilename());
-        listingService.createListing(userEmail, listingDtoRequest, file);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+        return ResponseEntity.status(HttpStatus.CREATED).body(listingService.createListing(userEmail,
+                listingDtoRequest, file));
 
     }
 

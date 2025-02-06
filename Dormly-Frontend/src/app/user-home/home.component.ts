@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardComponent } from '../dashboard-navbar/dashboard-navbar.component';
 import { AuthService } from '../auth/auth.service';
 import { CommonModule } from '@angular/common';
+import { ListingcardComponent } from '../listingcard/listingcard.component';
 
 
 @Component({
   selector: 'app-home',
-  imports: [DashboardComponent, CommonModule],
+  imports: [DashboardComponent, CommonModule, ListingcardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

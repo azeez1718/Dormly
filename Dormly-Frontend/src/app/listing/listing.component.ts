@@ -3,6 +3,7 @@ import { FileuploadService } from '../service/fileuploads/fileupload.service';
 import { ListingService } from '../service/listing/listing.service';
 import { Listing } from '../models/listing';
 import { FormsModule } from '@angular/forms';
+import { listingCard, listingConfirmation } from '../models/listingCard';
 
 @Component({
   selector: 'app-listing',
@@ -26,6 +27,7 @@ export class ListingComponent implements OnInit{
     }
   validForm:boolean = false
   formdata :FormData = new FormData()
+  listingConfirmation!:listingConfirmation
 
   constructor(private fileService:FileuploadService, private listingService:ListingService){}
   
@@ -57,8 +59,11 @@ export class ListingComponent implements OnInit{
     console.log("appended the form data")
 
     this.listingService.uploadlistingItems(this.formdata).subscribe({
-      next:(data:any)=>{
+      next:(data:listingConfirmation)=>{
         console.log("items uploaded successfully")
+        this.listingConfirmation = data
+        console.log(this.listingConfirmation)
+      
        
       },
       error:(error:Error)=>{

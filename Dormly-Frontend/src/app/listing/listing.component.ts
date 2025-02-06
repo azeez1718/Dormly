@@ -37,7 +37,6 @@ export class ListingComponent implements OnInit{
     //this will return the formdata that includes the file uploaded 
     this.formdata = this.fileService.uploadFile(event)
     console.log("file successfully added")
-    console.log(this.formdata.keys())
   }
 
 
@@ -60,13 +59,25 @@ export class ListingComponent implements OnInit{
     this.listingService.uploadlistingItems(this.formdata).subscribe({
       next:(data:any)=>{
         console.log("items uploaded successfully")
+       
       },
       error:(error:Error)=>{
         console.log(error.message)
       }
     })
-      //reset form data
-      this.formdata = new FormData();
+    //reset the form
+      this.listingDetails={
+        title: '',
+      price: undefined,  //overriden by the binding
+      description: '',
+      brand: '',
+      condition: '',
+      location: '',
+      category: '',
+      availability: ''
+
+      }
+      
   }
 
 }

@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit{
   fetchAllListings():void{
   this.listingService.fetchListings().subscribe({
     next:(listingDTO:Array<listingCard>)=>{
-      console.log('returned data from subscribing')
+      console.log(listingDTO)
       this.cards = listingDTO
       this.hasLoaded = true
     },

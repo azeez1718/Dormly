@@ -9,9 +9,13 @@ export interface listingCard{
     location:string
     category:string
     availability:string
-    listingImage:URL
+    listingUrl:URL
     firstname:string  //the name of the seller
     lastname:string
-    sellerProfilePicture:URL
+    profileUrl:URL
+   createdDate?:Date  //may be empty
+    
 
 }
+
+export type listingConfirmation = Pick<listingCard, 'listingId' | 'title' | 'description' | 'price' | 'createdDate'>

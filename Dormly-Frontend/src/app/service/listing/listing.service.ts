@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { listingCard } from '../../models/listingCard';
+import { listingCard, listingConfirmation } from '../../models/listingCard';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +14,10 @@ export class ListingService {
 
 
 
-  uploadlistingItems(formdata:FormData):Observable<void>{
+  uploadlistingItems(formdata:FormData):Observable<listingConfirmation>{
     const create = `${this.url}/create`
     console.log("about to make request")
-    return this.Http.post<void>(create,formdata)
+    return this.Http.post<listingConfirmation>(create,formdata)
 
     
   }

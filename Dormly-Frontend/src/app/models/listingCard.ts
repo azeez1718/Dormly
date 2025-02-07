@@ -14,8 +14,7 @@ export interface listingCard{
     lastname:string
     profileUrl:URL
    createdDate?:Date  //may be empty
-    
 
 }
 
-export type listingConfirmation = Pick<listingCard, 'listingId' | 'title' | 'description' | 'price' | 'createdDate'>
+export type listingConfirmation = Pick<listingCard, 'listingId' | 'title' | 'listingUrl' |'description' | 'price' | 'location' | 'createdDate'>

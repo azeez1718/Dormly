@@ -142,6 +142,7 @@ public class ListingService {
                 .price(listing.getPrice())
                 .ListingUrl(generatePreSignedUrlListing(listing.getId()))
                 .createdDate(listing.getListedDate())
+               .location(listing.getLocation())
                 .build();
 
     }

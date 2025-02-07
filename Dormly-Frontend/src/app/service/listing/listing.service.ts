@@ -27,4 +27,9 @@ export class ListingService {
     return this.Http.get<Array<listingCard>>(this.url);
 
   }
+
+  fetchListingById(id:string):Observable<listingCard>{
+    const url = `${this.url}/product/${id}`
+    return this.Http.get<listingCard>(url)
+  }
 }

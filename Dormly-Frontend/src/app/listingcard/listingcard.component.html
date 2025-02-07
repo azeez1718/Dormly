@@ -1,46 +1,39 @@
-<div class="container mx-auto px-4">
-    <!-- Product Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 items-start">
-      
-      <!-- Product Card -->
-      <div class="group flex flex-col bg-white shadow-lg rounded-lg overflow-hidden w-full min-h-[420px] border border-gray-100">
-        
-        <!-- Product Image -->
-        <a class="relative h-56 overflow-hidden" href="#">
-          <img class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
-               [src]="card.listingUrl" 
-               alt="product image" />
-          <div class="absolute bottom-0 mb-3 flex w-full justify-center space-x-2">
-            <div class="h-3 w-3 rounded-full border-2 border-white bg-white"></div>
-            <div class="h-3 w-3 rounded-full border-2 border-white bg-transparent"></div>
-            <div class="h-3 w-3 rounded-full border-2 border-white bg-transparent"></div>  
-          </div>
-        </a>
-  
-        <!-- Product Details -->
-        <div class="flex flex-col flex-1 p-4">
-          <a href="#">
-            <h5 class="text-lg font-semibold text-slate-900">{{card.title}}</h5>
-          </a>
-          <p class="mt-1 text-xl font-bold text-gray-800">${{card.price}}</p>
-          
-          <div class="flex mt-auto gap-2">
-            <!-- Add to Cart -->
-            <button class="flex-1 bg-blue-600 text-white py-2 rounded flex items-center justify-center gap-2 transition hover:bg-blue-500">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h18M4 6h16l1 10H3L4 6zm5 12a2 2 0 104 0m6 0a2 2 0 104 0"></path>
-              </svg>
-              Add to cart
-            </button>
-            <!-- Buy Now -->
-            <button class="flex-1 bg-gray-900 text-white py-2 rounded transition hover:bg-gray-700">
-              Buy
-            </button>
-          </div>
-        </div>
+<!-- Wrapper that centers the grid on the page -->
+<div class="container mx-auto">
+  <!-- Responsive grid container -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 justify-items-center">
+    <!-- Card instance (repeat for each card) -->
+    <div class="relative flex flex-col max-w-xs rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+      <div class="relative mx-4 mt-4 h-96 overflow-hidden rounded-xl">
+        <img
+          [src]="card.listingUrl"
+          alt="Product image"
+          class="h-full w-full object-cover cursor-pointer"
+          (click)="renderProductDetails(card.listingId)"
+        />
       </div>
-      <!-- End Product Card -->
-  
+      <div class="p-6">
+        <div class="mb-2 flex items-center justify-between">
+          <p class="font-sans text-base font-medium text-blue-gray-900">
+            {{card.title}}
+          </p>
+          <p class="font-sans text-base font-medium text-blue-gray-900">
+            ${{card.price}}
+          </p>
+        </div>
+        <p class="font-sans text-sm text-gray-700 opacity-75">
+          {{card.description}}
+        </p>
+      </div>
+      <div class="p-6 pt-0">
+        <button class="w-full rounded-lg bg-blue-gray-900/10 py-3 px-6 text-xs font-bold uppercase text-blue-gray-900 transition-all hover:scale-105 focus:scale-105">
+          Add to Cart
+        </button>
+      </div>
     </div>
+    <!-- Repeat card for each listing -->
   </div>
-  
+</div>
+
+<!-- Include Tailwind Material CSS if needed -->
+<link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>

@@ -8,6 +8,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { MainComponent } from './main/main.component';
 import { ListingComponent } from './listing/listing.component';
 import { ListingConfirmationComponent } from './listing-confirmation/listing-confirmation.component';
+import { ProductCardComponent } from './product-card/product-card.component';
 ;
 
 export const routes: Routes = [
@@ -43,5 +44,10 @@ export const routes: Routes = [
     {
         path : 'listing-confirmation',
         component:ListingConfirmationComponent
+    },
+
+    {
+        path: 'product/:id',
+        component:ProductCardComponent
     }
 ];

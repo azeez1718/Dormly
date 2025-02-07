@@ -12,7 +12,7 @@ export interface listingCard{
     listingUrl:URL
     firstname:string  //the name of the seller
     lastname:string
-    profileUrl:URL
+    profileUrl:URL //the profile of the seller
    createdDate?:Date  //may be empty
 
 }

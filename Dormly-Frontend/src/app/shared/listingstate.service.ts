@@ -9,7 +9,7 @@ export class ListingstateService {
 
   /**
    * This class allows us to manage state and pass data between different components
-   * behaviour subject holds the last emitted value, meaning whenever we make a listing and return a dto, we update the behaviour subject 
+   * behaviour subject emits the last value that it recieves, meaning whenever we make a listing and return a dto, we update the behaviour subject 
    * behaviour subject is done using next(), we later convert the behaviour subj to an observable
    * observbales allow us to subscribe to the data, behaviour subject is of type observable
    * converting it to an observable means subscribes cant alter or add values to the subject, they can only subscribe(process data/read)
@@ -27,6 +27,7 @@ export class ListingstateService {
 
 
   updateListingConfirmationState(dto:listingConfirmation){
+    console.log("about to update the state of the behaviour subject")
     this.subject.next(dto)
    
   }

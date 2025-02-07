@@ -32,6 +32,12 @@ export class ListingConfirmationComponent implements OnInit{
     next:(data:listingConfirmation| null)=>{
       console.log('the data we returned is', data)
       this.confirmation = data  
+
+      if(!this.confirmation){ 
+        //if falsy handle error
+        throw new Error('the data returned is falsy')
+      
+      }
       this.isCreated = true //meaning the user successfully created their listing and we were able to return their listing confirmation
     },
     error:(error:Error)=>{

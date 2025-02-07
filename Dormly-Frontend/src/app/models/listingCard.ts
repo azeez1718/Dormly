@@ -17,4 +17,4 @@ export interface listingCard{
 
 }
 
-export type listingConfirmation = Pick<listingCard, 'listingId' | 'title' | 'listingUrl' |'description' | 'price' | 'location' | 'createdDate'>
+export type listingConfirmation = Pick<listingCard, 'listingId' | 'title' | 'firstname'|'listingUrl' |'description' | 'price' | 'location' | 'createdDate'>

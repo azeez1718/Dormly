@@ -137,6 +137,7 @@ public class ListingService {
     public ListingDtoResponse creationResponse(Listing listing){
        return ListingDtoResponse.builder()
                 .listingId(listing.getId())
+               .firstname(listing.getProfile().getUser().getFirstname())
                 .title(listing.getTitle())
                 .description(listing.getDescription())
                 .price(listing.getPrice())
@@ -148,5 +149,19 @@ public class ListingService {
     }
 
 
+    public ListingDtoResponse findListingById(Long id) {
+        Listing listing = listingRepository.findById(id)
+                .orElseThrow(()-> new ListingNotFoundException("Listing not found"));
 
+        try {
+            //convert listing to a DTO, to return all relevant information that's to be displayed in the frontend
+            ListingDtoResponse dto = ListingDtoResponse.DtoMapper(listing);
+            dto.setListingUrl(generatePreSignedUrlListing(listing.getId()));
+            dto.setProfileUrl(profileService.getProfilePictureById(listing.getProfile().getId()));
+            return dto;
+
+        }catch(Exception e){
+            throw new RuntimeException("Error whilst retrieving listing", e);
+        }
+    }
 }

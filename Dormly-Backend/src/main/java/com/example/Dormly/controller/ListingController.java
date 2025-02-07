@@ -62,7 +62,15 @@ public class ListingController {
         List<ListingDtoResponse> dtoResponse = listingService.findAllListings();
          return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
 
-
-
     }
+
+
+    @GetMapping(path = "/product/{id}")
+    public ResponseEntity<ListingDtoResponse> findListingById(@PathVariable("id") Long id){
+        ListingDtoResponse dtoResponse = listingService.findListingById(id);
+        return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
+    }
+
+
+
 }

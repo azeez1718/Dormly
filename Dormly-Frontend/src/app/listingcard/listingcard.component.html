@@ -1,39 +1,17 @@
-<!-- Wrapper that centers the grid on the page -->
-<div class="container mx-auto">
-  <!-- Responsive grid container -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 justify-items-center">
-    <!-- Card instance (repeat for each card) -->
-    <div class="relative flex flex-col max-w-xs rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
-      <div class="relative mx-4 mt-4 h-96 overflow-hidden rounded-xl">
-        <img
-          [src]="card.listingUrl"
-          alt="Product image"
-          class="h-full w-full object-cover cursor-pointer"
-          (click)="renderProductDetails(card.listingId)"
-        />
+  <div class="relative flex max-w-xs flex-col rounded-xl bg-white shadow-md">
+      <div class="relative h-56 w-full overflow-hidden rounded-xl">
+        <img [src]="card.listingUrl" alt="Lorem Ipsum Product 1" class="h-full w-full cursor-pointer object-cover" />
       </div>
       <div class="p-6">
         <div class="mb-2 flex items-center justify-between">
-          <p class="font-sans text-base font-medium text-blue-gray-900">
-            {{card.title}}
-          </p>
-          <p class="font-sans text-base font-medium text-blue-gray-900">
-            ${{card.price}}
-          </p>
+          <p class="text-blue-gray-900 text-base font-medium">{{card.title}}</p>
+          <p class="text-blue-gray-900 text-base font-medium">${{card.price}}</p>
         </div>
-        <p class="font-sans text-sm text-gray-700 opacity-75">
-          {{card.description}}
-        </p>
+        <p class="text-sm text-gray-700 opacity-75">{{card.description}}</p>
       </div>
       <div class="p-6 pt-0">
-        <button class="w-full rounded-lg bg-blue-gray-900/10 py-3 px-6 text-xs font-bold uppercase text-blue-gray-900 transition-all hover:scale-105 focus:scale-105">
-          Add to Cart
-        </button>
+        <button class="bg-blue-gray-900/10 text-blue-gray-900 hover:bg-blue-gray-900 w-full rounded-lg px-6 py-3 text-xs font-bold uppercase transition-all hover:text-white">Add to Cart</button>
       </div>
     </div>
-    <!-- Repeat card for each listing -->
-  </div>
-</div>
 
-<!-- Include Tailwind Material CSS if needed -->
-<link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
+

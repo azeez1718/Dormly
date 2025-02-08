@@ -1,6 +1,7 @@
   <div class="relative flex max-w-xs flex-col rounded-xl bg-white shadow-md">
       <div class="relative h-56 w-full overflow-hidden rounded-xl">
-        <img [src]="card.listingUrl" alt="Lorem Ipsum Product 1" class="h-full w-full cursor-pointer object-cover" />
+        <img [src]="card.listingUrl" alt="Lorem Ipsum Product 1" class="h-full w-full cursor-pointer object-cover"
+          (click) = "renderProductDetails(card.listingId)"/>
       </div>
       <div class="p-6">
         <div class="mb-2 flex items-center justify-between">

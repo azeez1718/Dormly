@@ -41,7 +41,7 @@ export class ProductCardComponent implements OnInit {
       },
     
     error:(error:Error)=>{
-      console.log('error retrieveing listing information')
+      console.log('error retrieveing listing information', error)
     }
   
   })

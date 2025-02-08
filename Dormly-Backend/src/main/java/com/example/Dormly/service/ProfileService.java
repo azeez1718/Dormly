@@ -2,6 +2,7 @@ package com.example.Dormly.service;
 
 import com.example.Dormly.aws.S3Service;
 import com.example.Dormly.dto.ProfileDto;
+import com.example.Dormly.entity.Listing;
 import com.example.Dormly.exceptions.ProfileNotFoundException;
 import com.example.Dormly.entity.Profile;
 import com.example.Dormly.repository.ProfileRepository;
@@ -13,8 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,24 +39,31 @@ public class ProfileService {
 
         Profile profile = userProfile.get();
 
+
         //return the image URL from the presigned url we generate for the user, and set it in DTO to return to client
-        URL imageUrl = generatePreSignedUrl(userEmail);
+        URL profileUrl = generatePreSignedUrl(userEmail);
+
+        //all the users listings, will be shown when
+        List<String> ListingUrl = profile.
+                getListings()
+                .stream()
+                .map(Listing::getListingImageURL)
+                .toList();
+
 
 
         /**
          * convert the profile object we return to a DTO to hide internals
          */
-        ProfileDto profileDto = new ProfileDto(
-                imageUrl,
-                profile.getBio(),
-                profile.getLocation(),
-                profile.getUser().getEmail(),
-                profile.getUser().getFirstname(),
-                profile.getUser().getLastname()
 
-        );
+        return ProfileDto.builder()
+                .image(profileUrl)
+                .bio(profile.getBio())
+                .email(profile.getUser().getEmail())
+                .firstname(profile.getUser().getFirstname())
+                .lastname(profile.getUser().getLastname())
 
-        return profileDto;
+
 
     }
 
@@ -134,6 +144,13 @@ public class ProfileService {
     }
 
 
+
+    /**
+     * called when the user aims to view their profile pic in the homepage, called on NgOnInit
+     * return the url from s3 and placed in our ui as a small icon
+     * @param userEmail - the user that is rendering the homepage
+     * @return URL
+     */
     public URL getProfilePicture(String userEmail){
         //will find the profile of the user
         //we will pass the key and the bucket and call the presigned url function
@@ -142,6 +159,12 @@ public class ProfileService {
     }
 
 
+    /**
+     * used in the Listing service to fetch the profile id when fetching all listings
+     * we may need the profile id to display the seller of a listing when a buyer clicks on the product
+     * @param id - the profile id related to the listing
+     * @return -we return a url thats being set as the profileImageUrl in the listing dto return
+     */
     public URL getProfilePictureById(Long id){
         Profile profile = profileRepository.findById(id).orElseThrow(()->
                 new ProfileNotFoundException("profile with id " + id + " does not exist"));

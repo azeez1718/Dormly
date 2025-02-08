@@ -156,6 +156,12 @@ public class ListingService {
     }
 
 
+    /**
+     *
+     * @param id - binded to the path variable, when a user clicks on the card instance, we make an api call
+     * This call fetches the listing information for a single card when a user is about to buy
+     * @return
+     */
     public ListingDtoResponse findListingById(Long id) {
         Listing listing = listingRepository.findById(id)
                 .orElseThrow(()-> new ListingNotFoundException("Listing not found"));
@@ -170,5 +176,14 @@ public class ListingService {
         }catch(Exception e){
             throw new RuntimeException("Error whilst retrieving listing", e);
         }
+    }
+
+    /**
+     * Used when the user wants to
+     * @param keys
+     * @return
+     */
+    public List<URL> returnUserListings(List<String>keys){
+
     }
 }

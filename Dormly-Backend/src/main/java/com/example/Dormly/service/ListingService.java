@@ -179,11 +179,21 @@ public class ListingService {
     }
 
     /**
-     * Used when the user wants to
-     * @param keys
-     * @return
+     * Used when the user goes to their profile, and an api call is made to render profile information
+     * we call this function in the fetch profile function in the profile service
+     * we pass the profile id, and view his listings, for each listing id, we call the generateUrl method
+     * this for each user Listing will generate a presigned URL based on the bucket and the key defined in the db
+     * @param profileId - this is the unique identifier for each user
+     * @return a list of URLS
      */
-    public List<URL> returnUserListings(List<String>keys){
+    public List<URL> findListingsByProfile(Long profileId){
+
+        //TODO do a direct db lookup instead of iterating through the listings
+        return listingRepository.findAll()
+                .stream()
+                .filter(listing -> listing.getProfile().getId().equals(profileId))
+                .map(listing -> generatePreSignedUrlListing(listing.getId()))
+                .collect(Collectors.toList());
 
     }
 }

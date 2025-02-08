@@ -27,6 +27,7 @@ public class ProfileService {
     private String profileBucket;
     private final ProfileRepository profileRepository;
     private final S3Service s3Service;
+    private final ListingService listingService;
 
 
     public ProfileDto fetchProfile(String userEmail) {
@@ -43,14 +44,7 @@ public class ProfileService {
         //return the image URL from the presigned url we generate for the user, and set it in DTO to return to client
         URL profileUrl = generatePreSignedUrl(userEmail);
 
-        //all the users listings, will be shown when
-        List<String> ListingUrl = profile.
-                getListings()
-                .stream()
-                .map(Listing::getListingImageURL)
-                .toList();
-
-
+        List<URL> listingUrls= listingService.findListingsByProfile(profile.getId());
 
         /**
          * convert the profile object we return to a DTO to hide internals
@@ -62,8 +56,8 @@ public class ProfileService {
                 .email(profile.getUser().getEmail())
                 .firstname(profile.getUser().getFirstname())
                 .lastname(profile.getUser().getLastname())
-
-
+                .userListings(listingUrls)
+                .build();
 
     }
 

@@ -68,12 +68,9 @@ public class Listing {
     private String category;
 
 
-
     //this will be set in the constructor, any persistence to the db will be seen as an update
     //i.e user may change listing information, may delete a listing or may create one
     private LocalDate updated_at;
-
-
 
 
 

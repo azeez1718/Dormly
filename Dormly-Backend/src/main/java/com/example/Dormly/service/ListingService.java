@@ -104,6 +104,10 @@ public class ListingService {
                 .map(ListingDtoResponse::DtoMapper)
                 .toList();
 
+        if(listingDto.isEmpty()){
+            throw new ListingNotFoundException("Listings not found");
+        }
+
         /**
          * so we first set the Listing presigned url to return when returning all listed items to the user
          *we then for each dto need to return a pre-signed url of the profile picture,
@@ -123,6 +127,9 @@ public class ListingService {
         Listing retreiveListing = listingRepository.findById(id)
                 .orElseThrow(()-> new ListingNotFoundException("Listing not found"));
 
+        if(retreiveListing.getListingImageURL() == null){
+            throw new ListingNotFoundException("Listing image not found");
+        }
         String imageUrl = retreiveListing.getListingImageURL();
         /// were also going to need the profile id of the person who made each listing as that is in our key
         Long profileId = retreiveListing.getProfile().getId();

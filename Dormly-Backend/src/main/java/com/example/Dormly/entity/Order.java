@@ -3,6 +3,7 @@ package com.example.Dormly.entity;
 
 import com.example.Dormly.constants.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +20,8 @@ import java.util.UUID;
 @Builder
 @ToString
 @Entity
-public class order {
+@Table(name = "Orders")
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -43,11 +45,12 @@ public class order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
-    @JoinColumn(name = "sellerId", nullable = false)
+    @JoinColumn(name = "seller_id", nullable = false)
     private Profile sellerId;
 
+
     @OneToMany
-    @JsonBackReference
+    @JsonManagedReference
     @JoinColumn(name = "listing_id")
     private List<Listing> listings = new ArrayList<>();
 

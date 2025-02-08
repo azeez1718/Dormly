@@ -9,7 +9,6 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -41,6 +40,23 @@ public class Profile {
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Listing> listings = new ArrayList<>();
+
+
+    /// whenever the user writes profile.getOrdersReceived,
+    /// we return all the people that have made an order on their listings
+    @OneToMany(mappedBy = "sellerId", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Order> ordersReceived = new ArrayList<>();
+
+    @OneToMany(mappedBy = "buyerId", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Order> ordersPlaced = new ArrayList<>();
+
+
+
+
+
+
 
 
 

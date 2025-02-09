@@ -15,9 +15,9 @@ import { FileuploadService } from '../service/fileuploads/fileupload.service';
 export class ProfileComponent implements OnInit{
 
   //abstracts away from typescripts strict property initialization
-  userProfile:Array<Profile> = []
+  profile!:Profile
   hasError:boolean = false
-  hasloaded:boolean = false
+  hasLoaded:boolean = false
 
 
   constructor(private profileService:ProfileService, private fileService : FileuploadService){}
@@ -52,10 +52,10 @@ export class ProfileComponent implements OnInit{
     )
     .subscribe(data=>{
   
-      this.hasloaded = true
+      this.hasLoaded = true
       //wrap it an array as we only return a single object, and ngFor requires an iterable
-      this.userProfile = [data]
-      console.log(this.userProfile)
+      this.profile= data
+      console.log(this.profile)
       
       //as soon as this 
     });

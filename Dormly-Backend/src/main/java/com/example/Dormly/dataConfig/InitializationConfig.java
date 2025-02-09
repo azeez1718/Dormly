@@ -31,17 +31,17 @@ public class InitializationConfig {
         return args -> {
 
             //find the first user in the database and set the user field of the profile entity
-//
-//            Users user = new Users("abas", "jama", "abas@qmul.ac.uk", List.of(Role.USER));
-//            user.setPassword(passwordEncoder.encode("abasjama"));
-//            userRepository.save(user);
-//
-//            Profile p1 = Profile.builder()
-//                    .bio("Computer Engineer at QMUL 25")
-//                    .Location("London, kensington")
-//                    .user(user)
-//                    .build();
-//            profileRepository.save(p1);
+
+            Users user = new Users("abas", "jama", "abas@qmul.ac.uk", List.of(Role.USER));
+            user.setPassword(passwordEncoder.encode("abasjama"));
+            userRepository.save(user);
+
+            Profile p1 = Profile.builder()
+                    .bio("Computer Engineer at QMUL 25")
+                    .Location("London, kensington")
+                    .user(user)
+                    .build();
+            profileRepository.save(p1);
 
 
 

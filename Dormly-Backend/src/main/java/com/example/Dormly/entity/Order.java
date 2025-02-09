@@ -49,9 +49,8 @@ public class Order {
     private Profile sellerId;
 
 
-    @OneToMany
-    @JsonManagedReference
-    @JoinColumn(name = "listing_id")
+    @OneToMany(mappedBy = "order")
+    @JsonManagedReference   //we dont need to fetch this, because it would be serialized into the response
     private List<Listing> listings = new ArrayList<>();
 
 

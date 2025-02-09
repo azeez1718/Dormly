@@ -55,6 +55,7 @@ public class ProfileService {
                 .email(profile.getUser().getEmail())
                 .firstname(profile.getUser().getFirstname())
                 .lastname(profile.getUser().getLastname())
+                .location(profile.getLocation())
                 .userListings(listingUrls)
                 .build();
 

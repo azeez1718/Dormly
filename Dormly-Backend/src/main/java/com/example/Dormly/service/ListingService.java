@@ -1,5 +1,6 @@
 package com.example.Dormly.service;
 
+import com.example.Dormly.aws.PreSignedUrlService;
 import com.example.Dormly.aws.S3Service;
 import com.example.Dormly.dto.ListingDtoRequest;
 import com.example.Dormly.dto.ListingDtoResponse;
@@ -30,7 +31,7 @@ public class ListingService {
     private final ProfileRepository profileRepository;
     private final ListingRepository listingRepository;
     private final S3Service s3Service;
-    private final ProfileService profileService;
+    private final PreSignedUrlService preSignedUrlService;
 
     @Value("${aws.bucket.listing}")
     private String bucketName;
@@ -114,8 +115,8 @@ public class ListingService {
          * to see which user made the listing
          */
         listingDto.forEach(dto-> {
-            dto.setListingUrl(generatePreSignedUrlListing(dto.getListingId()));
-            dto.setProfileUrl(profileService.getProfilePictureById(dto.getProfileId()));
+            dto.setListingUrl(preSignedUrlService.generatePreSignedUrlListingById(dto.getListingId()));
+            dto.setProfileUrl(preSignedUrlService.getProfilePictureById(dto.getProfileId()));
         });
 
         return listingDto;
@@ -123,22 +124,6 @@ public class ListingService {
 
     }
 
-    public URL generatePreSignedUrlListing(Long id){
-        Listing retreiveListing = listingRepository.findById(id)
-                .orElseThrow(()-> new ListingNotFoundException("Listing not found"));
-
-        if(retreiveListing.getListingImageURL() == null){
-            throw new ListingNotFoundException("Listing image not found");
-        }
-        String imageUrl = retreiveListing.getListingImageURL();
-        /// were also going to need the profile id of the person who made each listing as that is in our key
-        Long profileId = retreiveListing.getProfile().getId();
-
-        String key = "uploads/listings/%s/%s".formatted(profileId, imageUrl);
-        return s3Service.generatePreSignedUrls(bucketName, key);
-
-
-    }
 
 
     public ListingDtoResponse creationResponse(Listing listing){
@@ -148,7 +133,7 @@ public class ListingService {
                 .title(listing.getTitle())
                 .description(listing.getDescription())
                 .price(listing.getPrice())
-                .ListingUrl(generatePreSignedUrlListing(listing.getId()))
+                .ListingUrl(preSignedUrlService.generatePreSignedUrlListingById(listing.getId()))
                 .createdDate(listing.getListedDate())
                .location(listing.getLocation())
                 .build();
@@ -169,8 +154,8 @@ public class ListingService {
         try {
             //convert listing to a DTO, to return all relevant information that's to be displayed in the frontend
             ListingDtoResponse dto = ListingDtoResponse.DtoMapper(listing);
-            dto.setListingUrl(generatePreSignedUrlListing(listing.getId()));
-            dto.setProfileUrl(profileService.getProfilePictureById(listing.getProfile().getId()));
+            dto.setListingUrl(preSignedUrlService.generatePreSignedUrlListingById(listing.getId()));
+            dto.setProfileUrl(preSignedUrlService.getProfilePictureById(listing.getProfile().getId()));
             return dto;
 
         }catch(Exception e){
@@ -178,22 +163,6 @@ public class ListingService {
         }
     }
 
-    /**
-     * Used when the user goes to their profile, and an api call is made to render profile information
-     * we call this function in the fetch profile function in the profile service
-     * we pass the profile id, and view his listings, for each listing id, we call the generateUrl method
-     * this for each user Listing will generate a presigned URL based on the bucket and the key defined in the db
-     * @param profileId - this is the unique identifier for each user
-     * @return a list of URLS
-     */
-    public List<URL> findListingsByProfile(Long profileId){
 
-        //TODO do a direct db lookup instead of iterating through the listings
-        return listingRepository.findAll()
-                .stream()
-                .filter(listing -> listing.getProfile().getId().equals(profileId))
-                .map(listing -> generatePreSignedUrlListing(listing.getId()))
-                .collect(Collectors.toList());
 
-    }
 }

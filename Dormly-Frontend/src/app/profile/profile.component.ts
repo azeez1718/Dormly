@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from '../service/profile/profile.service';
 import { Profile } from '../models/Profile';
-import { catchError, of } from 'rxjs';
+import { catchError, elementAt, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { FileuploadService } from '../service/fileuploads/fileupload.service';
 import { DashboardComponent } from '../dashboard-navbar/dashboard-navbar.component';
+import { profileListings } from '../models/listingCard';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +20,7 @@ export class ProfileComponent implements OnInit{
   profile!:Profile
   hasError:boolean = false
   hasLoaded:boolean = false
-  totalListings!:number 
+  activeListings!:number 
 
 
   constructor(private profileService:ProfileService, private fileService : FileuploadService){}
@@ -59,13 +60,28 @@ export class ProfileComponent implements OnInit{
       this.profile= data
       console.log(this.profile)
       //we can just know the number of listing objects returned.
+      this.activeListings= this.findActiveListings(this.profile.profileListings)
       
     });
 
     
       }
+
+
+    
+      findActiveListings(listings:Array<profileListings>):number{
+      /**
+       * call this function to return the number of listings that have isSold to False - hence active Listings
+       *this creates a new list as we use the filter function to iterate and create a new list where it pushes all not sold items
+       * we can then later fetch all items that have been sold, which would be the opposite of this statement, and render them
+       */
+        const activeListings:Array<profileListings> = listings.filter(listing => listing.isSold === false)
+        return activeListings.length
+        
+      }
     
   }
+
 
 
 

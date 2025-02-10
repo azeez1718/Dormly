@@ -19,5 +19,5 @@ export interface listingCard{
 
 export type listingConfirmation = Pick<listingCard, 'listingId' | 'title' | 'firstname'|'listingUrl' |'description' | 'price' | 'location' | 'createdDate'>
 
-export type profilePageListings = Pick<listingCard, 'listingId' | 'title' | 'price' | 'description' | 'brand' | 'condition'
+export type profileListings = Pick<listingCard, 'listingId' | 'title' | 'price' | 'description' | 'brand' | 'condition'
                                                  | 'location' | 'category' | 'availability' | 'isSold' | 'listingUrl'>

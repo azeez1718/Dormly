@@ -24,7 +24,7 @@
         <div class="flex bg-gray-50">
           <div class="text-center w-1/2 p-4 hover:bg-gray-100 cursor-pointer">
             <p>Active listings</p>
-            <span class="font-semibold"></span>
+            <span class="font-semibold">#</span>
           </div>
           <div class="border"></div>
           <div class="text-center w-1/2 p-4 hover:bg-gray-100 cursor-pointer">
@@ -36,33 +36,42 @@
     </div>
   </div>
 
+
+  
+
   <div class="container mx-auto p-4">
-    <div class="grid grid-cols-1 justify-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-  <!--<div *ngFor = "let listing of profile.userListings">-->
-  <!--<div class="px-10 py-10 bg-gray-100 grid gap-10 lg:grid-cols-3 xl:grid-cols-4 sm:grid-cols-2">-->
-    <!-- Product Card 1 -->
-    <div class="max-w-xs rounded-md overflow-hidden shadow-lg hover:scale-105 transition duration-500 cursor-pointer">
-      <div class = "h-48 overflow-hidden flex items-center justify-center">
-        <img src="" alt="" class = "w-full h-full object-cover"/>
-      </div>
-      <div class="py-4 px-4 bg-white">
-        <h3 class="text-md font-semibold text-gray-600"></h3>
-        <p class="mt-4 text-lg font-thin">$ 2400</p>
-        <span class="flex items-center justify-center mt-4 w-full bg-yellow-400 hover:bg-yellow-500 py-1 rounded">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-          <button>delete listing</button>
-          <button>delete listing</button>
-        </span>
+    <!-- Grid container: adjusts columns responsively -->
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
+      <!-- *ngFor iterates over your listing array -->
+      <div *ngFor="let listing of profile.profileListings" 
+           class="max-w-xs rounded-md overflow-hidden shadow-lg hover:scale-105 transition duration-500 cursor-pointer bg-white">
+        <!-- Image container -->
+        <div class="h-48 overflow-hidden flex items-center justify-center">
+          <img [src]="listing.listingUrl" 
+               alt="{{ listing.title }}" 
+               class="w-full h-full object-cover"/>
+        </div>
+        <!-- Listing details -->
+        <div class="py-4 px-4 bg-white">
+          <h3 class="text-md font-semibold text-gray-600">{{ listing.title }}</h3>
+          <p class="mt-4 text-lg font-thin">$ {{ listing.price }}</p>
+          <!-- Action buttons -->
+          <span class="flex items-center justify-center mt-4 w-full bg-yellow-400 hover:bg-yellow-500 py-1 rounded">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <button class="font-semibold text-gray-800 ml-2">Add to Basket</button>
+          </span>
+        </div>
       </div>
     </div>
-
-      </div>
-    </div>
+  </div>
+  
 
 </div>
-</div>
+
 
 
 

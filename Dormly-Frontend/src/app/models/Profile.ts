@@ -1,4 +1,4 @@
-import { profilePageListings } from "./listingCard"
+import { profileListings } from "./listingCard"
 
 export interface Profile{
     image :URL
@@ -7,7 +7,7 @@ export interface Profile{
     email:string
     firstname:string
     lastname:string
-    profileListings:profilePageListings
+    profileListings:Array<profileListings>
     
 
 

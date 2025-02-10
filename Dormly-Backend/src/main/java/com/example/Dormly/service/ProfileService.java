@@ -2,6 +2,7 @@ package com.example.Dormly.service;
 
 import com.example.Dormly.aws.PreSignedUrlService;
 import com.example.Dormly.aws.S3Service;
+import com.example.Dormly.dto.ListingDtoResponse;
 import com.example.Dormly.dto.ProfileDto;
 import com.example.Dormly.entity.Listing;
 import com.example.Dormly.exceptions.ProfileNotFoundException;
@@ -43,20 +44,36 @@ public class ProfileService {
         //return the image URL from the presigned url we generate for the user, and set it in DTO to return to client
         URL profileUrl = preSignedUrlService.generateProfilePreSignedUrlByEmail(userEmail);
 
-        List<URL> listingUrls= preSignedUrlService.findListingsByProfile(profile.getId());
+        List<ListingDtoResponse> listingDto = profile.getListings()
+                .stream()
+                .map(ListingDtoResponse::DtoMapper)
+                .toList();
+
+        /// because atm each user can only upload a single image, we can set the image URL by calling -
+        /// the generatePresignedURLById and return the listing image, so it is directly associated to that listing
+        /// because foreach is terminal and returns a void, we can just set the Url of the dto
+
+        listingDto.forEach(dto->dto.setListingUrl(
+                preSignedUrlService.generatePreSignedUrlListingById(dto.getListingId())));
+
+
+
+
+
 
         /**
          * convert the profile object we return to a DTO to hide internals
          */
 
         return ProfileDto.builder()
+                .id(profile.getId())
                 .image(profileUrl)
                 .bio(profile.getBio())
                 .email(profile.getUser().getEmail())
                 .firstname(profile.getUser().getFirstname())
                 .lastname(profile.getUser().getLastname())
                 .location(profile.getLocation())
-                .userListings(listingUrls)
+                .listingDtoResponse(listingDto)
                 .build();
 
     }

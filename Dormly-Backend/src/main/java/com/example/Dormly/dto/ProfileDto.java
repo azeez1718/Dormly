@@ -14,11 +14,13 @@ import java.util.List;
 @ToString
 public class ProfileDto {
 
+    private Long id;
     private URL image;
     private String bio;
     private String location;
     private String email;
     private String firstname;
     private String lastname;
-    private List<URL> userListings;
+    //private List<URL> userListings;
+    private List<ListingDtoResponse> listingDtoResponse;
 }

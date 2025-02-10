@@ -2,180 +2,69 @@
 <!--card Component that allows the user to view their profile and upload a photo. -->
 
 <!-- component -->
-
+<div class = content-between gap-4>
 <div *ngIf = "hasLoaded">
-<section class="pt-16 bg-blueGray-50">
-<div class="w-full lg:w-4/12 px-4 mx-auto">
-  <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16">
-    <div class="px-6">
-      <div class="flex flex-wrap justify-center">
-        <div class="w-full px-4 flex justify-center">
-          <div class="relative">
-            <img alt="profile picture" [src]="profile.image" class="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
-            >
-          </div>
-        </div>
-        <div class="w-full px-4 text-center mt-20">
-          <div class="flex justify-center py-4 lg:pt-4 pt-8">
-            <div class="mr-4 p-3 text-center">
-              <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                22
-              </span>
-              <span class="text-sm text-blueGray-400">Friends</span>
-            </div>
-            <div class="mr-4 p-3 text-center">
-              <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                10
-              </span>
-              <span class="text-sm text-blueGray-400">Photos</span>
-            </div>
-            <div class="lg:mr-4 p-3 text-center">
-              <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                89
-              </span>
-              <span class="text-sm text-blueGray-400">Comments</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="text-center mt-12">
-        <h3 class="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
-          {{profile.firstname}} {{profile.lastname}}
-        </h3>
-        <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-          <i class="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
-          {{profile.location}}
-        </div>
-        <div class="mb-2 text-blueGray-600 mt-10">
-          <i class="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
-          {{profile.email}}
-        </div>
-        <div class="mb-2 text-blueGray-600">
-          <i class="fas fa-university mr-2 text-lg text-blueGray-400"></i>
-          University of xxxx
-        </div>
-      </div>
-      <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
-        <div class="flex flex-wrap justify-center">
-          <div class="w-full lg:w-9/12 px-4">
-            <p class="mb-4 text-lg leading-relaxed text-blueGray-700">
-             {{profile.bio}}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<footer class="relative  pt-8 pb-6 mt-8">
-  <div class="container mx-auto px-4">
-    <div class="flex flex-wrap items-center md:justify-between justify-center">
-      <div class="w-full md:w-6/12 px-4 mx-auto text-center">
-      </div>
-    </div>
-  </div>
-</footer>
-</section>
-</div>
-
-
-
 <!-- component -->
-<!-- component -->
-<div>
-  <div class="px-10 py-20 bg-gray-100 grid gap-10 lg:grid-cols-3 xl:grid-cols-4 sm:grid-cols-2">
-    <div class="max-w-xs rounded-md overflow-hidden shadow-lg hover:scale-105 transition duration-500 cursor-pointer">
-      <div>
-        <img src="https://www.apple.com/newsroom/images/product/mac/standard/Apple_MacBook-Pro_16-inch-Screen_10182021_big_carousel.jpg.large.jpg" alt="" />
+  <!-- Profile Section -->
+  <div class="bg-gray-200 dark:bg-gray-800 flex flex-wrap items-center justify-center pt-0 relative">
+    <div class="container lg:w-2/6 xl:w-2/7 sm:w-full md:w-2/3 bg-white shadow-lg transform duration-200 easy-in-out">
+      <div class="h-32 overflow-hidden">
+        <img class="w-full" src="https://images.unsplash.com/photo-1605379399642-870262d3d051?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80" alt="" />
       </div>
-      <div class="py-4 px-4 bg-white">
-        <h3 class="text-md font-semibold text-gray-600">Apple MacBook Pro M1 13.3&quot; Silver 16GB/512GB (MYDC2FN/A-16GB)</h3>
-        <p class="mt-4 text-lg font-thin">$ 2400</p>
-        <span class="flex items-center justify-center mt-4 w-full bg-yellow-400 hover:bg-yellow-500 py-1 rounded">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-          <button class="font-semibold text-gray-800">Add to Basket</button>
-        </span>
+      <div class="flex justify-center px-5 -mt-12">
+        <img class="h-32 w-32 bg-white p-2 rounded-full" [src]="profile.image" alt="" />
       </div>
-    </div>
-    <div class="max-w-xs rounded-md overflow-hidden shadow-lg hover:scale-105 transition duration-500 cursor-pointer">
-      <div>
-        <img src="https://media.cnn.com/api/v1/images/stellar/prod/201116214440-9-macbook-air-review-silicon-underscoredjpg.jpg?q=w_2615,h_1556,x_0,y_0,c_fill" alt="" />
-      </div>
-      <div class="py-4 px-4 bg-white">
-        <h3 class="text-md font-semibold text-gray-600">Apple MacBook Pro M1 13.3&quot; Silver 16GB/512GB (MYDC2FN/A-16GB)</h3>
-        <p class="mt-4 text-lg font-thin">$ 2400</p>
-        <span class="flex items-center justify-center mt-4 w-full bg-yellow-400 hover:bg-yellow-500 py-1 rounded">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-          <button class="font-semibold text-gray-800">Add to Basket</button>
-        </span>
-      </div>
-    </div>
-    <div class="max-w-xs rounded-md overflow-hidden shadow-lg hover:scale-105 transition duration-500 cursor-pointer">
-      <div>
-        <img src="https://www.macworld.com/wp-content/uploads/2022/01/macbook-pro-compare.jpg?quality=50&strip=all&w=1024" alt="" />
-      </div>
-      <div class="py-4 px-4 bg-white">
-        <h3 class="text-md font-semibold text-gray-600">Apple MacBook Pro M1 13.3&quot; Silver 16GB/512GB (MYDC2FN/A-16GB)</h3>
-        <p class="mt-4 text-lg font-thin">$ 2400</p>
-        <span class="flex items-center justify-center mt-4 w-full bg-yellow-400 hover:bg-yellow-500 py-1 rounded">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-          <button class="font-semibold text-gray-800">Add to Basket</button>
-        </span>
-      </div>
-    </div>
-    <div class="max-w-xs rounded-md overflow-hidden shadow-lg hover:scale-105 transition duration-500 cursor-pointer">
-      <div>
-        <img src="https://img.republicworld.com/republic-prod/stories/promolarge/xhdpi/g1jzwrwrlfim5wux_1623141909.jpeg" alt="" />
-      </div>
-      <div class="py-4 px-4 bg-white">
-        <h3 class="text-md font-semibold text-gray-600">Apple MacBook Pro M1 13.3&quot; Silver 16GB/512GB (MYDC2FN/A-16GB)</h3>
-        <p class="mt-4 text-lg font-thin">$ 2400</p>
-        <span class="flex items-center justify-center mt-4 w-full bg-yellow-400 hover:bg-yellow-500 py-1 rounded">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-          <button class="font-semibold text-gray-800">Add to Basket</button>
-        </span>
-      </div>
-    </div>
-    <div class="max-w-xs rounded-md overflow-hidden shadow-lg hover:scale-105 transition duration-500 cursor-pointer">
-      <div>
-        <img src="https://cdn.mos.cms.futurecdn.net/GfinEMFXnT42BFxAcDc2rA.jpg" alt="" />
-      </div>
-      <div class="py-4 px-4 bg-white">
-        <h3 class="text-md font-semibold text-gray-600">Apple MacBook Pro M1 13.3&quot; Silver 16GB/512GB (MYDC2FN/A-16GB)</h3>
-        <p class="mt-4 text-lg font-thin">$ 2400</p>
-        <span class="flex items-center justify-center mt-4 w-full bg-yellow-400 hover:bg-yellow-500 py-1 rounded">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-          <button class="font-semibold text-gray-800">Add to Basket</button>
-        </span>
-      </div>
-    </div>
-    <div class="max-w-xs rounded-md overflow-hidden shadow-lg hover:scale-105 transition duration-500 cursor-pointer">
-      <div>
-        <img src="https://images.indianexpress.com/2021/12/macbook-pro-2021-review-featured-image.jpg" alt="" />
-      </div>
-      <div class="py-4 px-4 bg-white">
-        <h3 class="text-md font-semibold text-gray-600">Apple MacBook Pro M1 13.3&quot; Silver 16GB/512GB (MYDC2FN/A-16GB)</h3>
-        <p class="mt-4 text-lg font-thin">$ 2400</p>
-        <span class="flex items-center justify-center mt-4 w-full bg-yellow-400 hover:bg-yellow-500 py-1 rounded">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-          <button class="font-semibold text-gray-800">Add to Basket</button>
-        </span>
+      <div class="">
+        <div class="text-center px-14">
+          <h2 class="text-gray-800 text-3xl font-bold">{{profile.firstname}} {{profile.lastname}}</h2>
+          <p class="text-gray-400 mt-2">{{profile.email}}</p>
+          <p class="mt-2 text-gray-500 text-sm">{{profile.bio}}</p>
+        </div>
+        <hr class="mt-6" />
+        <div class="flex bg-gray-50">
+          <div class="text-center w-1/2 p-4 hover:bg-gray-100 cursor-pointer">
+            <p>Active listings</p>
+            <span class="font-semibold"></span>
+          </div>
+          <div class="border"></div>
+          <div class="text-center w-1/2 p-4 hover:bg-gray-100 cursor-pointer">
+            <p>Items solds</p>
+            <span class="font-semibold">2.0 k </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+  <div class="container mx-auto p-4">
+    <div class="grid grid-cols-1 justify-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+  <!--<div *ngFor = "let listing of profile.userListings">-->
+  <!--<div class="px-10 py-10 bg-gray-100 grid gap-10 lg:grid-cols-3 xl:grid-cols-4 sm:grid-cols-2">-->
+    <!-- Product Card 1 -->
+    <div class="max-w-xs rounded-md overflow-hidden shadow-lg hover:scale-105 transition duration-500 cursor-pointer">
+      <div class = "h-48 overflow-hidden flex items-center justify-center">
+        <img src="" alt="" class = "w-full h-full object-cover"/>
+      </div>
+      <div class="py-4 px-4 bg-white">
+        <h3 class="text-md font-semibold text-gray-600"></h3>
+        <p class="mt-4 text-lg font-thin">$ 2400</p>
+        <span class="flex items-center justify-center mt-4 w-full bg-yellow-400 hover:bg-yellow-500 py-1 rounded">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <button>delete listing</button>
+          <button>delete listing</button>
+        </span>
+      </div>
+    </div>
+
+      </div>
+    </div>
+
 </div>
+</div>
+
+
 
 <!--
 <div *ngIf = "hasloaded"></div>

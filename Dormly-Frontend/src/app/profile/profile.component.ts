@@ -5,6 +5,7 @@ import { catchError, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { FileuploadService } from '../service/fileuploads/fileupload.service';
+import { DashboardComponent } from '../dashboard-navbar/dashboard-navbar.component';
 
 @Component({
   selector: 'app-profile',
@@ -18,6 +19,7 @@ export class ProfileComponent implements OnInit{
   profile!:Profile
   hasError:boolean = false
   hasLoaded:boolean = false
+  totalListings!:number 
 
 
   constructor(private profileService:ProfileService, private fileService : FileuploadService){}
@@ -56,8 +58,8 @@ export class ProfileComponent implements OnInit{
       //wrap it an array as we only return a single object, and ngFor requires an iterable
       this.profile= data
       console.log(this.profile)
+      //we can just know the number of listing objects returned.
       
-      //as soon as this 
     });
 
     

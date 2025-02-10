@@ -1,3 +1,5 @@
+import { profilePageListings } from "./listingCard"
+
 export interface Profile{
     image :URL
     bio:string
@@ -5,7 +7,9 @@ export interface Profile{
     email:string
     firstname:string
     lastname:string
-    listinUrls:Array<URL>
+    profileListings:profilePageListings
+    
+
 
 
 

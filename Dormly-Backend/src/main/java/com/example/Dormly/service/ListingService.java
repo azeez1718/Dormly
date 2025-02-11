@@ -2,13 +2,16 @@ package com.example.Dormly.service;
 
 import com.example.Dormly.aws.PreSignedUrlService;
 import com.example.Dormly.aws.S3Service;
+import com.example.Dormly.dto.CategoryDto;
 import com.example.Dormly.dto.ListingDtoRequest;
 import com.example.Dormly.dto.ListingDtoResponse;
 import com.example.Dormly.entity.Category;
 import com.example.Dormly.entity.Listing;
 import com.example.Dormly.entity.Profile;
+import com.example.Dormly.exceptions.CategoryNotFoundException;
 import com.example.Dormly.exceptions.ListingNotFoundException;
 import com.example.Dormly.exceptions.ProfileNotFoundException;
+import com.example.Dormly.repository.CategoryRepository;
 import com.example.Dormly.repository.ListingRepository;
 import com.example.Dormly.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +36,7 @@ public class ListingService {
     private final ListingRepository listingRepository;
     private final S3Service s3Service;
     private final PreSignedUrlService preSignedUrlService;
-    private final
+    private final CategoryRepository categoryRepository;
 
     @Value("${aws.bucket.listing}")
     private String bucketName;
@@ -44,7 +47,8 @@ public class ListingService {
         Profile profile = profileRepository.findByEmail(userEmail).
                 orElseThrow(()->new ProfileNotFoundException(userEmail));
 
-        Category category = Category
+        Category category = categoryRepository.findByName(listingDtoRequest.getCategory())
+                .orElseThrow(()-> new  CategoryNotFoundException("There was not a valid category included in the request"));
 
 
         /**
@@ -73,7 +77,7 @@ public class ListingService {
                     .brand(listingDtoRequest.getBrand())
                     .availability(listingDtoRequest.getAvailability())
                     .condition(listingDtoRequest.getCondition())
-                    .category(listingDtoRequest.getCategory())
+                    .category(category)
                     .location(listingDtoRequest.getLocation())
                     .title(listingDtoRequest.getTitle())
                     .price(listingDtoRequest.getPrice())
@@ -169,5 +173,16 @@ public class ListingService {
     }
 
 
+    public List<CategoryDto> findAllCategories() {
 
+        List<CategoryDto> categoryDtos = categoryRepository.findAll()
+                .stream()
+                .map(CategoryDto::fromCategory)
+                .toList();
+
+        if(categoryDtos.isEmpty()){
+            throw new CategoryNotFoundException("Category not found");
+        }
+        return categoryDtos;
+    }
 }

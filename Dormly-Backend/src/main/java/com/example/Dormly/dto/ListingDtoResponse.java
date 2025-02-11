@@ -53,7 +53,7 @@ public class  ListingDtoResponse {
                 .brand(listing.getBrand())
                 .condition(listing.getCondition())
                 .location(listing.getLocation())
-                .category(listing.getCategory())
+                .category(listing.getCategory().getName())
                 .availability(listing.getAvailability())
                 .isSold(listing.isSold())
                .firstname(listing.getProfile().getUser().getFirstname())

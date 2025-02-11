@@ -1,6 +1,7 @@
 package com.example.Dormly.controller;
 
 
+import com.example.Dormly.dto.CategoryDto;
 import com.example.Dormly.dto.ListingDtoRequest;
 import com.example.Dormly.dto.ListingDtoResponse;
 import com.example.Dormly.entity.Listing;
@@ -71,6 +72,11 @@ public class ListingController {
         return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
     }
 
+
+    @GetMapping(path = "/categories")
+    public ResponseEntity<List<CategoryDto>> findAllCategories(){
+        return new ResponseEntity<>(listingService.findAllCategories(), HttpStatus.OK);
+    }
 
 
 }

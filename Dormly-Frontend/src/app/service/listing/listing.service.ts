@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { listingCard, listingConfirmation } from '../../models/listingCard';
+import { CategoryDto } from '../../models/CategoryDto';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,10 @@ export class ListingService {
   fetchListingById(id:string):Observable<listingCard>{
     const url = `${this.url}/product/${id}`
     return this.Http.get<listingCard>(url)
+  }
+
+  findAllCategories():Observable<CategoryDto[]>{
+    const url = `${this.url}/categories`
+    return this.Http.get<CategoryDto[]>(url)
   }
 }

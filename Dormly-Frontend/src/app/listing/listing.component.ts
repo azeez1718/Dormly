@@ -6,30 +6,44 @@ import { FormsModule } from '@angular/forms';
 import { listingCard, listingConfirmation } from '../models/listingCard';
 import { ListingstateService } from '../shared/listingstate.service';
 import { Router } from '@angular/router';
+import { CategoryDto } from '../models/CategoryDto';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-listing',
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './listing.component.html',
   styleUrl: './listing.component.css'
 })
 export class ListingComponent implements OnInit{
   
   
-    listingDetails: Listing = {
+    listingDetails:Listing = 
+   {
       title: '',
-      price: undefined,  //overriden by the binding
-      description: '',
-      brand: '',
-      condition: '',
-      location: '',
-      category: '',
-      availability: ''
+    price: undefined,  //overriden by the binding
+    description: '',
+    brand: '',
+    condition: '',
+    location: '',
+    category: '',
+    availability: ''
 
     }
+
+      // Predefined categories for the dropdown.
+
+    
+
+
+
   validForm:boolean = false
   formdata :FormData = new FormData()
   listingConfirmation!:listingConfirmation
+   // This property controls the dropdown's visibility.
+   isDropdownHidden: boolean = true;
+   categories!:Array<string>
+   selectedCategory:string=''
 
   constructor(private fileService:FileuploadService, private listingService:ListingService, 
     private listingStateService:ListingstateService,
@@ -39,6 +53,7 @@ export class ListingComponent implements OnInit{
   
   
   ngOnInit(): void {
+    this.fetchAllCategories()
   }
 
   uploadListing(event:Event):void{
@@ -58,6 +73,8 @@ export class ListingComponent implements OnInit{
 
     }
     this.validForm = true
+    this.listingDetails.category = this.selectedCategory.valueOf()
+    console.log(this.selectedCategory)
     //wrapping the json in a blob allows to explicity define the content-type
     const listingJson = new Blob([JSON.stringify(this.listingDetails)], {type:'application/json'})
     this.formdata.append('listing', listingJson)
@@ -95,5 +112,28 @@ export class ListingComponent implements OnInit{
       }
       
   }
+
+  //show dropdown
+  toggleDropdown(): void {
+    this.isDropdownHidden = !this.isDropdownHidden;
+    console.log("show dropdown")
+  }
+
+
+  fetchAllCategories(){
+    this.listingService.findAllCategories()
+    .subscribe({
+      next:(category:CategoryDto[])=>{
+        this.categories = category.map(category=>category.categoryName) 
+        },
+      error:(error:Error)=>{
+        console.log("error", error.message)
+      }
+    })
+
+
+  }
+   
+  
 
 }

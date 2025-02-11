@@ -12,7 +12,7 @@
   
       <div>
         <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
-        <input type="text" id="price" [(ngModel)]="listingDetails.price" name="price" placeholder = "£" step="0.01" class="mt-1 block w-full border border-gray-300 rounded-lg p-2">
+        <input type="text" id="price" [(ngModel)]="listingDetails.price" name="price" placeholder = "we currently only support £ & $" step="0.01" class="mt-1 block w-full border border-gray-300 rounded-lg p-2">
       </div>
   
       <div>
@@ -35,10 +35,47 @@
         <input type="text" id="location" [(ngModel)]="listingDetails.location" name="location" class="mt-1 block w-full border border-gray-300 rounded-lg p-2">
       </div>
   
-      <div>
-        <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-        <input type="text" id="category" [(ngModel)]="listingDetails.category" name="category" class="mt-1 block w-full border border-gray-300 rounded-lg p-2">
+
+      <div class="dropdown relative inline-flex [--auto-close:inside] rtl:[--placement:bottom-end]">
+        <!-- Dropdown toggle button -->
+        <button id="dropdown-radio" (click)="toggleDropdown()"
+                type="button" class="dropdown-toggle btn" 
+                aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+          Category
+          <span class="icon-[tabler--chevron-down] dropdown-open:rotate-180 size-4"></span>
+        </button>
+        
+        <!-- Dropdown menu: displayed when isDropdownHidden is false -->
+        <div *ngIf="!isDropdownHidden"
+             class="dropdown-menu dropdown-open:opacity-100 min-w-60 bg-white rounded-lg shadow-sm"
+             role="menu" aria-orientation="vertical" aria-labelledby="dropdown-radio">
+          <div class="p-3 space-y-3 text-sm text-gray-700">
+            <!-- Iterate over categories -->
+            <div *ngFor="let category of categories" class="flex items-center">
+              <!-- Use the same radio group name for all inputs -->
+              <input type="radio" name="categoryRadio"
+                     [value]="category" 
+                     [(ngModel)]="selectedCategory"
+                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500"
+                     id="radioDropdown-{{ category }}" />
+              <label for="radioDropdown-{{ category }}" class="ml-2 text-sm font-medium text-gray-900">
+                {{ category }}
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
+      
+    
+      
+      
+  
+  
+ 
+
+  
+
+     
   
       <div>
         <label for="availability" class="block text-sm font-medium text-gray-700">Availability</label>

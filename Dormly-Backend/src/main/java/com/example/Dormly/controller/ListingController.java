@@ -78,10 +78,12 @@ public class ListingController {
         return new ResponseEntity<>(listingService.findAllCategories(), HttpStatus.OK);
     }
 
-    @PutMapping(path = "/update")
+    @PutMapping(path = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ListingDtoResponse>updateListing(@AuthenticationPrincipal UserDetails user,
-                                                               @RequestBody ListingDtoRequest listingDtoRequest){
-        ListingDtoResponse updatedListing = listingService.updateListing(listingDtoRequest, user);
+                                                           @RequestPart("listing")ListingDtoRequest listingDtoRequest,
+                                                           @RequestPart("file") MultipartFile file,
+                                                           @PathVariable("id")Long ListingId) {
+        ListingDtoResponse updatedListing = listingService.updateListing(listingDtoRequest, user , file, ListingId);
         return new ResponseEntity<>(updatedListing, HttpStatus.OK);
     }
 

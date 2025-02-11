@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Date;
@@ -187,13 +188,63 @@ public class ListingService {
         return categoryDtos;
     }
 
-    public ListingDtoResponse updateListing(ListingDtoRequest listing,  UserDetails user) {
+
+
+    @Transactional
+    public ListingDtoResponse updateListing(ListingDtoRequest dto, UserDetails user, MultipartFile
+            file, Long id)  {
         /**
          * update the listing information for the user, override their current listing information
          * fetch the profileId of the user
          */
+        Listing retrieveListing = listingRepository.findById(id)
+                .orElseThrow(()-> new ListingNotFoundException("Listing not found"));
+
+        Category category = categoryRepository.findByName(dto.getCategory())
+                .orElseThrow(()-> new CategoryNotFoundException("Category not found"));
 
 
+        Profile userProfile = profileRepository.findByEmail(user.getUsername())
+                .orElseThrow(()-> new ProfileNotFoundException
+                        ("profile with email "+ user.getUsername() +" not found"));
+
+        if(!userProfile.getId().equals(retrieveListing.getProfile().getId())){
+            throw new ProfileNotFoundException("Profile matching this listing was not found");
+        }
+
+        //convert the image into bytes, as saving the users image to AWS expects the image to be in bytes form
+        try{
+            byte[] image = file.getBytes();
+            String fileUUID = UUID.randomUUID().toString();
+            Long profileId = userProfile.getId();
+            if(file.getOriginalFilename() == null){
+                throw new FileNotFoundException("File not found");
+            }
+
+            String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+            String key = "uploads/listings/%s/%s".formatted(profileId, fileUUID);
+            s3Service.putObject(bucketName, key + extension, image);
+
+
+            //map every property of the DTO to this the listing object to override properties and save it in the database
+            retrieveListing.setTitle(dto.getTitle());
+            retrieveListing.setDescription(dto.getDescription());
+            retrieveListing.setPrice(dto.getPrice());
+            retrieveListing.setBrand(dto.getBrand());
+            retrieveListing.setAvailability(dto.getAvailability());
+            retrieveListing.setCondition(dto.getCondition());
+            retrieveListing.setLocation(dto.getLocation());
+            retrieveListing.setCategory(category);
+            retrieveListing.setUpdated_at(LocalDate.now());
+            retrieveListing.setListingImageURL(fileUUID);
+
+            listingRepository.save(retrieveListing);
+            return ListingDtoResponse.DtoMapper(retrieveListing);
+
+        } catch (IOException e) {
+            //TODO create an exception for more clarity
+            throw new RuntimeException("Error whilst uploading file", e);
+        }
 
     }
 }

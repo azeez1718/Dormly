@@ -4,7 +4,7 @@
     <div class="w-full max-w-7xl px-4 md:px-5 lg:px-5 mx-auto">
         <div class="w-full flex-col justify-start items-center lg:gap-12 gap-8 inline-flex">
             <div class="w-full flex-col justify-start items-center gap-3 flex">
-                <h2 class="text-center text-gray-900 text-3xl font-bold font-manrope leading-normal">Hi {{confirmation?.firstname}}, Thank You for Your Listing</h2>
+                <h2 class="text-center text-gray-900 text-3xl font-bold font-manrope leading-normal">Hi {{confirmation?.firstname | titlecase}}, Thank You for Your Listing</h2>
                 <div class="justify-center items-center gap-2.5 inline-flex">
                     <h5 class="text-gray-500 text-lg font-normal leading-8">Listing date: {{confirmation?.createdDate}}</h5>
                 </div>

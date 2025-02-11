@@ -16,7 +16,7 @@
       </div>
       <div class="">
         <div class="text-center px-14">
-          <h2 class="text-gray-800 text-3xl font-bold">{{profile.firstname}} {{profile.lastname}}</h2>
+          <h2 class="text-gray-800 text-3xl font-bold">{{profile.firstname | titlecase}} {{profile.lastname | titlecase}}</h2>
           <p class="text-gray-400 mt-2">{{profile.email}}</p>
           <p class="mt-2 text-gray-500 text-sm">{{profile.bio}}</p>
         </div>
@@ -57,7 +57,7 @@
           <p class="mt-4 text-lg font-thin">$ {{ listing.price }}</p>
           <!-- Action buttons -->
           <div class="flex justify-between mt-4 space-x-2  h-12">
-            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Edit</button>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" (click)="updateListing(listing.listingId)">Edit</button>
             <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete</button>
           </div>
         </div>

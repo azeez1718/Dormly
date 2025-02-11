@@ -8,6 +8,8 @@ export interface Profile{
     firstname:string
     lastname:string
     profileListings:Array<profileListings>
+
+    //the json sent by the backend must match the property names that angular maps to it, hence profileListings was changed in the dto response 
     
 
 

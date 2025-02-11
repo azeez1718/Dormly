@@ -78,5 +78,12 @@ public class ListingController {
         return new ResponseEntity<>(listingService.findAllCategories(), HttpStatus.OK);
     }
 
+    @PutMapping(path = "/update")
+    public ResponseEntity<ListingDtoResponse>updateListing(@AuthenticationPrincipal UserDetails user,
+                                                               @RequestBody ListingDtoRequest listingDtoRequest){
+        ListingDtoResponse updatedListing = listingService.updateListing(listingDtoRequest, user);
+        return new ResponseEntity<>(updatedListing, HttpStatus.OK);
+    }
+
 
 }

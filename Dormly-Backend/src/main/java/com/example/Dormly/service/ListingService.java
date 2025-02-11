@@ -16,6 +16,7 @@ import com.example.Dormly.repository.ListingRepository;
 import com.example.Dormly.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -184,5 +185,15 @@ public class ListingService {
             throw new CategoryNotFoundException("Category not found");
         }
         return categoryDtos;
+    }
+
+    public ListingDtoResponse updateListing(ListingDtoRequest listing,  UserDetails user) {
+        /**
+         * update the listing information for the user, override their current listing information
+         * fetch the profileId of the user
+         */
+
+
+
     }
 }

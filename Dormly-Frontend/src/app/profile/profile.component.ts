@@ -2,15 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ProfileService } from '../service/profile/profile.service';
 import { Profile } from '../models/Profile';
 import { catchError, elementAt, of } from 'rxjs';
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { FileuploadService } from '../service/fileuploads/fileupload.service';
 import { DashboardComponent } from '../dashboard-navbar/dashboard-navbar.component';
 import { profileListings } from '../models/listingCard';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule],
+  imports: [CommonModule, TitleCasePipe],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -23,7 +24,7 @@ export class ProfileComponent implements OnInit{
   activeListings!:number 
 
 
-  constructor(private profileService:ProfileService, private fileService : FileuploadService){}
+  constructor(private profileService:ProfileService, private fileService : FileuploadService, private router:Router){}
   
  
   ngOnInit(): void {
@@ -78,6 +79,12 @@ export class ProfileComponent implements OnInit{
         const activeListings:Array<profileListings> = listings.filter(listing => listing.isSold === false)
         return activeListings.length
         
+      }
+
+      updateListing(listingId:number){
+        //when the user clicks on the card instance, we retrieve the id associated to it
+        //we then pass the id as a path variable to our backend only after routing to our edit listing component
+        this.router.navigate(['/update/listing', listingId])
       }
     
   }

@@ -9,6 +9,7 @@ import { MainComponent } from './main/main.component';
 import { ListingComponent } from './listing/listing.component';
 import { ListingConfirmationComponent } from './listing-confirmation/listing-confirmation.component';
 import { ProductCardComponent } from './product-card/product-card.component';
+import { UpdateListingComponent } from './update-listing/update-listing.component';
 ;
 
 export const routes: Routes = [
@@ -49,5 +50,9 @@ export const routes: Routes = [
     {
         path: 'product/:id',
         component:ProductCardComponent
+    },
+    {
+        path : "update/listing/:id",
+        component: UpdateListingComponent
     }
 ];

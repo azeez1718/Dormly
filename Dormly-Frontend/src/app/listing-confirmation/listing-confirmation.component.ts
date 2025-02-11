@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ListingService } from '../service/listing/listing.service';
 import { ListingstateService } from '../shared/listingstate.service';
 import { listingConfirmation } from '../models/listingCard';
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-listing-confirmation',
-  imports: [CommonModule],
+  imports: [CommonModule, TitleCasePipe],
   templateUrl: './listing-confirmation.component.html',
   styleUrl: './listing-confirmation.component.css'
 })

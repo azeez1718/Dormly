@@ -22,5 +22,5 @@ public class ProfileDto {
     private String firstname;
     private String lastname;
     //private List<URL> userListings;
-    private List<ListingDtoResponse> listingDtoResponse;
+    private List<ListingDtoResponse> profileListings;
 }

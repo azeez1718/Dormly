@@ -4,6 +4,7 @@ import com.example.Dormly.aws.PreSignedUrlService;
 import com.example.Dormly.aws.S3Service;
 import com.example.Dormly.dto.ListingDtoRequest;
 import com.example.Dormly.dto.ListingDtoResponse;
+import com.example.Dormly.entity.Category;
 import com.example.Dormly.entity.Listing;
 import com.example.Dormly.entity.Profile;
 import com.example.Dormly.exceptions.ListingNotFoundException;
@@ -32,6 +33,7 @@ public class ListingService {
     private final ListingRepository listingRepository;
     private final S3Service s3Service;
     private final PreSignedUrlService preSignedUrlService;
+    private final
 
     @Value("${aws.bucket.listing}")
     private String bucketName;
@@ -41,6 +43,9 @@ public class ListingService {
         //fetch the profile making that is trying to make a listing
         Profile profile = profileRepository.findByEmail(userEmail).
                 orElseThrow(()->new ProfileNotFoundException(userEmail));
+
+        Category category = Category
+
 
         /**
          * to store the listing in our aws bucket we need to define the key, which will be the profile id

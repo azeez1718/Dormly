@@ -73,7 +73,7 @@ public class ProfileService {
                 .firstname(profile.getUser().getFirstname())
                 .lastname(profile.getUser().getLastname())
                 .location(profile.getLocation())
-                .listingDtoResponse(listingDto)
+                .profileListings(listingDto)
                 .build();
 
     }

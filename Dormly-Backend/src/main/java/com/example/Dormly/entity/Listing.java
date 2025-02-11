@@ -65,7 +65,9 @@ public class Listing {
     @Column(nullable = false)
     private String listingImageURL;
 
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
 
     @ManyToOne

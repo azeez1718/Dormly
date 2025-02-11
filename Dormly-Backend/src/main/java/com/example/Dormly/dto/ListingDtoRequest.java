@@ -21,4 +21,5 @@ public class ListingDtoRequest {
     private String location;
     private String category;
     private String availability;
+
 }

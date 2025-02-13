@@ -49,15 +49,12 @@ public class ProfileService {
                 .map(ListingDtoResponse::DtoMapper)
                 .toList();
 
-        /// because atm each user can only upload a single image, we can set the image URL by calling -
+        /// for each listing associated to the user, retrieve the listing url from s3
         /// the generatePresignedURLById and return the listing image, so it is directly associated to that listing
         /// because foreach is terminal and returns a void, we can just set the Url of the dto
 
         listingDto.forEach(dto->dto.setListingUrl(
                 preSignedUrlService.generatePreSignedUrlListingById(dto.getListingId())));
-
-
-
 
 
 
@@ -124,17 +121,16 @@ public class ProfileService {
         /**
          * Aws structure - the Key represents the unique file that identifies our object
          * Bucket
-         *      uploads
-         *          profile
+         *      uploads/
+         *          profile/
          *              1  ->profile id
-         *                      22 -> the random number
+         *                      22 -> the image UUID + ext
          *                      32
          *
          */
 
 
     }
-
 
 
     /**

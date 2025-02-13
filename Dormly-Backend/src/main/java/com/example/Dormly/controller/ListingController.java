@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Slf4j
-@RequestMapping(value = "api/v1/Dormly.com/listing")
+@RequestMapping(value = "api/v1/Dormly/listing")
 @RestController
 public class ListingController {
 

@@ -10,7 +10,7 @@ import java.sql.Time;
 import java.util.Date;
 
 @RestController
-@RequestMapping(path = "/api/v1/Dormly.com")
+@RequestMapping(path = "/api/v1/Dormly")
 public class TestController {
 
 

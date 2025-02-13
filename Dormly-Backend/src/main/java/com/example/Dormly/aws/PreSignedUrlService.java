@@ -116,4 +116,7 @@ public class PreSignedUrlService {
 
         }
 
+
+        //TODO when a user wants to update their profile picture or image of their listing we delete them from s3
+
     }

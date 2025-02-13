@@ -117,8 +117,7 @@ public class ListingService {
         List<ListingDtoResponse> listingDto = listingRepository.findAll()
                 .stream()
                 .filter(listing -> listing.getListingVisibility() == Visibility.PUBLIC
-                && listing.getOrder().getOrderStatus().equals(OrderStatus.CANCELLED)
-                        || listing.getOrder().getOrderStatus()==null)
+                && (listing.getOrder() == null || listing.getOrder().getOrderStatus().equals(OrderStatus.CANCELLED)))
                 .map(ListingDtoResponse::DtoMapper)
                 .toList();
 

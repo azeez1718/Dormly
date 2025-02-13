@@ -17,7 +17,7 @@ import java.net.URL;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("api/v1/Dormly.com/profile")
+@RequestMapping("api/v1/Dormly/profile")
 @RestController
 public class ProfileController {
 

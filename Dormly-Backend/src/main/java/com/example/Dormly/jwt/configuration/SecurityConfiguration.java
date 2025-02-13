@@ -38,8 +38,8 @@ public class SecurityConfiguration {
         cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(http->http.
-                        requestMatchers("/api/v1/Dormly.com/Sign-up").permitAll()
-                        .requestMatchers("/api/v1/Dormly.com/login").permitAll()
+                        requestMatchers("/api/v1/Dormly/Sign-up").permitAll()
+                        .requestMatchers("/api/v1/Dormly/login").permitAll()
                         .anyRequest()
                         .authenticated()
                 )

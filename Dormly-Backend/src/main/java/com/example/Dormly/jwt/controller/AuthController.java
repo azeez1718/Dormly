@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/Dormly.com/")
+@RequestMapping("/api/v1/Dormly")
 @Slf4j
 public class AuthController {
 

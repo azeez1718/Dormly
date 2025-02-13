@@ -30,6 +30,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -196,71 +197,67 @@ public class ListingService {
 
 
     @Transactional
-    public ListingDtoResponse updateListing(ListingDtoRequest dto, UserDetails user, MultipartFile
-            file, Long id)  {
+    public void updateListing(ListingDtoRequest request, UserDetails user, MultipartFile
+            file, Long id) throws IOException {
         /**
          * update the listing information for the user, override their current listing information
          * fetch the profileId of the user
          */
         Listing retrieveListing = listingRepository.findById(id)
-                .orElseThrow(()-> new ListingNotFoundException("Listing not found"));
+                .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
 
-        Category category = categoryRepository.findByName(dto.getCategory())
-                .orElseThrow(()-> new CategoryNotFoundException("Category not found"));
+        Category category = categoryRepository.findByName(request.getCategory())
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
 
 
         Profile userProfile = profileRepository.findByEmail(user.getUsername())
-                .orElseThrow(()-> new ProfileNotFoundException
-                        ("profile with email "+ user.getUsername() +" not found"));
+                .orElseThrow(() -> new ProfileNotFoundException
+                        ("profile with email " + user.getUsername() + " not found"));
 
         /// user can only update the listings if there has been no orders or if the order was cancelled
-        if(retrieveListing.getOrder().getOrderStatus().equals(OrderStatus.PENDING) ||
-                retrieveListing.getOrder().getOrderStatus().equals(OrderStatus.CONFIRMED)
-                || retrieveListing.getOrder().getOrderStatus().equals(OrderStatus.COMPLETED)
-                ){
+        if (retrieveListing.getOrder() != null && !retrieveListing.getOrder().getOrderStatus().equals(OrderStatus.CANCELLED)) {
             throw new ListingNotFoundException("items undergoing sale process can not be updated");
 
         }
 
-        if(!userProfile.getId().equals(retrieveListing.getProfile().getId())){
+        if (!userProfile.getId().equals(retrieveListing.getProfile().getId())) {
             throw new ProfileNotFoundException(" A Profile matching this listing was not found");
         }
 
-        //convert the image into bytes, as saving the users image to AWS expects the image to be in bytes form
-        try{
-            byte[] image = file.getBytes();
-            String fileUUID = UUID.randomUUID().toString();
-            Long profileId = userProfile.getId();
-            if(file.getOriginalFilename() == null){
-                throw new FileNotFoundException("File name was not found");
+        /// if the user has not sent any images alongside the request then leave the listing image url untouched
+        if (file.isEmpty()) {
+            Listing listing = Listing.SaveListing(retrieveListing, request);
+            /// leave image untouched
+            listing.setCategory(category);
+
+        } else {
+            //convert the image into bytes, as saving the users image to AWS expects the image to be in bytes form
+            try {
+                byte[] image = file.getBytes();
+                String fileUUID = UUID.randomUUID().toString();
+                Long profileId = userProfile.getId();
+
+                String extension = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
+                String key = "uploads/listings/%s/%s".formatted(profileId, fileUUID);
+                s3Service.putObject(bucketName, key + extension, image);
+
+
+                Listing saveListing = Listing.SaveListing(retrieveListing, request);
+                saveListing.setCategory(category);
+                saveListing.setListingImageURL(fileUUID + extension);
+
+                listingRepository.save(retrieveListing);
+
+            } catch (IOException e) {
+                //TODO create an exception for more clarity
+                throw new RuntimeException("Error whilst uploading file", e);
             }
 
-            String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-            String key = "uploads/listings/%s/%s".formatted(profileId, fileUUID);
-            s3Service.putObject(bucketName, key + extension, image);
-
-
-            //map every property of the DTO to this the listing object to override properties and save it in the database
-            retrieveListing.setTitle(dto.getTitle());
-            retrieveListing.setDescription(dto.getDescription());
-            retrieveListing.setPrice(dto.getPrice());
-            retrieveListing.setBrand(dto.getBrand());
-            retrieveListing.setAvailability(dto.getAvailability());
-            retrieveListing.setCondition(dto.getCondition());
-            retrieveListing.setLocation(dto.getLocation());
-            retrieveListing.setCategory(category);
-            retrieveListing.setUpdated_at(LocalDate.now());
-            retrieveListing.setListingImageURL(fileUUID + extension);
-
-            listingRepository.save(retrieveListing);
-            return ListingDtoResponse.DtoMapper(retrieveListing);
-
-        } catch (IOException e) {
-            //TODO create an exception for more clarity
-            throw new RuntimeException("Error whilst uploading file", e);
         }
 
     }
+
+
 
 
 

@@ -79,12 +79,12 @@ public class ListingController {
     }
 
     @PutMapping(path = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ListingDtoResponse>updateListing(@AuthenticationPrincipal UserDetails user,
+    public ResponseEntity<Void>updateListing(@AuthenticationPrincipal UserDetails user,
                                                            @RequestPart("listing")ListingDtoRequest listingDtoRequest,
                                                            @RequestPart("file") MultipartFile file,
-                                                           @PathVariable("id")Long ListingId) {
-        ListingDtoResponse updatedListing = listingService.updateListing(listingDtoRequest, user , file, ListingId);
-        return new ResponseEntity<>(updatedListing, HttpStatus.OK);
+                                                           @PathVariable("id")Long ListingId) throws IOException {
+        listingService.updateListing(listingDtoRequest, user , file, ListingId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

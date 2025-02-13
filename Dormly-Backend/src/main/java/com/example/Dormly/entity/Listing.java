@@ -2,6 +2,8 @@ package com.example.Dormly.entity;
 
 
 import com.example.Dormly.constants.Visibility;
+import com.example.Dormly.dto.ListingDtoRequest;
+import com.example.Dormly.dto.ListingDtoResponse;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,6 +12,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,6 +83,22 @@ public class Listing {
     //this will be set in the constructor, any persistence to the db will be seen as an update
     //i.e user may change listing information, may delete a listing or may create one
     private LocalDate updated_at;
+
+
+
+    public static Listing SaveListing(Listing listing, ListingDtoRequest dto){
+        return Listing.builder()
+                .title(dto.getTitle())
+                .description(dto.getDescription())
+                .price(dto.getPrice())
+                .brand(dto.getBrand())
+                .availability(dto.getBrand())
+                .condition(dto.getCondition())
+                .location(dto.getLocation())
+                .updated_at(LocalDate.now())
+                .build();
+
+    }
 
 
 

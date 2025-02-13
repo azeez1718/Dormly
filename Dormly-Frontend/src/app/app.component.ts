@@ -4,6 +4,7 @@ import { HomeComponent } from "./user-home/home.component";
 import { NavbarComponent } from './navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from './footer/footer.component';
+import { DashboardComponent } from './dashboard-navbar/dashboard-navbar.component';
 
 @Component({
   selector: 'app-root',

@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule, TitleCasePipe],
+  imports: [CommonModule, TitleCasePipe, DashboardComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit{
   profile!:Profile
   hasError:boolean = false
   hasLoaded:boolean = false
-  activeListings!:number 
+  totalListings!:number 
 
 
   constructor(private profileService:ProfileService, private fileService : FileuploadService, private router:Router){}
@@ -61,7 +61,7 @@ export class ProfileComponent implements OnInit{
       this.profile= data
       console.log(this.profile)
       //we can just know the number of listing objects returned.
-      this.activeListings= this.findActiveListings(this.profile.profileListings)
+      this.totalListings= this.findTotalListings(this.profile.profileListings)
       
     });
 
@@ -70,14 +70,14 @@ export class ProfileComponent implements OnInit{
 
 
     
-      findActiveListings(listings:Array<profileListings>):number{
+      findTotalListings(listings:Array<profileListings>):number{
       /**
        * call this function to return the number of listings that have isSold to False - hence active Listings
        *this creates a new list as we use the filter function to iterate and create a new list where it pushes all not sold items
        * we can then later fetch all items that have been sold, which would be the opposite of this statement, and render them
        */
-        const activeListings:Array<profileListings> = listings.filter(listing => listing.isSold === false)
-        return activeListings.length
+        const TotalListings:Array<profileListings> = listings
+        return TotalListings.length
         
       }
 

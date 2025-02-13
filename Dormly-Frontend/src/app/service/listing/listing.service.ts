@@ -9,7 +9,7 @@ import { CategoryDto } from '../../models/CategoryDto';
 })
 export class ListingService {
   
-  url:string = "http://localhost:8099/api/v1/Dormly.com/listing"
+  url:string = "http://localhost:8099/api/v1/Dormly/listing"
 
   constructor(private Http:HttpClient) { }
 
@@ -38,4 +38,6 @@ export class ListingService {
     const url = `${this.url}/categories`
     return this.Http.get<CategoryDto[]>(url)
   }
+
+ 
 }

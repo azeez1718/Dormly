@@ -1,6 +1,6 @@
 
 <!--card Component that allows the user to view their profile and upload a photo. -->
-
+<app-dashboard-navbar></app-dashboard-navbar>
 <!-- component -->
 <div class = content-between gap-4>
 <div *ngIf = "hasLoaded">
@@ -23,8 +23,8 @@
         <hr class="mt-6" />
         <div class="flex bg-gray-50">
           <div class="text-center w-1/2 p-4 hover:bg-gray-100 cursor-pointer">
-            <p>Active listings</p>
-            <span class="font-semibold">{{activeListings}}</span>
+            <p>Total listings</p>
+            <span class="font-semibold">{{totalListings}}</span>
           </div>
           <div class="border"></div>
           <div class="text-center w-1/2 p-4 hover:bg-gray-100 cursor-pointer">

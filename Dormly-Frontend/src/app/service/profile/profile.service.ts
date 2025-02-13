@@ -8,7 +8,7 @@ import { Profile } from '../../models/Profile';
 })
 export class ProfileService {
   
-   url:string = "http://localhost:8099/api/v1/Dormly.com/profile"
+   url:string = "http://localhost:8099/api/v1/Dormly/profile"
 
   constructor(private Http:HttpClient) { }
 

@@ -87,7 +87,7 @@ export class ListingComponent implements OnInit{
         this.listingConfirmation = data //this will be required by the listingconfirmation component
         console.log(this.listingConfirmation)
 
-        //something went wrong here!!
+       
         this.listingStateService.updateListingConfirmationState(this.listingConfirmation)
         this.router.navigate(['/listing-confirmation']) //subscribes to the observable to retrieve the latest listing creation
 

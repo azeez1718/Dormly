@@ -13,7 +13,7 @@ export class AuthService {
   
  
 
-    url:string = "http://localhost:8099/api/v1/Dormly.com"
+    url:string = "http://localhost:8099/api/v1/Dormly"
 
   constructor(private http:HttpClient) { }
 

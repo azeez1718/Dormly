@@ -6,6 +6,7 @@ import com.example.Dormly.dto.ListingDtoRequest;
 import com.example.Dormly.dto.ListingDtoResponse;
 import com.example.Dormly.entity.Listing;
 import com.example.Dormly.service.ListingService;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -81,7 +82,7 @@ public class ListingController {
     @PutMapping(path = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void>updateListing(@AuthenticationPrincipal UserDetails user,
                                                            @RequestPart("listing")ListingDtoRequest listingDtoRequest,
-                                                           @RequestPart("file") MultipartFile file,
+                                                           @Nullable @RequestPart("file") MultipartFile file,
                                                            @PathVariable("id")Long ListingId) throws IOException {
         listingService.updateListing(listingDtoRequest, user , file, ListingId);
         return new ResponseEntity<>(HttpStatus.OK);

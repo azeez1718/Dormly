@@ -86,19 +86,7 @@ public class Listing {
 
 
 
-    public static Listing SaveListing(Listing listing, ListingDtoRequest dto){
-        return Listing.builder()
-                .title(dto.getTitle())
-                .description(dto.getDescription())
-                .price(dto.getPrice())
-                .brand(dto.getBrand())
-                .availability(dto.getBrand())
-                .condition(dto.getCondition())
-                .location(dto.getLocation())
-                .updated_at(LocalDate.now())
-                .build();
 
-    }
 
 
 

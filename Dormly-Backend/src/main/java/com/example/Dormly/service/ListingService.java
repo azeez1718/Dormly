@@ -225,10 +225,11 @@ public class ListingService {
         }
 
         /// if the user has not sent any images alongside the request then leave the listing image url untouched
-        if (file.isEmpty()) {
-            Listing listing = Listing.SaveListing(retrieveListing, request);
-            /// leave image untouched
-            listing.setCategory(category);
+        if (file == null) {
+            ListingDtoRequest.updateListing(retrieveListing, request);
+            retrieveListing.setCategory(category);
+            /// we dont replace the image
+            listingRepository.save(retrieveListing);
 
         } else {
             //convert the image into bytes, as saving the users image to AWS expects the image to be in bytes form
@@ -242,9 +243,10 @@ public class ListingService {
                 s3Service.putObject(bucketName, key + extension, image);
 
 
-                Listing saveListing = Listing.SaveListing(retrieveListing, request);
-                saveListing.setCategory(category);
-                saveListing.setListingImageURL(fileUUID + extension);
+                ListingDtoRequest.updateListing(retrieveListing, request);
+                retrieveListing.setCategory(category);
+                retrieveListing.setListingImageURL(fileUUID + extension);
+
 
                 listingRepository.save(retrieveListing);
 
@@ -256,9 +258,6 @@ public class ListingService {
         }
 
     }
-
-
-
 
 
 }

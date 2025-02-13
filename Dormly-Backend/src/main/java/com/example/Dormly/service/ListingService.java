@@ -2,6 +2,7 @@ package com.example.Dormly.service;
 
 import com.example.Dormly.aws.PreSignedUrlService;
 import com.example.Dormly.aws.S3Service;
+import com.example.Dormly.constants.OrderStatus;
 import com.example.Dormly.dto.CategoryDto;
 import com.example.Dormly.dto.ListingDtoRequest;
 import com.example.Dormly.dto.ListingDtoResponse;
@@ -208,6 +209,13 @@ public class ListingService {
                 .orElseThrow(()-> new ProfileNotFoundException
                         ("profile with email "+ user.getUsername() +" not found"));
 
+        /// ensure the listing is not on the selling list, as the user cant update an item when its set to sell
+        if(retrieveListing.isSold() && retrieveListing.getOrder().getOrderStatus().equals(OrderStatus.PENDING)
+                || retrieveListing.getOrder().getOrderStatus().equals(OrderStatus.SUCCESS)){
+            throw new ListingNotFoundException("items put up for sale can not be edited");
+
+        }
+
         if(!userProfile.getId().equals(retrieveListing.getProfile().getId())){
             throw new ProfileNotFoundException("Profile matching this listing was not found");
         }
@@ -236,7 +244,7 @@ public class ListingService {
             retrieveListing.setLocation(dto.getLocation());
             retrieveListing.setCategory(category);
             retrieveListing.setUpdated_at(LocalDate.now());
-            retrieveListing.setListingImageURL(fileUUID);
+            retrieveListing.setListingImageURL(fileUUID + extension);
 
             listingRepository.save(retrieveListing);
             return ListingDtoResponse.DtoMapper(retrieveListing);
@@ -247,4 +255,7 @@ public class ListingService {
         }
 
     }
+
+
+
 }

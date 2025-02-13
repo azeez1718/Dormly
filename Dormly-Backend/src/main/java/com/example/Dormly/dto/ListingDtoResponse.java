@@ -32,7 +32,6 @@ public class  ListingDtoResponse {
     private String category;
     private String availability;
     private URL ListingUrl;
-    private Boolean isSold;
     /// these will be explicity set, as the listing object does not contain these properties
     private String firstname; //person who made the listing
     private String lastname;
@@ -55,7 +54,6 @@ public class  ListingDtoResponse {
                 .location(listing.getLocation())
                 .category(listing.getCategory().getName())
                 .availability(listing.getAvailability())
-                .isSold(listing.isSold())
                .firstname(listing.getProfile().getUser().getFirstname())
                .lastname(listing.getProfile().getUser().getLastname())
                .profileId(listing.getProfile().getId())

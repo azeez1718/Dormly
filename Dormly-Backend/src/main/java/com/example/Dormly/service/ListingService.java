@@ -3,6 +3,7 @@ package com.example.Dormly.service;
 import com.example.Dormly.aws.PreSignedUrlService;
 import com.example.Dormly.aws.S3Service;
 import com.example.Dormly.constants.OrderStatus;
+import com.example.Dormly.constants.Visibility;
 import com.example.Dormly.dto.CategoryDto;
 import com.example.Dormly.dto.ListingDtoRequest;
 import com.example.Dormly.dto.ListingDtoResponse;
@@ -91,7 +92,7 @@ public class ListingService {
             listing.setListedDate(LocalDate.now());
             listing.setUpdated_at(LocalDate.now());
             listing.setProfile(profile);
-            listing.setSold(false);
+            listing.setListingVisibility(Visibility.PUBLIC);
             //set the fileUUID to the image url with extension so we can fetch it when generating a presigned url
             listing.setListingImageURL(fileUUID + extension);
 
@@ -104,16 +105,20 @@ public class ListingService {
         }
 
     }
-
+    /**
+     *  we'll need to iterate through each listing items and convert them into a listingDTO
+     *  because Map returns a new object we'll first convert it to a dto then set the presigned url using peek
+     * peek works but it isn't the best solution to use
+     * only display
+     */
     public List<ListingDtoResponse> findAllListings() {
-        /**
-         *  we'll need to iterate through each listing items and convert them into a listingDTO
-         *  because Map returns a new object we'll first convert it to a dto then set the presigned url using peek
-         * peek works but it isn't the best solution to use
-         */
+
 
         List<ListingDtoResponse> listingDto = listingRepository.findAll()
                 .stream()
+                .filter(listing -> listing.getListingVisibility() == Visibility.PUBLIC
+                && listing.getOrder().getOrderStatus().equals(OrderStatus.CANCELLED)
+                        || listing.getOrder().getOrderStatus()==null)
                 .map(ListingDtoResponse::DtoMapper)
                 .toList();
 
@@ -157,7 +162,7 @@ public class ListingService {
      *
      * @param id - binded to the path variable, when a user clicks on the card instance, we make an api call
      * This call fetches the listing information for a single card when a user is about to buy
-     * @return
+     * @return ListingDto to hide internals
      */
     public ListingDtoResponse findListingById(Long id) {
         Listing listing = listingRepository.findById(id)
@@ -209,15 +214,17 @@ public class ListingService {
                 .orElseThrow(()-> new ProfileNotFoundException
                         ("profile with email "+ user.getUsername() +" not found"));
 
-        /// ensure the listing is not on the selling list, as the user cant update an item when its set to sell
-        if(retrieveListing.isSold() && retrieveListing.getOrder().getOrderStatus().equals(OrderStatus.PENDING)
-                || retrieveListing.getOrder().getOrderStatus().equals(OrderStatus.SUCCESS)){
-            throw new ListingNotFoundException("items put up for sale can not be edited");
+        /// user can only update the listings if there has been no orders or if the order was cancelled
+        if(retrieveListing.getOrder().getOrderStatus().equals(OrderStatus.PENDING) ||
+                retrieveListing.getOrder().getOrderStatus().equals(OrderStatus.CONFIRMED)
+                || retrieveListing.getOrder().getOrderStatus().equals(OrderStatus.COMPLETED)
+                ){
+            throw new ListingNotFoundException("items undergoing sale process can not be updated");
 
         }
 
         if(!userProfile.getId().equals(retrieveListing.getProfile().getId())){
-            throw new ProfileNotFoundException("Profile matching this listing was not found");
+            throw new ProfileNotFoundException(" A Profile matching this listing was not found");
         }
 
         //convert the image into bytes, as saving the users image to AWS expects the image to be in bytes form
@@ -226,7 +233,7 @@ public class ListingService {
             String fileUUID = UUID.randomUUID().toString();
             Long profileId = userProfile.getId();
             if(file.getOriginalFilename() == null){
-                throw new FileNotFoundException("File not found");
+                throw new FileNotFoundException("File name was not found");
             }
 
             String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));

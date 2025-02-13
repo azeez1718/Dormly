@@ -35,7 +35,7 @@ public class Order {
 
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "order_status", nullable = false)
+    @Column(name = "order_status")
     private OrderStatus orderStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)

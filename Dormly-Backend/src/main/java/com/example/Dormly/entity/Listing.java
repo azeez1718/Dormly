@@ -1,6 +1,7 @@
 package com.example.Dormly.entity;
 
 
+import com.example.Dormly.constants.Visibility;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -53,8 +54,9 @@ public class Listing {
     @Column(nullable = false)
     private String location;
 
-    @Column(name = "is_sold", nullable = false)
-    private boolean isSold;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "listing_visibility", nullable = false)
+    private Visibility listingVisibility;
 
     private String brand;
 

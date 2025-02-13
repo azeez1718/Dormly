@@ -17,7 +17,7 @@ public class ListingDtoRequest {
     private String description;
     private String brand;
     private String condition;
-    //by default isSold in the listing entity is going to be No;
+    //by default  visibility is set to true
     private String location;
     private String category;
     private String availability;

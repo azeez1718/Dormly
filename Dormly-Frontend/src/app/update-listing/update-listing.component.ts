@@ -3,11 +3,12 @@ import { ListingService } from '../service/listing/listing.service';
 import { ActivatedRoute } from '@angular/router';
 import { listingCard } from '../models/listingCard';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FileuploadService } from '../service/fileuploads/fileupload.service';
 
 @Component({
   selector: 'app-update-listing',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './update-listing.component.html',
   styleUrl: './update-listing.component.css'
 })
@@ -18,13 +19,17 @@ export class UpdateListingComponent implements OnInit{
   listing!:listingCard
   hasLoaded:boolean = false
   editForm!:FormGroup
+  multipartForm!:FormData
+  hasUploadedNewPhoto:boolean = false
+  uploadedPhoto!:string | undefined
+
 
   
 
 
    
   constructor(private listingService:ListingService,
-     private route:ActivatedRoute, private formBuilder:FormBuilder){}
+     private route:ActivatedRoute, private formBuilder:FormBuilder, private fileService:FileuploadService){}
 
  
 
@@ -32,27 +37,25 @@ export class UpdateListingComponent implements OnInit{
 
 
   ngOnInit(): void {
-    this.updateListing()
     this.UpdateForm()
+    this.updateListing()
+  
+  
     
   }
 
   private UpdateForm():void{
     //prepopulate the form to show the user listing information
-
-    if(!this.hasLoaded){
-      throw Error("An error occured fetching the listing information")
-
-    }
     this.editForm = this.formBuilder.group({
-      'title' : [this.listing.title, [Validators.required,  Validators.maxLength(20)]],
-      'price' : [this.listing.price, [Validators.required, Validators.min(5.01)]],
-      'description': [this.listing.description, [Validators.required, Validators.maxLength(100)]],
-      'brand': [this.listing.brand, [Validators.required, Validators.maxLength(100)]],
-      'condition': [this.listing.condition, [Validators.required, Validators.maxLength(100)]],
-      'location': [this.listing.location, [Validators.required, Validators.maxLength(20)]], // we will make an API call to fetch locations
-      'category': [this.listing.category, [Validators.required,]],
-      'availability': [this.listing.availability, [Validators.required, Validators.maxLength(100)]]
+      'title' : ['' ,[Validators.required,  Validators.maxLength(20)]],
+      'price' : ['', [Validators.required, Validators.min(5.01)]],
+      'description': ['', [Validators.required, Validators.maxLength(100)]],
+      'brand': ['', [Validators.required, Validators.maxLength(100)]],
+      'condition': ['', [Validators.required, Validators.maxLength(100)]],
+      'location': ['', [Validators.required, Validators.maxLength(100)]],
+      'category': ['', [Validators.required,]],
+      'availability': ['', [Validators.required, Validators.maxLength(100)]]
+
       
 
     })
@@ -71,7 +74,17 @@ export class UpdateListingComponent implements OnInit{
       next:(res:listingCard)=>{
         this.listing = res
         console.log("edit listing", this.listing)
+        this.editForm.controls['title'].setValue(this.listing.title)
+        this.editForm.controls['price'].setValue(this.listing.price)
+        this.editForm.controls['description'].setValue(this.listing.description)
+        this.editForm.controls['brand'].setValue(this.listing.brand)
+        this.editForm.controls['condition'].setValue(this.listing.condition)
+        this.editForm.controls['category'].setValue(this.listing.category)
+        this.editForm.controls['location'].setValue(this.listing.location)
+        this.editForm.controls['availability'].setValue(this.listing.availability)
         this.hasLoaded = true
+      
+
 
       },
       error:(error:Error)=>{
@@ -80,11 +93,30 @@ export class UpdateListingComponent implements OnInit{
     })
   }
 
+}
 
 
-
+onFileSelected($event:Event){
+  this.multipartForm = this.fileService.uploadFile($event);
+  // we want to display the image on the left side of the screen, so the user can see his new listing
+  //if the new listing uploaded photo doesnt equal to null and is valid, then show the listing photo on the left
+    //otherwise if nothing changes meaning 
+  if(!this.multipartForm.get('file') === null){
+    //only when this is true we can append the json and the file together
+    this.hasUploadedNewPhoto=true
+  }
+  else{
+    throw Error("please select a valid image")
+  }
+  
+   
 
 }
 
+onSubmit(){
+
+  
+
+}
 
 }

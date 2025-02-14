@@ -32,8 +32,9 @@ public class Profile {
 
     //default, will be set to university Location
     private String Location;
-    
-    private String university;
+
+
+    private String university = "queens mary university";
 
     @OneToOne
     @JoinColumn(name = "user_id")

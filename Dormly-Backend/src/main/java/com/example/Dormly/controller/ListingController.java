@@ -88,5 +88,19 @@ public class ListingController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param user - ensure the user calling the api is the one who owns the listing
+     * @param ListingId - unique identifier for the listing
+     * @return no response in the body required
+     */
+    @DeleteMapping(path="/delete/{id}")
+    public ResponseEntity<Void> deleteListing(@AuthenticationPrincipal UserDetails user,
+                                              @PathVariable("id") Long ListingId){
+        listingService.deleteListingById(user, ListingId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    }
+
 
 }

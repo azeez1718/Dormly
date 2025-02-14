@@ -17,6 +17,7 @@ import com.example.Dormly.repository.CategoryRepository;
 import com.example.Dormly.repository.ListingRepository;
 import com.example.Dormly.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class ListingService {
@@ -197,8 +199,7 @@ public class ListingService {
 
 
     @Transactional
-    public void updateListing(ListingDtoRequest request, UserDetails user, MultipartFile
-            file, Long id) throws IOException {
+    public void updateListing(ListingDtoRequest request, UserDetails user, MultipartFile file, Long id)  {
         /**
          * update the listing information for the user, override their current listing information
          * fetch the profileId of the user
@@ -259,5 +260,34 @@ public class ListingService {
 
     }
 
+
+
+        public void deleteListingById(UserDetails user, Long ListingId){
+        Listing listing = listingRepository.findById(ListingId)
+                .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
+
+        if(!listing.getProfile().getUser().getEmail().equals(user.getUsername())){
+            throw new ProfileNotFoundException(" A Profile matching this listing was not found");
+        }
+
+        /// ensure users can not delete a listing, if it is currently undergoing a purchase process
+        if(listing.getOrder() != null && !listing.getOrder().getOrderStatus().equals(OrderStatus.CANCELLED)){
+            throw new ListingNotFoundException("items undergoing sale process can not be updated");
+        }
+            try{
+                /// include as a key when identifying the object in s3 for deletion
+                Long profileId = listing.getProfile().getId();
+                String imageUrl = listing.getListingImageURL();
+                String key = "uploads/listings/%s/%s".formatted(profileId, imageUrl);
+                s3Service.DeleteObject(bucketName,key );
+                log.info("Attempting to delete S3 object with key: {}", key);
+                listingRepository.delete(listing);
+            }catch(Exception e){
+                throw new RuntimeException("error whilst generating key with profile and url", e);
+            }
+
+
+
+        }
 
 }

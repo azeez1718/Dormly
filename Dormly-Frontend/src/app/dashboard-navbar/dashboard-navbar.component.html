@@ -1,76 +1,57 @@
-<div class="navbar bg-base-100">
-    <div class="flex-1">
-      <a class="btn btn-ghost text-xl">Dormly</a>
-    </div>
+<div class="navbar bg-indigo-50 fixed top-0 left-0 w-full z-50 border-b border-gray-200">
+  <!-- Left: Logo -->
+  <div class="flex-1">
+    <a class="btn btn-ghost text-xl" routerLink="/my-home">Dormly</a>
+  </div>
 
+  <!-- Right: Actions -->
+  <div class="flex-none flex items-center space-x-8 pr-8">
+    <!-- Create New Listing Link -->
+    <a routerLink ="/listing" class="btn btn-outline">Create New Listing</a>
 
-   <!-- Middle: Search Bar -->
-  <div class="flex-1 flex justify-center">
-    <form class="max-w-md w-full">
-      <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-      <div class="relative">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+    <!-- Cart Icon -->
+    <div class="dropdown dropdown-end">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+        <div class="indicator">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
           </svg>
-        </div>
-        <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items..." required />
-        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-      </div>
-    </form>
-  </div>
-
-  
-    <!-- Adjusted Flex Container -->
-    <div class="flex-none flex items-center space-x-8 pr-8">
-      <!-- Create New Listing Link (Moved Before Cart) -->
-      <a href="/listing" class="btn btn-outline">Create New Listing</a>
-  
-      <!-- Cart Icon -->
-      <div class="dropdown dropdown-end">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-          <div class="indicator">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-            <span class="badge badge-sm indicator-item">8</span>
-          </div>
-        </div>
-        <!-- Cart Dropdown Content -->
-        <div tabindex="0" class="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow">
-          <div class="card-body">
-            <span class="text-lg font-bold">8 Items</span>
-            <span class="text-info">Subtotal: $999</span>
-            <div class="card-actions">
-              <button class="btn btn-primary btn-block">View cart</button>
-            </div>
-          </div>
+          <span class="badge badge-sm indicator-item">8</span>
         </div>
       </div>
-  
-      <!-- Profile Avatar -->
-      <div class="dropdown dropdown-end">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-          <div class="w-10 rounded-full">
-            <!-- User profile picture -->
-            <img *ngIf="hasLoaded" alt="User Profile" [src]="image" />
+      <!-- Cart Dropdown Content -->
+      <div tabindex="0" class="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow">
+        <div class="card-body">
+          <span class="text-lg font-bold">8 Items</span>
+          <span class="text-info">Subtotal: $999</span>
+          <div class="card-actions">
+            <button class="btn btn-primary btn-block">View cart</button>
           </div>
         </div>
-        <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-          <li>
-            <a routerLink = "/profile" class="justify-between">
-              Profile
-              <span class="badge">New</span>
-            </a>
-          </li>
-          <li><a>View listings</a></li>
-          <li><a>View orders</a></li>
-          <li><a>logout</a></li>
-        </ul>
       </div>
     </div>
-  </div>
 
+    <!-- Profile Avatar -->
+    <div class="dropdown dropdown-end">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+        <div class="w-10 rounded-full">
+          <img *ngIf="hasLoaded" alt="User Profile" [src]="image" />
+        </div>
+      </div>
+      <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+        <li>
+          <a routerLink="/profile" class="justify-between">
+            Profile
+            <span class="badge">New</span>
+          </a>
+        </li>
+        <li><a>View listings</a></li>
+        <li><a>View orders</a></li>
+        <li><a>logout</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
   
   

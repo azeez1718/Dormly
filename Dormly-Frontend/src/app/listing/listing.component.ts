@@ -33,10 +33,7 @@ export class ListingComponent implements OnInit{
 
       // Predefined categories for the dropdown.
 
-    
-
-
-
+  
   validForm:boolean = false
   formdata :FormData = new FormData()
   listingConfirmation!:listingConfirmation
@@ -95,9 +92,6 @@ export class ListingComponent implements OnInit{
         //this.listingStateService.updateListingConfirmationState(this.listingConfirmation)
         //this.router.navigate(['/listing-confirmation']) //subscribes to the observable to retrieve the latest listing creation
 
-      
-      
-       
       },
       error:(error:Error)=>{
         console.log(error.message)

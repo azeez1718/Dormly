@@ -5,11 +5,13 @@ import { CommonModule } from '@angular/common';
 import { ListingcardComponent } from '../listingcard/listingcard.component';
 import { listingCard } from '../models/listingCard';
 import { ListingService } from '../service/listing/listing.service';
+import { SidebarComponent } from '../sidebar/sidebar.component';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 
 @Component({
   selector: 'app-home',
-  imports: [DashboardComponent, CommonModule, ListingcardComponent],
+  imports: [ CommonModule, ListingcardComponent, SidebarComponent, DashboardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

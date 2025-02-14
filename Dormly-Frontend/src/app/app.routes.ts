@@ -10,6 +10,7 @@ import { ListingComponent } from './listing/listing.component';
 import { ListingConfirmationComponent } from './listing-confirmation/listing-confirmation.component';
 import { ProductCardComponent } from './product-card/product-card.component';
 import { UpdateListingComponent } from './update-listing/update-listing.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 ;
 
 export const routes: Routes = [
@@ -54,5 +55,9 @@ export const routes: Routes = [
     {
         path : "update/listing/:id",
         component: UpdateListingComponent
+    },
+    {
+        path : "sidebar",
+        component: SidebarComponent
     }
 ];

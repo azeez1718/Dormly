@@ -1,58 +1,51 @@
 <app-dashboard-navbar></app-dashboard-navbar>
+<app-sidebar></app-sidebar>
 
-
-<!--Carousel-->
-<div class="carousel w-full  h-96">
-    <div id="slide1" class="carousel-item relative w-full">
-      <img
-        src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        class="w-full h-full object-cover" />
-      <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-        <a href="#slide4" class="btn btn-circle">❮</a>
-        <a href="#slide2" class="btn btn-circle">❯</a>
+<div class="ml-[280px] mt-16 p-6">
+    <!-- Carousel -->
+    <div class="carousel w-full h-96">
+      <div id="slide1" class="carousel-item relative w-full">
+        <img
+          src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          class="w-full h-full object-cover" />
+        <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+          <a href="#slide4" class="btn btn-circle">❮</a>
+          <a href="#slide2" class="btn btn-circle">❯</a>
+        </div>
+      </div>
+      <div id="slide2" class="carousel-item relative w-full">
+        <img
+          src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp"
+          class="w-full" />
+        <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+          <a href="#slide1" class="btn btn-circle">❮</a>
+          <a href="#slide3" class="btn btn-circle">❯</a>
+        </div>
+      </div>
+      <div id="slide3" class="carousel-item relative w-full">
+        <img
+          src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
+          class="w-full" />
+        <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+          <a href="#slide2" class="btn btn-circle">❮</a>
+          <a href="#slide4" class="btn btn-circle">❯</a>
+        </div>
+      </div>
+      <div id="slide4" class="carousel-item relative w-full">
+        <img
+          src="https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp"
+          class="w-full" />
+        <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+          <a href="#slide3" class="btn btn-circle">❮</a>
+          <a href="#slide1" class="btn btn-circle">❯</a>
+        </div>
       </div>
     </div>
-    <div id="slide2" class="carousel-item relative w-full">
-      <img
-        src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp"
-        class="w-full" />
-      <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-        <a href="#slide1" class="btn btn-circle">❮</a>
-        <a href="#slide3" class="btn btn-circle">❯</a>
-      </div>
-    </div>
-    <div id="slide3" class="carousel-item relative w-full">
-      <img
-        src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
-        class="w-full" />
-      <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-        <a href="#slide2" class="btn btn-circle">❮</a>
-        <a href="#slide4" class="btn btn-circle">❯</a>
-      </div>
-    </div>
-    <div id="slide4" class="carousel-item relative w-full">
-      <img
-        src="https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp"
-        class="w-full" />
-      <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-        <a href="#slide3" class="btn btn-circle">❮</a>
-        <a href="#slide1" class="btn btn-circle">❯</a>
+  
+    <!-- Listing Cards -->
+    <div class="container mx-auto p-4">
+      <div class="grid grid-cols-1 justify-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <app-listingcard *ngFor="let card of cards" [card]="card"></app-listingcard>
       </div>
     </div>
   </div>
-
-
-
-
-<div class="container mx-auto p-4">
-    <div class="grid grid-cols-1 justify-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      <app-listingcard *ngFor="let card of cards" [card]="card"></app-listingcard>
-    </div>
-  </div>
-
-
-
-
-
-
-

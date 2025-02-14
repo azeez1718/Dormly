@@ -94,9 +94,12 @@
               <label for="image" class="block text-sm font-medium text-gray-900 dark:text-white">
                 Upload photo
               </label>
+
               <!-- Note: We don't bind file inputs with formControlName because browsers don't allow it -->
               <input type="file" id="image" (change)="onFileSelected($event)" />
             </div>
+
+ 
             
             <!-- Submit Button -->
             <button type="button" (click) = "onSubmit()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">

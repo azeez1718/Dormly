@@ -35,8 +35,8 @@ export class ListingService {
   }
 
   findAllCategories():Observable<CategoryDto[]>{
-    const url = `${this.url}/categories`
-    return this.Http.get<CategoryDto[]>(url)
+    const getCategories = `${this.url}/categories`
+    return this.Http.get<CategoryDto[]>(getCategories)
   }
 
 
@@ -44,6 +44,11 @@ export class ListingService {
     const updateApi = `${this.url}/update/${id}`
     return this.Http.put<void>(updateApi, multipartForm)
 
+  }
+
+  deleteListingById(ListingId:number):Observable<void>{
+    const deleteListing = `${this.url}/delete/${ListingId}`
+    return this.Http.delete<void>(deleteListing) 
   }
  
 }

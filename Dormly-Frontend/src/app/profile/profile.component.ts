@@ -8,6 +8,7 @@ import { FileuploadService } from '../service/fileuploads/fileupload.service';
 import { DashboardComponent } from '../dashboard-navbar/dashboard-navbar.component';
 import { profileListings } from '../models/listingCard';
 import { Router } from '@angular/router';
+import { ListingService } from '../service/listing/listing.service';
 
 @Component({
   selector: 'app-profile',
@@ -22,9 +23,12 @@ export class ProfileComponent implements OnInit{
   hasError:boolean = false
   hasLoaded:boolean = false
   totalListings!:number 
+  deleteAlert:Boolean = false
+  selectedListingId!:number
 
 
-  constructor(private profileService:ProfileService, private fileService : FileuploadService, private router:Router){}
+  constructor(private profileService:ProfileService, private fileService : FileuploadService,
+     private router:Router, private listingService : ListingService){}
   
  
   ngOnInit(): void {
@@ -66,11 +70,29 @@ export class ProfileComponent implements OnInit{
     });
 
     
+
       }
+
+    deleteListing(){
+      this.listingService.deleteListingById(this.selectedListingId)
+      .subscribe({
+        next:()=>{
+          //real time update instead of user having to refresh the page
+          this.profile.profileListings = this.profile.profileListings.filter(listing=> listing.listingId !== this.selectedListingId)
+          console.log("item deleteed successfully")
+          
+        },
+        error:(error:Error)=>{
+          console.log("an error occured whilst deleting listing", error.message)
+        }
+      })
+      
+
+    }  
 
 
     
-      findTotalListings(listings:Array<profileListings>):number{
+    findTotalListings(listings:Array<profileListings>):number{
       /**
        * call this function to return the number of listings that have isSold to False - hence active Listings
        *this creates a new list as we use the filter function to iterate and create a new list where it pushes all not sold items
@@ -81,13 +103,30 @@ export class ProfileComponent implements OnInit{
         
       }
 
-      updateListing(listingId:number){
+    updateListing(listingId:number){
         //when the user clicks on the card instance, we retrieve the id associated to it
         //we then pass the id as a path variable to our backend only after routing to our edit listing component
         this.router.navigate(['/update/listing', listingId])
       }
+
+    toggleDeleteAlert(id:number){
+      this.selectedListingId = id
+      this.deleteAlert = true
+    }
+
+    
+    closeModal():void{
+      console.log("closing the modal")
+      this.deleteAlert = false
+     
+    }
+    
     
   }
+
+  
+
+
 
 
 

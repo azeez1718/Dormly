@@ -37,7 +37,7 @@ export class ProfileComponent implements OnInit{
     //the event parameter represents the  input field that triggered the event
     //we return a formdata which represents the key and value, the key binds to the backend request param
     console.log("calling the upload file function")
-    const file = this.fileService.uploadFile(event)
+    const file = this.fileService.upload(event)
     console.log("we returned a form data object")
     this.profileService.uploadProfilePicture(file)
 

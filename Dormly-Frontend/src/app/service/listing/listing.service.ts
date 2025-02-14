@@ -39,5 +39,11 @@ export class ListingService {
     return this.Http.get<CategoryDto[]>(url)
   }
 
+
+  updateListing(multipartForm:FormData, id: string):Observable<void>{
+    const updateApi = `${this.url}/update/${id}`
+    return this.Http.put<void>(updateApi, multipartForm)
+
+  }
  
 }

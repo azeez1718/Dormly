@@ -6,24 +6,27 @@ import { Form } from '@angular/forms';
 })
 export class FileuploadService {
   
+  
 
   constructor() { }
 
-  uploadFile(event: Event):FormData{
-    const input = event.target as HTMLInputElement
-    //handle the possibility of it being null
-    if(input.files!==null && input.files.length>0){
+  upload(event:Event):FormData{
+    let input = event.target as HTMLInputElement
+    if(input.files!==null && input.files.length==1){
       const file:File = input.files[0]
-
-      //backend is expecting a multipart form data object 
-      const formdata = new FormData()
-      formdata.append("file", file)
-      return formdata
-    }else{
-      throw new Error("there was no file found")
+      const formdata:FormData= new FormData()
+      formdata.append('file', file)
+     return formdata
     }
-
+    else if(input.files && input.files.length>1){
+      throw Error("please select more than one image")
     }
+    else{
+       //if the user hasnt selected any files, we return an empty formdata object, in which we will later append just the json
+      //if it returns a form data it means it is being used by the update listing component
+      return new FormData()    
+    }
+  }  
     
 
     

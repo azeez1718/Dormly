@@ -1,4 +1,4 @@
-<div *ngIf="hasLoaded">
+
     <section class="bg-white dark:bg-gray-900 min-h-screen flex items-center">
       <div class="flex w-full max-w-6xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
         
@@ -9,11 +9,11 @@
                class="max-w-full max-h-[500px] object-cover">
         </div>
         
-    
+        <div *ngIf="hasLoaded">
         <div class="w-1/2 p-8">
           <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Update Listing</h2>
           <!-- Bind the form group using formGroup -->
-          <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+          <form [formGroup]="editForm">
             
             <!-- Title -->
             <div>
@@ -95,17 +95,18 @@
                 Upload photo
               </label>
               <!-- Note: We don't bind file inputs with formControlName because browsers don't allow it -->
-              <input type="file" id="image" (change)="onFileSelected($event)" class="sr-only" />
+              <input type="file" id="image" (change)="onFileSelected($event)" />
             </div>
             
             <!-- Submit Button -->
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+            <button type="button" (click) = "onSubmit()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
               Update
             </button>
           </form>
+          </div>
         </div>
         
       </div>
     </section>
-  </div>
+
   

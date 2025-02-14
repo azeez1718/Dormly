@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FileuploadService } from '../service/fileuploads/fileupload.service';
 import { ListingService } from '../service/listing/listing.service';
 import { Listing } from '../models/listing';
-import { FormsModule } from '@angular/forms';
+import { Form, FormsModule } from '@angular/forms';
 import { listingCard, listingConfirmation } from '../models/listingCard';
 import { ListingstateService } from '../shared/listingstate.service';
 import { Router } from '@angular/router';
@@ -58,7 +58,7 @@ export class ListingComponent implements OnInit{
 
   uploadListing(event:Event):void{
     //this will return the formdata that includes the file uploaded 
-    this.formdata = this.fileService.uploadFile(event)
+    this.formdata = this.fileService.upload(event)
     console.log("file successfully added")
   }
 
@@ -71,6 +71,10 @@ export class ListingComponent implements OnInit{
     if(!this.listingDetails || !this.formdata.has('file')){
       throw new Error("error creating listing")
 
+    }
+    //check to see if we return an empty form data
+    if(!this.formdata.has('file')){
+      throw Error("please select a file")
     }
     this.validForm = true
     this.listingDetails.category = this.selectedCategory.valueOf()
@@ -91,6 +95,7 @@ export class ListingComponent implements OnInit{
         //this.listingStateService.updateListingConfirmationState(this.listingConfirmation)
         //this.router.navigate(['/listing-confirmation']) //subscribes to the observable to retrieve the latest listing creation
 
+      
       
        
       },

@@ -1,5 +1,6 @@
 package com.example.Dormly.service;
 
+import com.example.Dormly.aws.PreSignedUrlService;
 import com.example.Dormly.dto.CategoryDto;
 import com.example.Dormly.dto.ListingDtoResponse;
 import com.example.Dormly.entity.Category;
@@ -19,6 +20,7 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final ListingRepository listingRepository;
+    private final PreSignedUrlService preSignedUrlService;
 
     public List<ListingDtoResponse> findCategoriesByName(String name) {
         if(name==null || name.isEmpty()){
@@ -35,6 +37,15 @@ public class CategoryService {
         if(listingDto.isEmpty()){
             throw new ListingNotFoundException("There was no listing found for this category!");
         }
+
+        /// we return the image Url, and profile Url(seller), allows us to render the image for each listing alongside seller profile information
+        listingDto.forEach(listingDtoResponse->{
+            listingDtoResponse.setListingUrl(preSignedUrlService.
+                    generatePreSignedUrlListingById(listingDtoResponse.getListingId()));
+            listingDtoResponse.setProfileUrl(preSignedUrlService.
+                    getProfilePictureById(listingDtoResponse.getProfileId()));
+        });
+
         return listingDto;
 
     }

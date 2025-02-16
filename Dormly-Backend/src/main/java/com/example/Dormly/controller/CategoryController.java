@@ -24,7 +24,11 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-
+    /**
+     * users are able to filter listings based on our set categories
+     * @param name - deserialized the value from the query param to our string name -represents category
+     * @return ListingDTO - hide internals and return a collection of listings matching the category
+     */
     @GetMapping(path = "filter")
     public ResponseEntity<List<ListingDtoResponse>> getAllCategoriesByName(@RequestParam("categoryName") String name) {
         List<ListingDtoResponse> listings = categoryService.findCategoriesByName(name);

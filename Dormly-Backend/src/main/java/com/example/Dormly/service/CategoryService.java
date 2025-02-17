@@ -9,11 +9,13 @@ import com.example.Dormly.exceptions.ListingNotFoundException;
 import com.example.Dormly.repository.CategoryRepository;
 import com.example.Dormly.repository.ListingRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CategoryService {
@@ -26,8 +28,12 @@ public class CategoryService {
         if(name==null || name.isEmpty()){
             throw new CategoryNotFoundException("Category name cannot be null or empty");
         }
+
+        log.info("----------------------------------------");
          Category category = categoryRepository.findByName(name)
                  .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
+
+         log.info("category exists");
 
         List<ListingDtoResponse> listingDto = listingRepository.findAll()
                 .stream()

@@ -9,6 +9,7 @@ import { CategoryDto } from '../../models/CategoryDto';
 })
 export class ListingService {
   
+  
   url:string = "http://localhost:8099/api/v1/Dormly/listing"
 
   constructor(private Http:HttpClient) { }
@@ -50,5 +51,8 @@ export class ListingService {
     const deleteListing = `${this.url}/delete/${ListingId}`
     return this.Http.delete<void>(deleteListing) 
   }
+
+
+  
  
 }

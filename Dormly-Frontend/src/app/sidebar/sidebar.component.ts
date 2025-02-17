@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ɵresetCompiledComponents } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, OnInit, Query, ɵresetCompiledComponents } from '@angular/core';
+import { ActivatedRoute, Route, Router, RouterLink } from '@angular/router';
 import { ListingService } from '../service/listing/listing.service';
 import { CategoryDto } from '../models/CategoryDto';
 
@@ -12,10 +12,10 @@ import { CategoryDto } from '../models/CategoryDto';
 })
 export class SidebarComponent implements OnInit{
 
-  categories:Array<String> = []
+  categories:Array<string> = []
   categoriesReturned:boolean = false
   
-  constructor(private listingService:ListingService){}
+  constructor(private listingService:ListingService, private router:Router, private route:ActivatedRoute){}
   
   
   ngOnInit() :void{
@@ -24,7 +24,6 @@ export class SidebarComponent implements OnInit{
 
   ///we dont want categories statically placed in side navbar 
   findAllCategories(){
-    console.log("entered")
     this.listingService.findAllCategories()
     .subscribe({
       next:(res:CategoryDto[])=>{
@@ -40,8 +39,20 @@ export class SidebarComponent implements OnInit{
     })
   }
 
-  //whenever the user clicks a category we bind category as a query parameter to the url
+  /**
+   * we want to make the url the single soruce of truth, hence the home component will always look to the url when deciding what to render
+   * @param category - the category to binded as a query param to the URL
+   */
+  fetchByCategory(Category:string):void{
+    console.log("we clicked the category :", Category)
+    this.router.navigate([] //dont navigate , stay on the component that instanitates this component e.g home
+     ,
+      {
+        relativeTo:this.route, //stay on the current route
+        queryParams:{Category}, //the query param will be default to ?category:books
+        queryParamsHandling: 'merge' //merge any existing queries, useful for when we add sorts and pagination
 
-
+      })
+  }
 
 }

@@ -7,6 +7,8 @@ import { listingCard } from '../models/listingCard';
 import { ListingService } from '../service/listing/listing.service';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { ActivatedRoute } from '@angular/router';
+import { CategoryService } from '../service/category/category.service';
 
 
 @Component({
@@ -18,18 +20,27 @@ import { NavbarComponent } from '../navbar/navbar.component';
 export class HomeComponent implements OnInit{
  cards!:Array<listingCard>
  hasLoaded:boolean = false
+ category:string = ''
 
 
 
-  constructor(private listingService:ListingService){}
+  constructor(private listingService:ListingService, private activaedRoute:ActivatedRoute, private categoryService:CategoryService){}
   
   
   ngOnInit(): void {
-    console.log("going to make call in ts class")
+    this.activaedRoute.queryParamMap.subscribe(data=>{
+      this.category = data.get('Category') as string
+      console.log(this.category)
+      if(this.category){
+        this.fetchListingsByCategoryName()
+        return
+        }
+    
+    })
+    console.log("going to fetch all listings")
     this.fetchAllListings()
    
   }
-
 
   fetchAllListings():void{
   this.listingService.fetchListings().subscribe({
@@ -43,6 +54,19 @@ export class HomeComponent implements OnInit{
       console.log('unable to retrieve listings' , error.message)
     }
   })
+
+  }
+
+
+  fetchListingsByCategoryName():void{
+    console.log("this.category", this.category)
+    this.categoryService.findByCategoryName(this.category).subscribe({
+      next:(listingDTO:listingCard[])=>{
+      this.cards = listingDTO
+      this.hasLoaded = true
+      console.log(`listings for category: ${this.category} is ${this.cards}`)
+      }
+    })
 
   }
 

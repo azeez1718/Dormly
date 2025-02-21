@@ -19,17 +19,14 @@ public class Controller {
     /// we create an output message object which contains a sender and the content
     /// we then send this output message to the user
     /// The message object just has the recipient(to whom we send to) and the content, the sender is fetched from the principal
-    @MessageMapping("/chat")
+    @MessageMapping("/chat/send")
     public void sendMessage(@Payload  Message message , @AuthenticationPrincipal UserDetails user){
         OutputMessage outputMessage = new OutputMessage(
                 message.getContent(),
                 user.getUsername() /// user who sent the message - the recipient will see this
         );
-        simpMessagingTemplate.convertAndSendToUser(message.getRecipient(),"/topic/chat", outputMessage);
-
-
-
-
+        /// the server will send back something like '/user/james/queue/chat'
+        simpMessagingTemplate.convertAndSendToUser(message.getRecipient(),"/queue/chat", outputMessage);
 
 
     }

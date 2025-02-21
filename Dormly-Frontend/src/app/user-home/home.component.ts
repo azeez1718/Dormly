@@ -31,14 +31,15 @@ export class HomeComponent implements OnInit{
     this.activaedRoute.queryParamMap.subscribe(data=>{
       this.category = data.get('Category') as string
       console.log(this.category)
-      if(this.category){
-        this.fetchListingsByCategoryName()
-        return
+      if(this.category == null){
+        this.fetchAllListings()
         }
-    
+      else{  
+      console.log("going to fetch all listings")
+      this.fetchListingsByCategoryName()
+      }
     })
-    console.log("going to fetch all listings")
-    this.fetchAllListings()
+   
    
   }
 

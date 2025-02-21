@@ -10,4 +10,5 @@ import lombok.*;
 public class Message {
 
     private String content;
+    private String recipient;
 }

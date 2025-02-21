@@ -12,10 +12,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
         /// this method initiates the web socket connection, when a client wants to upgrade their
     /// protocol from HTTP to WebSocket
+        /// . we also define the servers that can make initiate websocket connection
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
 
-        registry.addEndpoint("/wss").withSockJS();
+        registry.addEndpoint("/wss")
+                .setAllowedOrigins("*")
+                .withSockJS();
     }
 
     /// we define the prefix of the placeholder in the url as 'app' in which this will be binded to the

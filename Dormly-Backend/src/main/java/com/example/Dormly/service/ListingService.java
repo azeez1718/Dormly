@@ -115,6 +115,9 @@ public class ListingService {
      * only display
      */
     public List<ListingDtoResponse> findAllListings() {
+        /**
+         * we dont want to display listings which have been purchased and are awaiting their confirmation
+         */
 
 
         List<ListingDtoResponse> listingDto = listingRepository.findAll()

@@ -61,7 +61,7 @@ public class JwtService {
     public String generateToken(UserDetails userDetails){
         return generateToken(userDetails, new HashMap<>());
     }
-
+ 
     private <T>T extractClaim(String jwt, Function<Claims, T> SpecificClaims){
         Claims claim = extractAllClaims(jwt);
         /**

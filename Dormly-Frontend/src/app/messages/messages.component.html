@@ -1,3 +1,9 @@
+<div *ngIf = "messageRecieved">
 <div *ngFor = "let message of messages">
     {{message}}
 </div>
+
+</div>
+
+
+<button (click)="sendMessage()">send message</button>

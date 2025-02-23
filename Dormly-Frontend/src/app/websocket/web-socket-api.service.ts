@@ -14,7 +14,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class WebSocketApiService {
   //create a subject to communicate the responses back to the messages component
-  private subject = new BehaviorSubject("")
+  private subject = new BehaviorSubject(null)
   messageSubscription$ = this.subject.asObservable()
 
 

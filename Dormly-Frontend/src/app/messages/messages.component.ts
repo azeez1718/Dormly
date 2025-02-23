@@ -11,16 +11,19 @@ import { CommonModule } from '@angular/common';
 export class MessagesComponent implements OnInit{
 
   messages : any = []
+  recievedMessage:boolean = false
   constructor(private webSocket:WebSocketApiService){}
 
   ngOnInit():void{
+  this.connect()
   this.onMessageRecieved()
 
   }
    onMessageRecieved(){
   this.webSocket.messageSubscription$.subscribe({
     next:(message)=>{
-      if(message){
+      if(message!==null){
+        this.recievedMessage = true
         this.messages.push(message)
       }
     },
@@ -39,6 +42,16 @@ connect(){
 
 disconnect(){
   this.webSocket.disconnect()
+}
+
+sendmessage(){
+  ///create a sample message object
+  const message = {
+    "content"   : "hi james its abas, hope you are well!",
+    "recipient" : "james@qmul.ac.uk",
+  }
+  this.webSocket.send(message)
+
 }
   
   

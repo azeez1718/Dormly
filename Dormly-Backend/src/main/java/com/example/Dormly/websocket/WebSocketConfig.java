@@ -9,15 +9,14 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-
-        /// this method initiates the web socket connection, when a client wants to upgrade their
+     /// this method initiates the web socket connection, when a client wants to upgrade their
     /// protocol from HTTP to WebSocket
-        /// . we also define the servers that can make initiate websocket connection
+        /// . we also define the servers that can make initiate a websocket connection
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-
+        
         registry.addEndpoint("/ws")
-                .setAllowedOrigins("*")
+                .setAllowedOrigins("http://localhost:49322")
                 .withSockJS();
     }
 

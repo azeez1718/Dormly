@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DormlyApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DormlyApplication.class, args);
+		SpringApplication.run(DormlyApplication.class,  args);
 		System.out.println("DormlyApplication started");
 	}
 

@@ -27,6 +27,7 @@ export const customInterceptor: HttpInterceptorFn = (req, next) => {
   
   req = req.clone({headers:req.headers.set('Authorization',`Bearer ${jwt}`)})
   //allow the request to be handled by the next handler
+
   return next(req);
   
 

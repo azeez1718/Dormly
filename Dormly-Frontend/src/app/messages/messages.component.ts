@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { WebSocketApiService } from '../websocket/web-socket-api.service';
 import { CommonModule } from '@angular/common';
 
@@ -15,8 +15,10 @@ export class MessagesComponent implements OnInit{
   constructor(private webSocket:WebSocketApiService){}
 
   ngOnInit():void{
-  this.connect()
-  this.onMessageRecieved()
+    console.log("calling handshake")
+    this.webSocket.handshake()
+  //this.connect()
+  //this.onMessageRecieved()
 
   }
    onMessageRecieved(){
@@ -35,6 +37,7 @@ export class MessagesComponent implements OnInit{
 
 
 connect(){
+  console.log("----------------- hello")
   console.log("calling service class to connect to websocket")
   this.webSocket.connect()
 }
@@ -44,7 +47,7 @@ disconnect(){
   this.webSocket.disconnect()
 }
 
-sendmessage(){
+sendMessage(){
   ///create a sample message object
   const message = {
     "content"   : "hi james its abas, hope you are well!",
@@ -54,6 +57,7 @@ sendmessage(){
 
 }
   
+
   
 
 

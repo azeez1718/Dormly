@@ -22,23 +22,30 @@ export class WebSocketApiService {
   brokerURL:string = "http://localhost:8099/ws"
   stompClient:any
   token!:string
- 
 
   constructor(private tokenService:TokenService) {
     this.token = this.tokenService.token as string
-   }
+  }
 
+  handshake(){
+    console.log("in handshake")
+    let ws = new SockJS(this.brokerURL)
+    this.stompClient = Stomp.over(ws)
+    console.log("connected to websocket")
+  }
 
 
   connect(){
     console.log("connecting to websocket...")
-    let ws = new SockJS(this.brokerURL)
-      this.stompClient = Stomp.over(ws)
+
+
+   
     
-    this.stompClient.connect({"Authorization" : "Bearer " + this.token}, () =>{
+    this.stompClient.connect({"Authorization" : `Bearer ${this.token}`}, () =>{
+      console.log("WebSocket connected");
 
         ///the stompclient takes 3 parameters which includes the headers and 2 callback functions,
-        ///the frames defined the handshake agreement of protocol switches, and once the event occurs we can now subscribe to the destination
+        ///the frames define the stomp protocol connection over the established WS connection, and once the event occurs we can now subscribe to the destination
 
         this.stompClient.subscribe(this.destination, (message:any)=>{
           //the subscribe also triggers a callback which means when a user subscribes to a destination, an event of a message could be returned
@@ -66,15 +73,22 @@ export class WebSocketApiService {
       this.stompClient.disconnect()
       console.log("disconnected")
     }
+    setTimeout(()=>{
+      this.connect()
+    },
+    5000) //reconnect after 5 seconds
     
   }
 
 
   onMessageRecieved(message:any) {
-   ///manual deserialization with websockets. using Json.parse() to convert the json into a javascript objecy
+    if(message){
+    ///manual deserialization with websockets. using Json.parse() to convert the json into a javascript objecy
     console.log("message recieved ", message)
     this.subject.next(JSON.parse(message))
     console.log("added message to the subject")
+    }
+ 
 
   }
 

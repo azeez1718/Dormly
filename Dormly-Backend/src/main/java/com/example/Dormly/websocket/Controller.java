@@ -1,14 +1,19 @@
 package com.example.Dormly.websocket;
 
+import com.example.Dormly.jwt.model.Users;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.security.Principal;
+
 @org.springframework.stereotype.Controller
 @RequiredArgsConstructor
+@Slf4j
 public class Controller {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
@@ -20,11 +25,14 @@ public class Controller {
     /// we then send this output message to the user
     /// The message object just has the recipient(to whom we send to) and the content, the sender is fetched from the principal
     @MessageMapping("/chat/send")
-    public void sendMessage(@Payload  Message message , @AuthenticationPrincipal UserDetails user){
+    public void sendMessage(@Payload  Message message , @AuthenticationPrincipal Principal principal){
+        log.info(message.toString());
+        log.info(principal.toString());
         OutputMessage outputMessage = new OutputMessage(
                 message.getContent(),
-                user.getUsername() /// user who sent the message - the recipient will see this
+                principal.getName()
         );
+        log.info(outputMessage.toString());
         /// the server will send back something like '/user/james/queue/chat'
         simpMessagingTemplate.convertAndSendToUser(message.getRecipient(),"/queue/chat", outputMessage);
 

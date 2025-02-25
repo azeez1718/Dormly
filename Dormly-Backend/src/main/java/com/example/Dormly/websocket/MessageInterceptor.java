@@ -42,12 +42,15 @@ public class MessageInterceptor implements ChannelInterceptor {
             /// this checks if the command being sent is a CONNECT command
             /// a user will not be able to send any frames unless they are connected to a STOMP protocol
             /// we check here to ensure the authorization header isn't null
-             var authHeader =  accessor.getNativeHeader("Authorization");
-             log.info("authHeader: {}", authHeader);
+             var authHeaderList =  accessor.getNativeHeader("Authorization");
+             log.info("authHeader: {}", authHeaderList);
 
-             if(authHeader!=null  && authHeader.toString().startsWith("Bearer ")) {
+            assert authHeaderList != null;
+            String authHeader = authHeaderList.get(0);
+            /// because it returns a list of strings, ensure the token is not empty
+             if(authHeader!=null && authHeader.startsWith("Bearer ")) {
 
-                 String jwt = authHeader.toString().substring(7);
+                 String jwt = authHeader.substring(7);
                  String username = jwtService.extractSubject(jwt);
                  log.info("username: {}", username);
                  UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);

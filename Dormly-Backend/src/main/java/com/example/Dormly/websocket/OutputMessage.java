@@ -1,14 +1,13 @@
 package com.example.Dormly.websocket;
 
 import jakarta.annotation.Nullable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
+@Getter
+@Setter
 public class OutputMessage {
 
     private String message;

@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(http->http.
                         requestMatchers("/api/v1/Dormly/Sign-up").permitAll()
                         .requestMatchers("/api/v1/Dormly/login").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
                         .anyRequest()
                         .authenticated()
                 )

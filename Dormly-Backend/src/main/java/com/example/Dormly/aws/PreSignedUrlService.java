@@ -59,7 +59,7 @@ public class PreSignedUrlService {
     public URL generateProfilePreSignedUrlByEmail(String userEmail) {
         Profile userProfile = profileRepository.findByEmail(userEmail).
                 orElseThrow(() -> new ProfileNotFoundException("user with email " +
-                        userEmail + " does not exist"));
+                        userEmail + " does not have a profile"));
 
         Long profileId = userProfile.getId();
         String profileImageId = userProfile.getProfilePictureId();

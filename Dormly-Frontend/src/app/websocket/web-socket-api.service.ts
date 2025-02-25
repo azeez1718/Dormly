@@ -35,15 +35,19 @@ export class WebSocketApiService {
     let ws = new SockJS(this.brokerURL)
     this.stompClient = Stomp.over(ws)//wraps the ws over a stomp protocol to allow usage of stomp protocols over the ws connection
     console.log("connected to websocket")
+    
 
-   
+    ///user will only subscribe to his destination
+    let subject = this.tokenService.getTokenSubject()
+    
     this.stompClient.connect({"Authorization" :"Bearer " + this.token}, () =>{
       console.log("connected with STOMP");
 
         ///the stompclient takes 3 parameters which includes the headers and 2 callback functions,
         ///the frames define the stomp protocol connection over the established WS connection, and once the event occurs we can now subscribe to the destination
-
-        this.stompClient.subscribe(`/user/${this.username}/queue/chat`, (message:any)=>{
+        ///the user who is sending the request should be subscribed to his own queue
+        ///we need the subject of the users token
+        this.stompClient.subscribe(`/user/${subject}/queue/chat`, (message:any)=>{
           console.log("i got back a message")
           //the subscribe also triggers a callback which means when a user subscribes to a destination, an event of a message could be returned
           this.onMessageRecieved(message.body)
@@ -81,7 +85,7 @@ export class WebSocketApiService {
     if(message){
     ///manual deserialization with websockets. using Json.parse() to convert the json into a javascript objecy
     console.log("message recieved ", message)
-    this.subject.next(JSON.parse(message.content))
+    this.subject.next(JSON.parse(message))
     console.log("added message to the subject")
     }
  

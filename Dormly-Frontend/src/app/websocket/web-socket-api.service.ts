@@ -27,29 +27,26 @@ export class WebSocketApiService {
     this.token = this.tokenService.token as string
   }
 
-  handshake(){
-    console.log("in handshake")
-    let ws = new SockJS(this.brokerURL)
-    this.stompClient = Stomp.over(ws)
-    console.log("connected to websocket")
-  }
 
 
   connect(){
     console.log("connecting to websocket...")
-
+    let ws = new SockJS(this.brokerURL)
+    this.stompClient = Stomp.over(ws)//wraps the ws over a stomp protocol to allow usage of stomp protocols over the ws connection
+    console.log("connected to websocket")
 
    
-    
-    this.stompClient.connect({"Authorization" : `Bearer ${this.token}`}, () =>{
-      console.log("WebSocket connected");
+    this.stompClient.connect({"Authorization" :"Bearer " + this.token}, () =>{
+      console.log("connected with STOMP");
 
         ///the stompclient takes 3 parameters which includes the headers and 2 callback functions,
         ///the frames define the stomp protocol connection over the established WS connection, and once the event occurs we can now subscribe to the destination
 
         this.stompClient.subscribe(this.destination, (message:any)=>{
+          console.log(message)
           //the subscribe also triggers a callback which means when a user subscribes to a destination, an event of a message could be returned
-          this.onMessageRecieved(message)
+          this.onMessageRecieved(message.body)
+          
 
         })
 
@@ -59,8 +56,6 @@ export class WebSocketApiService {
     this.errorCallBack(error)
     }
   )
-
-
 
   }
   errorCallBack(error:Error):void{
@@ -85,7 +80,7 @@ export class WebSocketApiService {
     if(message){
     ///manual deserialization with websockets. using Json.parse() to convert the json into a javascript objecy
     console.log("message recieved ", message)
-    this.subject.next(JSON.parse(message))
+    this.subject.next(JSON.parse(message.content))
     console.log("added message to the subject")
     }
  
@@ -99,7 +94,7 @@ export class WebSocketApiService {
     ///all messages are sent with the /app prefix and users are able to send messages
     ///the message object includes the recieptent and the message itself.
     ///websocket does not serialize the object into a json like HTTP does, hence we do it manually
-    this.stompClient.send("/app/chat/send", {"Authorization" : "Bearer " + this.token}, JSON.stringify(message))
+    this.stompClient.send("/app/chat/send", {}, JSON.stringify(message))
   }
 
 

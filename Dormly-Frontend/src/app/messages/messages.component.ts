@@ -16,9 +16,9 @@ export class MessagesComponent implements OnInit{
 
   ngOnInit():void{
     console.log("calling handshake")
-    this.webSocket.handshake()
-  //this.connect()
-  //this.onMessageRecieved()
+  
+  this.connect()
+  this.onMessageRecieved()
 
   }
    onMessageRecieved(){
@@ -26,6 +26,7 @@ export class MessagesComponent implements OnInit{
     next:(message)=>{
       if(message!==null){
         this.recievedMessage = true
+        console.log("i got the message")
         this.messages.push(message)
       }
     },

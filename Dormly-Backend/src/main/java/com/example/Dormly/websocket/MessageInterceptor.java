@@ -7,6 +7,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -21,6 +23,7 @@ import java.util.Objects;
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
+@Order(Ordered.HIGHEST_PRECEDENCE + 99)/// ensure its used before spring securities interceptor
 public class MessageInterceptor implements ChannelInterceptor {
 
 
@@ -32,18 +35,21 @@ public class MessageInterceptor implements ChannelInterceptor {
     /// other frames like SEND,SUBSCRIBE use this principal as the authenticated user
 
     @Override
-    public Message<?> preSend(Message<?> message, MessageChannel channel) {
+    public Message<?> preSend(@NonNull Message<?> message, @NonNull MessageChannel channel) {
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+        assert accessor != null;
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
             /// this checks if the command being sent is a CONNECT command
             /// a user will not be able to send any frames unless they are connected to a STOMP protocol
             /// we check here to ensure the authorization header isn't null
-             String authHeader = Objects.requireNonNull(accessor.getHeader("Authorization")).toString();
+             var authHeader =  accessor.getNativeHeader("Authorization");
+             log.info("authHeader: {}", authHeader);
 
-             if(authHeader.startsWith("Bearer ")) {
+             if(authHeader!=null  && authHeader.toString().startsWith("Bearer ")) {
 
-                 String jwt = authHeader.substring(7);
+                 String jwt = authHeader.toString().substring(7);
                  String username = jwtService.extractSubject(jwt);
+                 log.info("username: {}", username);
                  UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
                  // Access authentication header(s) and invoke accessor.setUser(user)
                  UsernamePasswordAuthenticationToken authenticatedUser = new UsernamePasswordAuthenticationToken(userDetails,
@@ -51,11 +57,14 @@ public class MessageInterceptor implements ChannelInterceptor {
                          userDetails.getAuthorities());
                  accessor.setUser(authenticatedUser);
 
-                 return message;
+
+             }else{
+                 log.info("Authorization header not present");
              }
 
         }
-        log.info("AuthHeader is null");
-        return null;
+
+        /// if any other frames are being sent they don't need authentication as it is already set
+        return message;
     }
 }

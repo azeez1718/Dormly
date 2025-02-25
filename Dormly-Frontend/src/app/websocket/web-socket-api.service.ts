@@ -18,10 +18,11 @@ export class WebSocketApiService {
   messageSubscription$ = this.subject.asObservable()
 
 
-  destination:string = "/user/queue/chat"
+
   brokerURL:string = "http://localhost:8099/ws"
   stompClient:any
   token!:string
+  username = "james@qmul.ac.uk"
 
   constructor(private tokenService:TokenService) {
     this.token = this.tokenService.token as string
@@ -42,8 +43,8 @@ export class WebSocketApiService {
         ///the stompclient takes 3 parameters which includes the headers and 2 callback functions,
         ///the frames define the stomp protocol connection over the established WS connection, and once the event occurs we can now subscribe to the destination
 
-        this.stompClient.subscribe(this.destination, (message:any)=>{
-          console.log(message)
+        this.stompClient.subscribe(`/user/${this.username}/queue/chat`, (message:any)=>{
+          console.log("i got back a message")
           //the subscribe also triggers a callback which means when a user subscribes to a destination, an event of a message could be returned
           this.onMessageRecieved(message.body)
           
@@ -94,6 +95,7 @@ export class WebSocketApiService {
     ///all messages are sent with the /app prefix and users are able to send messages
     ///the message object includes the recieptent and the message itself.
     ///websocket does not serialize the object into a json like HTTP does, hence we do it manually
+    console.log(message)
     this.stompClient.send("/app/chat/send", {}, JSON.stringify(message))
   }
 

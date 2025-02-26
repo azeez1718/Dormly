@@ -54,6 +54,8 @@ public class ProfileController {
 
     }
 
+
+
     /**
      * return the profile image of the user, which will be set in the homepage
      * @param userDetails

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -30,6 +31,16 @@ public class InitializationConfig {
     CommandLineRunner commandLineRunner(ProfileRepository profileRepository,
                                         UserRepository userRepository, CategoryRepository categoryRepository) {
         return args -> {
+//            UserDetails user = userRepository.findByEmail("james@qmul.ac.uk")
+//                    .orElseThrow(()-> new RuntimeException("user doesnt exist"));
+//
+//            Profile profile = Profile.builder()
+//                    .bio("Here to explore")
+//                    .Location("mayfair")
+//                    .user((Users)user)
+//                    .build();
+
+//            profileRepository.save(profile);
 //
 //            //find the first user in the database and set the user field of the profile entity
 //

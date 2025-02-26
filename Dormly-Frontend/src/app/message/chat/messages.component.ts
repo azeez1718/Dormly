@@ -1,10 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { WebSocketApiService } from '../websocket/web-socket-api.service';
+import { WebSocketApiService } from '../../websocket/web-socket-api.service';
 import { CommonModule } from '@angular/common';
+import { DashboardComponent } from '../../dashboard-navbar/dashboard-navbar.component';
+import { SidebarmessageComponent } from '../sidebarmessage/sidebarmessage.component';
+
 
 @Component({
   selector: 'app-messages',
-  imports: [CommonModule],
+  imports: [CommonModule, SidebarmessageComponent, DashboardComponent],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.css'
 })

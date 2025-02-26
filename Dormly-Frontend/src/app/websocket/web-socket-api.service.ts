@@ -3,7 +3,7 @@ import { TokenService } from '../auth/token/token.service';
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { Message } from '../models/Message';
-import { MessagesComponent } from '../messages/messages.component';
+import { MessagesComponent } from '../message/chat/messages.component';
 import { BehaviorSubject } from 'rxjs';
 
 

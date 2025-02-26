@@ -11,7 +11,7 @@ import { ListingConfirmationComponent } from './listing-confirmation/listing-con
 import { ProductCardComponent } from './product-card/product-card.component';
 import { UpdateListingComponent } from './update-listing/update-listing.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { MessagesComponent } from './messages/messages.component';
+import { MessagesComponent } from './message/chat/messages.component';
 ;
 
 export const routes: Routes = [

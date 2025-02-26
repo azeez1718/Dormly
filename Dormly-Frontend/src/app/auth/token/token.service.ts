@@ -25,7 +25,6 @@ export class TokenService {
   const decoded = jwtDecode(jwt)
   
   if(decoded){
-    console.log(decoded)
     return decoded.sub as string
   }
   return "Error decoding token"

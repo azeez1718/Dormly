@@ -7,7 +7,7 @@ import { SidebarmessageComponent } from '../sidebarmessage/sidebarmessage.compon
 
 @Component({
   selector: 'app-messages',
-  imports: [CommonModule, SidebarmessageComponent, DashboardComponent],
+  imports: [CommonModule, DashboardComponent, SidebarmessageComponent],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.css'
 })

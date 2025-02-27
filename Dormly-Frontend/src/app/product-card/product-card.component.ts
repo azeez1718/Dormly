@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ListingService } from '../service/listing/listing.service';
 import { listingCard } from '../models/listingCard';
 import { DashboardComponent } from '../dashboard-navbar/dashboard-navbar.component';
@@ -21,7 +21,7 @@ export class ProductCardComponent implements OnInit {
   listingId!:string | null
   listingProduct!:listingCard
   
-  constructor(private route:ActivatedRoute, private listingService:ListingService){}
+  constructor(private route:ActivatedRoute, private listingService:ListingService, private router:Router){}
 
   
   ngOnInit(): void {
@@ -43,10 +43,18 @@ export class ProductCardComponent implements OnInit {
     error:(error:Error)=>{
       console.log('error retrieveing listing information', error)
     }
+
+
   
   })
 }
 
+  messageSeller(id:number){
+    ///navigate to the messages component in which we bind the listing id to the path variable
+    /// this acts as our source of truth and we fetch the user associated with this specific listing
+    this.router.navigate(["messages", id])
+
+  }
 
 
 }

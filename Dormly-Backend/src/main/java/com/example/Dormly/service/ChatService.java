@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.net.URL;
 import java.security.Principal;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class ChatService {
@@ -33,41 +36,33 @@ public class ChatService {
                 .orElseThrow(()->new ListingNotFoundException("listing id does not exist"));
 
         /// get the owner of the listing
-        Profile profile = listing.getProfile();
+        Profile seller = listing.getProfile();
 
         /// ensure the user is not trying to message himself as the seller
-        if(principal.getName().equals(profile.getUser().getEmail())){
+        if(principal.getName().equals(seller.getUser().getEmail())){
             throw new RuntimeException("users can not message themselves from the listings page");
         }
 
-        /// we return a dto of the chat, to prevent serializing sensitive information
-        List<ChatDto> chats = chatRepository.findAll()
+        String buyer = principal.getName();
+        /// query ensures both users have a chat history about this specific listing, if not we throw an error
+        List<Chat> findChatAssociatedWithListingAndUsers = chatRepository.findChatsByListingAndUsers(buyer, seller, listingId);
+
+        /// we return a dto of chats, and ensure they are in order of oldest to newest
+        List<ChatDto> chats = findChatAssociatedWithListingAndUsers
                 .stream()
-                .filter(chat -> chat.getBuyer().getUser().getEmail().equals(principal.getName())
-                        && chat.getSeller().equals(profile))
-                .filter(chat -> chat.getListing().getId().equals(listingId))
-                .filter(chat->chat.getCreatedAt().get)
+                .sorted(Comparator.comparing(Chat::getCreatedAt))
                 .map(ChatDto::convertToDto)
-                .toList();
+                .collect(Collectors.toList());
 
-        /// because this is a list of chats associated with the same user, we dont need to call the presigned service for each dto
+        /// because this is a list of chats associated with the same user, we don't need to call the presigned service for each dto
         /// we can set the profile pictures of the user for only the first chat dto, and leave the rest null
-        /// the principal is the buyer here and the profile is the user
+        /// the buyer is the principal and the seller is the profile instance of the seller
 
-        chats.get(0).getBuyer().setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(principal.getName()));
-        chats.get(0).getSeller().setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(profile.getUser().getEmail()));
+        chats.get(0).getBuyer().setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(buyer));
+        chats.get(0).getSeller().setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(seller.getUser().getEmail()));
 
 
         return chats;
-
-
-
-
-
-
-
-
-
 
 
 

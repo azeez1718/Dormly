@@ -3,9 +3,12 @@ package com.example.Dormly.initialization;
 
 import com.example.Dormly.constants.Role;
 import com.example.Dormly.entity.Category;
+import com.example.Dormly.entity.Chat;
 import com.example.Dormly.entity.Profile;
+import com.example.Dormly.exceptions.ProfileNotFoundException;
 import com.example.Dormly.jwt.model.Users;
 import com.example.Dormly.repository.CategoryRepository;
+import com.example.Dormly.repository.ChatRepository;
 import com.example.Dormly.repository.ProfileRepository;
 import com.example.Dormly.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +30,27 @@ public class InitializationConfig {
     private final CategoryRepository categoryRepository;
 
 
+
     @Bean
     CommandLineRunner commandLineRunner(ProfileRepository profileRepository,
-                                        UserRepository userRepository, CategoryRepository categoryRepository) {
+                                        UserRepository userRepository, CategoryRepository categoryRepository,
+                                        ChatRepository chatRepository) {
+
+        /// lets create two default chat objects, between abas and james
+        Profile abas = profileRepository.findById(1L).orElseThrow(()->new ProfileNotFoundException(""));
+        Profile james = profileRepository.findById(2L).orElseThrow(()->new ProfileNotFoundException(""));
+
+        Chat cha1 = Chat.builder()
+                .seller(abas)
+                .buyer(james)
+                .content("would it be possible to negotiate the price down?")
+                .listing(abas.getListings().get(0)) /// get the first listing
+                .build();
+
+        chatRepository.save(cha1);
+
+
+
         return args -> {
 //            UserDetails user = userRepository.findByEmail("james@qmul.ac.uk")
 //                    .orElseThrow(()-> new RuntimeException("user doesnt exist"));

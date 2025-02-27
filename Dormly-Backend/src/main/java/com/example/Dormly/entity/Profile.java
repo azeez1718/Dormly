@@ -56,6 +56,15 @@ public class Profile {
     private List<Order> ordersPlaced = new ArrayList<>();
 
 
+    /// when we call profile.sellerChats() it will match the current profile id to the seller Id in the chat entity
+    /// thus it will return the chat object where the seller id has chats
+    @OneToMany(mappedBy = "sellerId")
+    private List<Chat> sellerChats = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "buyerId")
+    private List<Chat> buyerChats = new ArrayList<>();
+
 
 
 

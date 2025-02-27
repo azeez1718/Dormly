@@ -3,6 +3,9 @@ package com.example.Dormly.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -19,12 +22,12 @@ public class Chat {
 
     @ManyToOne
     @JoinColumn(name = "seller_id", nullable = false)
-    private Profile sellerId;
+    private Profile seller;
 
 
     @ManyToOne
     @JoinColumn(name = "buyer_id", nullable = false)
-    private Profile buyerId;
+    private Profile buyer;
 
     @Column(nullable = false)
     private String content;
@@ -36,6 +39,8 @@ public class Chat {
     @JoinColumn(name = "listing_id", nullable = false)
     private Listing listing;
 
-    @Column(name = "updated_at", nullable = false)
-    private String updatedAt;
+    @Column(name = "created_at", nullable = false)
+    private LocalDate createdAt;
+
+
 }

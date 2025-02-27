@@ -1,5 +1,6 @@
 package com.example.Dormly.controller;
 
+import com.example.Dormly.dto.ChatDto;
 import com.example.Dormly.entity.Chat;
 import com.example.Dormly.service.ChatService;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +28,10 @@ public class ChatController {
     /// we use the listing Id to find who the seller is.
 
     @GetMapping(value = "history/{id}")
-    public ResponseEntity<List<Chat>> chatHistory(@AuthenticationPrincipal Principal principal,
-                                                  @PathVariable("id") String listingId){
+    public ResponseEntity<List<ChatDto>> chatHistory(@AuthenticationPrincipal Principal principal,
+                                                     @PathVariable("id") Long listingId){
 
-        List<Chat> chatHistory = chatService.findChatHistory(principal, listingId);
+        List<ChatDto> chatHistory = chatService.findChatHistory(principal, listingId);
         return new ResponseEntity<>(chatHistory, HttpStatus.OK);
     }
 

@@ -3,6 +3,9 @@ import { WebSocketApiService } from '../../websocket/web-socket-api.service';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from '../../dashboard-navbar/dashboard-navbar.component';
 import { SidebarmessageComponent } from '../sidebarmessage/sidebarmessage.component';
+import { ActivatedRoute } from '@angular/router';
+import { MessageService } from '../../service/message/message.service';
+import { MessageDto } from '../../models/MessageDto';
 
 
 @Component({
@@ -15,9 +18,19 @@ export class MessagesComponent implements OnInit{
 
   messages : any = []
   recievedMessage:boolean = false
-  constructor(private webSocket:WebSocketApiService){}
+  returnedInbox = false
+  listingId !: number 
+  constructor(private webSocket:WebSocketApiService, private route:ActivatedRoute, private messageService:MessageService){}
 
+  
   ngOnInit():void{
+    if(this.setupInboxWithSeller!==null){
+      ///we can fetch the chat history between a user and a seller for that specific listing
+      this.fetchUserBasedOnListingId(this.setupInboxWithSeller()as string)
+    }
+      
+      
+    
     console.log("calling handshake")
   
   this.connect()
@@ -49,6 +62,32 @@ connect(){
 
 disconnect(){
   this.webSocket.disconnect()
+}
+
+setupInboxWithSeller(){
+  const listingId = this.route.snapshot.paramMap.get("id")
+  ///if listing id is truthy return it, otherwise return null
+  return listingId ? listingId : null
+
+}
+
+fetchUserBasedOnListingId(id:string){
+  this.messageService.InboxHistoryForListing(id)
+  .subscribe({
+    next:(message:MessageDto)=>{
+    this.messages.push(message)
+    
+    if(this.messages){
+      this.returnedInbox = true
+      console.log(this.messages)
+    }
+
+  },
+  error:(err:Error)=>{
+    console.log(`error returning inbox with id : ${id}`, err.message)
+  }
+})
+
 }
 
 sendMessage(){

@@ -6,6 +6,9 @@ import com.example.Dormly.entity.Profile;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -25,6 +28,10 @@ public class ChatDto {
     private String title;
     private String description;
 
+
+    /// this needs to be in order of time not date
+    private LocalDateTime createdAt;
+
     /// on the instance of chatDtos for each profileDTO(seller and buyer) we can set the value of profile URL by passing in the
     public static ChatDto convertToDto(Chat chat) {
         return ChatDto.builder()
@@ -33,6 +40,7 @@ public class ChatDto {
                 .message(chat.getContent())
                 .title(chat.getListing().getTitle())
                 .description(chat.getListing().getDescription())
+                .createdAt(chat.getCreatedAt())
                 .build();
     }
 

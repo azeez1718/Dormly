@@ -4,13 +4,12 @@ package com.example.Dormly.initialization;
 import com.example.Dormly.constants.Role;
 import com.example.Dormly.entity.Category;
 import com.example.Dormly.entity.Chat;
+import com.example.Dormly.entity.Listing;
 import com.example.Dormly.entity.Profile;
+import com.example.Dormly.exceptions.ListingNotFoundException;
 import com.example.Dormly.exceptions.ProfileNotFoundException;
 import com.example.Dormly.jwt.model.Users;
-import com.example.Dormly.repository.CategoryRepository;
-import com.example.Dormly.repository.ChatRepository;
-import com.example.Dormly.repository.ProfileRepository;
-import com.example.Dormly.repository.UserRepository;
+import com.example.Dormly.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Configuration
@@ -34,24 +35,47 @@ public class InitializationConfig {
     @Bean
     CommandLineRunner commandLineRunner(ProfileRepository profileRepository,
                                         UserRepository userRepository, CategoryRepository categoryRepository,
-                                        ChatRepository chatRepository) {
-
-        /// lets create two default chat objects, between abas and james
-        Profile abas = profileRepository.findById(1L).orElseThrow(()->new ProfileNotFoundException(""));
-        Profile james = profileRepository.findById(2L).orElseThrow(()->new ProfileNotFoundException(""));
-
-        Chat cha1 = Chat.builder()
-                .seller(abas)
-                .buyer(james)
-                .content("would it be possible to negotiate the price down?")
-                .listing(abas.getListings().get(0)) /// get the first listing
-                .build();
-
-        chatRepository.save(cha1);
-
-
+                                        ChatRepository chatRepository, ListingRepository listingRepository) {
 
         return args -> {
+
+
+            /// abas and james begin conversing again over another listing
+            /// this is to test whether the messages are returning from oldest to newest
+
+
+//
+//            /// lets create two default chat objects, between abas and james
+            Profile abas = profileRepository.findById(1L).orElseThrow(()->new ProfileNotFoundException(""));
+            Profile james = profileRepository.findById(2L).orElseThrow(()->new ProfileNotFoundException(""));
+
+            Chat newChat = Chat.builder()
+                    .buyer(james)
+                    .seller(abas)
+                    .createdAt(LocalDateTime.now())
+                    .content("i was thinking of buying this")
+                    .listing(listingRepository.findById(153L).orElseThrow(()->new ListingNotFoundException("")))
+                    .build();
+
+
+            chatRepository.save(newChat);
+
+            /// now lets create another chat between the same two users for the SAME listing
+
+
+
+//            Listing listing = listingRepository.findById(52L).orElse(null);
+//
+//
+//            Chat cha1 = Chat.builder()
+//                    .seller(abas)
+//                    .buyer(james)
+//                    .content("would it be possible to negotiate the price down?")
+//                    .listing(listing) /// get the first listing
+//                    .createdAt(LocalDateTime.now())
+//                    .build();
+//
+//            chatRepository.save(cha1);
 //            UserDetails user = userRepository.findByEmail("james@qmul.ac.uk")
 //                    .orElseThrow(()-> new RuntimeException("user doesnt exist"));
 //

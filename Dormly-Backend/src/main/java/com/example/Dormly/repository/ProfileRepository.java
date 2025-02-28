@@ -1,6 +1,7 @@
 package com.example.Dormly.repository;
 
 import com.example.Dormly.entity.Profile;
+import com.example.Dormly.jwt.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +15,6 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
     @Query("SELECT p FROM Profile p where p.user.email=:email")
     Optional<Profile> findByEmail(@Param("email") String email);
+
+    String user(Users user);
 }

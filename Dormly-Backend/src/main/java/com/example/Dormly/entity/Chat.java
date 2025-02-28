@@ -1,5 +1,6 @@
 package com.example.Dormly.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,7 +41,8 @@ public class Chat {
     private Listing listing;
 
     @Column(name = "created_at", nullable = false)
-    private LocalDate createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
 
 
 }

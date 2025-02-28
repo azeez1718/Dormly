@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,10 +29,10 @@ public class ChatController {
     /// we use the listing Id to find who the seller is.
 
     @GetMapping(value = "history/{id}")
-    public ResponseEntity<List<ChatDto>> chatHistory(@AuthenticationPrincipal Principal principal,
+    public ResponseEntity<List<ChatDto>> chatHistory(@AuthenticationPrincipal UserDetails userdetails,
                                                      @PathVariable("id") Long listingId){
 
-        List<ChatDto> chatHistory = chatService.findChatHistory(principal, listingId);
+        List<ChatDto> chatHistory = chatService.findPreviousChatForListing(userdetails.getUsername(), listingId);
         return new ResponseEntity<>(chatHistory, HttpStatus.OK);
     }
 

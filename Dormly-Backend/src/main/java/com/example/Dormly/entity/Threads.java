@@ -1,5 +1,6 @@
 package com.example.Dormly.entity;
 
+import aj.org.objectweb.asm.commons.Remapper;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,7 +18,7 @@ public class Threads {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private Long id;
 
 
     @ManyToOne
@@ -45,6 +46,7 @@ public class Threads {
     //allow users to soft delete listings
     @Column(name ="is_deleted", nullable = false)
     private Boolean isDeleted;
+
 
 
 }

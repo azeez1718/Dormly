@@ -1,7 +1,7 @@
 package com.example.Dormly.initialization;
 
 
-import com.example.Dormly.entity.Chat;
+
 import com.example.Dormly.entity.Message;
 import com.example.Dormly.entity.Profile;
 import com.example.Dormly.entity.Threads;
@@ -31,7 +31,7 @@ public class InitializationConfig {
     @Bean
     CommandLineRunner commandLineRunner(ProfileRepository profileRepository,
                                         UserRepository userRepository, CategoryRepository categoryRepository,
-                                        ChatRepository chatRepository, ListingRepository listingRepository) {
+                                        MessageRepository messageRepository, ListingRepository listingRepository) {
 
         return args -> {
 
@@ -56,12 +56,13 @@ public class InitializationConfig {
                     .thread(Threads.builder()
                             .buyer(james)
                             .seller(abas)
+                            .isDeleted(false)
                             .listing(listingRepository.findById(153L).orElseThrow(()->new ListingNotFoundException("")))
                             .build())
                     .build();
 
-
-
+            /// it automatically persists the thread
+            messageRepository.save(m1);
 
 
 

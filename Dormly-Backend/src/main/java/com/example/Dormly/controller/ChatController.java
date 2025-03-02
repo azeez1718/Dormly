@@ -1,7 +1,6 @@
 package com.example.Dormly.controller;
 
-import com.example.Dormly.dto.ChatDto;
-import com.example.Dormly.entity.Chat;
+import com.example.Dormly.dto.ThreadsDto;
 import com.example.Dormly.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,9 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.security.Principal;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,10 +25,10 @@ public class ChatController {
     /// we use the listing Id to find who the seller is.
 
     @GetMapping(value = "history/{id}")
-    public ResponseEntity<List<ChatDto>> chatHistory(@AuthenticationPrincipal UserDetails userdetails,
-                                                     @PathVariable("id") Long listingId){
+    public ResponseEntity<ThreadsDto> chatHistory(@AuthenticationPrincipal UserDetails userdetails,
+                                                  @PathVariable("id") Long listingId){
 
-        List<ChatDto> chatHistory = chatService.findPreviousChatForListing(userdetails.getUsername(), listingId);
+        ThreadsDto chatHistory = chatService.findPreviousChatForListing(userdetails.getUsername(), listingId);
         return new ResponseEntity<>(chatHistory, HttpStatus.OK);
     }
 

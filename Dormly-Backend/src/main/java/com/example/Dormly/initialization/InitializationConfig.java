@@ -68,18 +68,18 @@ public class InitializationConfig {
 //            messageRepository.save(m1);
 //
 //
-            Threads thread = threadsRepository.findById(2L)
-                    .orElseThrow(() -> new RuntimeException("Thread not found"));
-
-            Message m2 = Message.builder()
-                    .senderId(abas)
-                    .content("hi james, yeah what price was you looking at")
-                    .timestamp(LocalDateTime.now())
-                    .thread(thread)
-                    .build();
-
-
-            messageRepository.save(m2);
+//            Threads thread = threadsRepository.findById(2L)
+//                    .orElseThrow(() -> new RuntimeException("Thread not found"));
+//
+//            Message m2 = Message.builder()
+//                    .senderId(abas)
+//                    .content("hi james, yeah what price was you looking at")
+//                    .timestamp(LocalDateTime.now())
+//                    .thread(thread)
+//                    .build();
+//
+//
+//            messageRepository.save(m2);
 
 
 //

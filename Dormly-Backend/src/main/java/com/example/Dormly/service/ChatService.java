@@ -2,17 +2,25 @@ package com.example.Dormly.service;
 
 
 import com.example.Dormly.aws.PreSignedUrlService;
+import com.example.Dormly.dto.MessageDto;
 import com.example.Dormly.dto.ThreadsDto;
 import com.example.Dormly.entity.Listing;
 import com.example.Dormly.entity.Profile;
 import com.example.Dormly.entity.Threads;
 import com.example.Dormly.exceptions.ListingNotFoundException;
+import com.example.Dormly.exceptions.ProfileNotFoundException;
+import com.example.Dormly.exceptions.ThreadNotFoundException;
 import com.example.Dormly.repository.ListingRepository;
 import com.example.Dormly.repository.MessageRepository;
+import com.example.Dormly.repository.ProfileRepository;
 import com.example.Dormly.repository.ThreadsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -25,12 +33,13 @@ public class ChatService {
     private final MessageRepository messageRepository;
     private final ListingRepository listingRepository;
     private final PreSignedUrlService preSignedUrlService;
+    private final ProfileRepository profileRepository;
 
     ///whenever a user clicks on 'message seller' ideally what we want is to check if these two users have a conversation
     /// about that specific listing, if so we return the associated message object including the content.
     /// we want to persist the images in order of their created date
 
-    public ThreadsDto findPreviousChatForListing(String buyer, Long listingId) {
+    public ThreadsDto UserConversationThread(String buyer, Long listingId) {
         Listing listing  = listingRepository.findById(listingId)
                 .orElseThrow(()->new ListingNotFoundException("listing id does not exist"));
 
@@ -58,17 +67,44 @@ public class ChatService {
     }
 
 
-//    /// retrieve all the profiles users have in their inbox,
-//    ///for each chat id we check if the user is either a seller or a buyer
-//    /// this way we know what conversations the users had
-//    public void FindUserChats(String userEmail){
-//        Profile profile = profileRepository.findByEmail(userEmail)
-//                .orElseThrow(()->new ProfileNotFoundException("profile does not exist"));
-//
-//        List<Chat> findUserChats = chatRepository.findUserInbox(userEmail);
-//        /**
-//         *  for each chat we need to return the profile of the users,each chat between two users always has a unique listing id
-//         */
+    /// retrieve all the profiles users have in their inbox,
+    ///for each chat id we check if the user is either a seller or a buyer
+    /// this way we know what conversations the users had
+
+    public List<ThreadsDto> FindInboxPreview(String userEmail){
+        Profile profile = profileRepository.findByEmail(userEmail)
+                .orElseThrow(()->new ProfileNotFoundException("profile does not exist"));
+
+        List<Threads> findUserChats = threadsRepository.findUserInbox(profile.getUser().getEmail());
+
+        if(findUserChats.isEmpty()){
+            /// the user may not have any conversations yet
+            return Collections.emptyList();
+        }
+
+        List<ThreadsDto> inboxPreview = findUserChats.stream()
+                .filter(t-> t.getIsDeleted().equals(false))
+                .map(ThreadsDto::convertToDto)
+                .toList();
+
+        /// we want to only call the s3 presigned service for the users that this authenticated user communicated with
+        /// this prevents us from repeated aws api calls
+        for(ThreadsDto threads : inboxPreview){
+            if(threads.getSeller().getEmail().equals(userEmail)){
+                threads.getBuyer()
+                        .setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(threads.getBuyer().getEmail()));
+            }
+            else if(threads.getBuyer().getEmail().equals(userEmail)){
+                threads.getSeller().setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(threads.getSeller().getEmail()));
+            }
+            else{
+                throw new RuntimeException("user must be either seller, buyer");
+            }
+        }
+        return inboxPreview;
+    }
+
+
 
 
 

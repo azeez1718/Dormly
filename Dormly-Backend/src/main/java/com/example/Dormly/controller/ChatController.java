@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/Dormly/chats")
@@ -28,7 +30,14 @@ public class ChatController {
     public ResponseEntity<ThreadsDto> chatHistory(@AuthenticationPrincipal UserDetails userdetails,
                                                   @PathVariable("id") Long listingId){
 
-        ThreadsDto chatHistory = chatService.findPreviousChatForListing(userdetails.getUsername(), listingId);
+        ThreadsDto chatHistory = chatService.UserConversationThread(userdetails.getUsername(), listingId);
+        return new ResponseEntity<>(chatHistory, HttpStatus.OK);
+    }
+
+
+    @GetMapping(path = "/inbox/preview")
+    public ResponseEntity<List<ThreadsDto>> chatPreview(@AuthenticationPrincipal UserDetails userdetails){
+        List<ThreadsDto> chatHistory = chatService.FindInboxPreview(userdetails.getUsername());
         return new ResponseEntity<>(chatHistory, HttpStatus.OK);
     }
 

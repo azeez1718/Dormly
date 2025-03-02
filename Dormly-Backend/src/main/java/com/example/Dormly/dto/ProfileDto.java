@@ -4,6 +4,7 @@ package com.example.Dormly.dto;
 import com.example.Dormly.entity.Profile;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.net.URL;
@@ -19,6 +20,7 @@ import java.util.List;
 public class ProfileDto {
 
     private Long id;
+    @Nullable
     private URL image;
     private String bio;
     private String location;

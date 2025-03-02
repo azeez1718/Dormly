@@ -3,6 +3,7 @@ package com.example.Dormly.controller;
 import com.example.Dormly.dto.ThreadsDto;
 import com.example.Dormly.service.ChatService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/Dormly/chats")
@@ -30,13 +31,14 @@ public class ChatController {
     public ResponseEntity<ThreadsDto> chatHistory(@AuthenticationPrincipal UserDetails userdetails,
                                                   @PathVariable("id") Long listingId){
 
-        ThreadsDto chatHistory = chatService.UserConversationThread(userdetails.getUsername(), listingId);
+        ThreadsDto chatHistory = chatService.getConversationThreadForListing(userdetails.getUsername(), listingId);
         return new ResponseEntity<>(chatHistory, HttpStatus.OK);
     }
 
 
     @GetMapping(path = "/inbox/preview")
     public ResponseEntity<List<ThreadsDto>> chatPreview(@AuthenticationPrincipal UserDetails userdetails){
+        log.info(userdetails.getUsername());
         List<ThreadsDto> chatHistory = chatService.FindInboxPreview(userdetails.getUsername());
         return new ResponseEntity<>(chatHistory, HttpStatus.OK);
     }

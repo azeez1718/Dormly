@@ -39,7 +39,7 @@ public class ChatService {
     /// about that specific listing, if so we return the associated message object including the content.
     /// we want to persist the images in order of their created date
 
-    public ThreadsDto UserConversationThread(String buyer, Long listingId) {
+    public ThreadsDto getConversationThreadForListing(String buyer, Long listingId) {
         Listing listing  = listingRepository.findById(listingId)
                 .orElseThrow(()->new ListingNotFoundException("listing id does not exist"));
 
@@ -52,11 +52,15 @@ public class ChatService {
         }
 
         ///this should only return a single object, a buyer and seller only have one thread FOR a specific listing
-        Threads findThreadsBetweenUsers = threadsRepository.findChatsByListingAndUsers(buyer, seller, listingId)
-                .orElseThrow(()->new RuntimeException("conversation does not exist"));
+        Optional<Threads> findThreadsBetweenUsers = threadsRepository.findChatsByListingAndUsers(buyer, seller, listingId);
+
+        if(findThreadsBetweenUsers.isEmpty()){
+            return new ThreadsDto(); //returns an empty object if no chats
+        }
+
 
         /// we return a dto of messages, and ensure they are in order of oldest to newest
-            ThreadsDto threadsDto = ThreadsDto.convertToDto(findThreadsBetweenUsers);
+            ThreadsDto threadsDto = ThreadsDto.convertToDto(findThreadsBetweenUsers.get());
 
 
         /// we can set the profile pictures of the usesr for the thread
@@ -75,7 +79,7 @@ public class ChatService {
         Profile profile = profileRepository.findByEmail(userEmail)
                 .orElseThrow(()->new ProfileNotFoundException("profile does not exist"));
 
-        List<Threads> findUserChats = threadsRepository.findUserInbox(profile.getUser().getEmail());
+        List<Threads> findUserChats = threadsRepository.findUserInbox(profile);
 
         if(findUserChats.isEmpty()){
             /// the user may not have any conversations yet

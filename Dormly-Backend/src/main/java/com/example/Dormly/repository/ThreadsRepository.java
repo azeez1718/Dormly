@@ -20,5 +20,5 @@ public interface ThreadsRepository extends JpaRepository<Threads, Long> {
 
 
     @Query("SELECT t from Threads t where t.buyer=?1 OR t.seller=?1")
-    List<Threads> findUserInbox(String userEmail);
+    List<Threads> findUserInbox(Profile profile);
 }

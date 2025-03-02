@@ -33,7 +33,6 @@ public class ProfileDto {
 
     public static ProfileDto from(Profile profile) {
         return ProfileDto.builder()
-                .id(profile.getId())
                 .email(profile.getUser().getEmail())
                 .firstname(profile.getUser().getFirstname())
                 .lastname(profile.getUser().getLastname())

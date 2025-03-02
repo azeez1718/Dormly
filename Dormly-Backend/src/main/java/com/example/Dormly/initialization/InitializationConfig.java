@@ -1,25 +1,18 @@
 package com.example.Dormly.initialization;
 
 
-import com.example.Dormly.constants.Role;
-import com.example.Dormly.entity.Category;
 import com.example.Dormly.entity.Chat;
-import com.example.Dormly.entity.Listing;
 import com.example.Dormly.entity.Profile;
 import com.example.Dormly.exceptions.ListingNotFoundException;
 import com.example.Dormly.exceptions.ProfileNotFoundException;
-import com.example.Dormly.jwt.model.Users;
 import com.example.Dormly.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -53,14 +46,10 @@ public class InitializationConfig {
                     .buyer(james)
                     .seller(abas)
                     .createdAt(LocalDateTime.now())
-                    .content("i was thinking of buying this")
                     .listing(listingRepository.findById(153L).orElseThrow(()->new ListingNotFoundException("")))
-                    .build();
+                    .conversation(
+            // now lets create another chat between the same two users for the SAME listing
 
-
-            chatRepository.save(newChat);
-
-            /// now lets create another chat between the same two users for the SAME listing
 
 
 

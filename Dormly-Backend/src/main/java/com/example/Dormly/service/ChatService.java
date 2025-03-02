@@ -67,6 +67,7 @@ public class ChatService {
         chats.get(0).getSeller().setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(seller.getUser().getEmail()));
         return chats;
     }
+
     /// retrieve all the profiles users have in their inbox,
     ///for each chat id we check if the user is either a seller or a buyer
     /// this way we know what conversations the users had
@@ -74,13 +75,13 @@ public class ChatService {
         Profile profile = profileRepository.findByEmail(userEmail)
                 .orElseThrow(()->new ProfileNotFoundException("profile does not exist"));
 
-        List<ChatDto> findUserChats = chatRepository.findAll()
-                .stream()
-                .filter(chat-> chat.getBuyer().equals(profile)|| chat.getSeller().equals(profile))
-                .map(ChatDto::convertToDto)
-                .toList();
+        List<Chat> findUserChats = chatRepository.findUserInbox(userEmail);
+        /**
+         *  for each chat we need to return the profile of the users,each chat between two users always has a unique listing id
+         */
 
-        /// for each chat we need to
+
+
 
     }
 }

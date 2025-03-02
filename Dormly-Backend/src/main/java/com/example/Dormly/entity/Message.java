@@ -1,5 +1,6 @@
 package com.example.Dormly.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,7 +23,7 @@ public class Message {
      * then from the conversation, the message object associated to that conversation is queried
      */
 
-
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -34,7 +35,12 @@ public class Message {
     private String content;
 
     @Column(nullable = false)
-    @JsonFormat(shape = "YYYY-MM-DD ")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
+
+    @ManyToOne
+    @JoinColumn(name = "thread_id")
+    @JsonBackReference
+    private Threads thread;
 
 }

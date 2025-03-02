@@ -2,12 +2,15 @@ package com.example.Dormly.initialization;
 
 
 import com.example.Dormly.entity.Chat;
+import com.example.Dormly.entity.Message;
 import com.example.Dormly.entity.Profile;
+import com.example.Dormly.entity.Threads;
 import com.example.Dormly.exceptions.ListingNotFoundException;
 import com.example.Dormly.exceptions.ProfileNotFoundException;
 import com.example.Dormly.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,31 +45,27 @@ public class InitializationConfig {
             Profile abas = profileRepository.findById(1L).orElseThrow(()->new ProfileNotFoundException(""));
             Profile james = profileRepository.findById(2L).orElseThrow(()->new ProfileNotFoundException(""));
 
-            Chat newChat = Chat.builder()
-                    .buyer(james)
-                    .seller(abas)
-                    .createdAt(LocalDateTime.now())
-                    .listing(listingRepository.findById(153L).orElseThrow(()->new ListingNotFoundException("")))
-                    .conversation(
-            // now lets create another chat between the same two users for the SAME listing
+            //conversation between Abas and james, abas seller james buyer
+            // for the same conversation there will be a few message objects
+            // each object represents a sender and the message
+
+            Message m1 = Message.builder()
+                    .senderId(james)
+                    .content("hi abas, could we negotiate the price down")
+                    .timestamp(LocalDateTime.now())
+                    .thread(Threads.builder()
+                            .buyer(james)
+                            .seller(abas)
+                            .listing(listingRepository.findById(153L).orElseThrow(()->new ListingNotFoundException("")))
+                            .build())
+                    .build();
 
 
 
 
-//            Listing listing = listingRepository.findById(52L).orElse(null);
-//
-//
-//            Chat cha1 = Chat.builder()
-//                    .seller(abas)
-//                    .buyer(james)
-//                    .content("would it be possible to negotiate the price down?")
-//                    .listing(listing) /// get the first listing
-//                    .createdAt(LocalDateTime.now())
-//                    .build();
-//
-//            chatRepository.save(cha1);
-//            UserDetails user = userRepository.findByEmail("james@qmul.ac.uk")
-//                    .orElseThrow(()-> new RuntimeException("user doesnt exist"));
+
+
+
 //
 //            Profile profile = Profile.builder()
 //                    .bio("Here to explore")

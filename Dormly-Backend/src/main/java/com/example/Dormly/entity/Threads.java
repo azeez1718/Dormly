@@ -1,10 +1,9 @@
 package com.example.Dormly.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @AllArgsConstructor
@@ -13,7 +12,7 @@ import java.util.*;
 @Setter
 @Builder
 @Entity
-public class Thread {
+public class Threads {
     ///This thread represent the distinct conversation between two users
 
     @Id
@@ -37,6 +36,15 @@ public class Thread {
     private Listing listing;
 
 
+    /// bidirectinal with messages, which allows us to fetch the messages from a thread
+    @OneToMany(mappedBy = "thread", fetch = FetchType.EAGER)
+    @OrderBy("timestamp ASC")
+    @JsonManagedReference
+    private List<Message> messages;
+
+    //allow users to soft delete listings
+    @Column(name ="is_deleted", nullable = false)
+    private Boolean isDeleted;
 
 
 }

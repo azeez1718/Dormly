@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ListingService } from '../service/listing/listing.service';
 import { listingCard } from '../models/listingCard';
 import { DashboardComponent } from '../dashboard-navbar/dashboard-navbar.component';
+import { MessageService } from '../service/message/message.service';
 
 @Component({
   selector: 'app-product-card',
@@ -21,7 +22,7 @@ export class ProductCardComponent implements OnInit {
   listingId!:string | null
   listingProduct!:listingCard
   
-  constructor(private route:ActivatedRoute, private listingService:ListingService, private router:Router){}
+  constructor(private route:ActivatedRoute, private listingService:ListingService, private router:Router, private messageService:MessageService){}
 
   
   ngOnInit(): void {
@@ -49,10 +50,13 @@ export class ProductCardComponent implements OnInit {
   })
 }
 
-  messageSeller(id:number){
-    ///navigate to the messages component in which we bind the listing id to the path variable
-    /// this acts as our source of truth and we fetch the user associated with this specific listing
-    this.router.navigate(["messages", id])
+  messageSeller(id:string){
+    /**
+     * this acts as our source of truth and we fetch the user associated with this specific listing
+     * and only when the the user & the seller have had a previous conversation do we then navigate to the specific thread
+     */
+    this.messageService.InboxHistoryForListing(id)
+    
 
   }
 

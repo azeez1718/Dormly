@@ -5,7 +5,7 @@ import { DashboardComponent } from '../../dashboard-navbar/dashboard-navbar.comp
 import { SidebarmessageComponent } from '../sidebarmessage/sidebarmessage.component';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '../../service/message/message.service';
-import { MessageDto } from '../../models/MessageDto';
+import { MessageDto } from '../../models/ThreadsDto';
 
 
 @Component({
@@ -24,7 +24,8 @@ export class MessagesComponent implements OnInit{
 
   
   ngOnInit():void{
-    if(this.setupInboxWithSeller!==null){
+    if(this.setupInboxWithSeller()!==null){
+      console.log("not null, calling the service")
       ///we can fetch the chat history between a user and a seller for that specific listing
       this.fetchUserBasedOnListingId(this.setupInboxWithSeller()as string)
     }
@@ -37,6 +38,7 @@ export class MessagesComponent implements OnInit{
   this.onMessageRecieved()
 
   }
+
    onMessageRecieved(){
   this.webSocket.messageSubscription$.subscribe({
     next:(message)=>{
@@ -64,10 +66,6 @@ disconnect(){
   this.webSocket.disconnect()
 }
 
-setupInboxWithSeller(){
-  const listingId = this.route.snapshot.paramMap.get("id")
-  ///if listing id is truthy return it, otherwise return null
-  return listingId ? listingId : null
 
 }
 
@@ -81,6 +79,8 @@ fetchUserBasedOnListingId(id:string){
       this.returnedInbox = true
       console.log(this.messages)
     }
+    ///if both users have no messages, we make another call to fetch the information of the both seller and buyer and create a new chat
+    ///we create an alert or a pop up that allows the user to send a message
 
   },
   error:(err:Error)=>{

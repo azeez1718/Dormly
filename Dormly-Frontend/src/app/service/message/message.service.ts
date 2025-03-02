@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MessageDto } from '../../models/MessageDto';
+import { MessageDto } from '../../models/ThreadsDto';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class MessageService {
   // the Listing id, acts as our source of truth as we can return chat history between currently authenticated user(buyer) & seller(owner of listing)
 
   InboxHistoryForListing(listingId:string):Observable<MessageDto>{
-    const chatsBylisting = `${this.chatUrl}/history${listingId}`
+    const chatsBylisting = `${this.chatUrl}/history/${listingId}`
     return this.http.get<MessageDto>(chatsBylisting)
   }
 

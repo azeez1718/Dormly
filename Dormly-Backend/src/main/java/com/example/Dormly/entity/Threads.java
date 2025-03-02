@@ -17,7 +17,8 @@ public class Threads {
     ///This thread represent the distinct conversation between two users
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "thread_seq")
+    @SequenceGenerator(name = "thread_seq", sequenceName = "thread_seq", allocationSize = 1)
     private Long id;
 
 

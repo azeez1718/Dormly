@@ -14,12 +14,12 @@ import java.util.List;
 @Data
 @Builder
 public class MessageDto {
-    private String email;
+    private String sender;
     private String message;
     private LocalDateTime timestamp;
 
     public MessageDto(Message message) {
-        this.email = message.getSenderId().getUser().getEmail();
+        this.sender = message.getSenderId().getUser().getEmail();
         this.message = message.getContent();
         this.timestamp = message.getTimestamp();
     }

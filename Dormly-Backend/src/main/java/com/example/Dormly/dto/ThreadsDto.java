@@ -28,7 +28,8 @@ public class ThreadsDto {
     private Long listingId;
 
 
-    /// on the instance of chatDto's for each profileDTO(seller and buyer) we can set the value of profile URL by passing in the
+    /// on the instance of Threads dto for each profileDTO(seller and buyer) we can set the value of profile URL
+    /// we convert messages to a dto, to prevent serializing the sender entity as it contains sensitive information
     public static ThreadsDto convertToDto(Threads threads) {
         return ThreadsDto.builder()
                 .id(threads.getId())
@@ -36,10 +37,11 @@ public class ThreadsDto {
                 .seller(ProfileDto.from(threads.getSeller()))
                 .messages(threads.getMessages().stream().map(MessageDto::new).collect(Collectors.toList()))
                 .title(threads.getListing().getTitle())
+                .listingId(threads.getListing().getId())
                 .build();
     }
 
-    //convert messages to a dto, to prevent serializing the sender entity as it contains sensitive information
+
 
 
 

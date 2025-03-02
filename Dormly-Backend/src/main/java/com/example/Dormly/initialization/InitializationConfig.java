@@ -31,7 +31,7 @@ public class InitializationConfig {
     @Bean
     CommandLineRunner commandLineRunner(ProfileRepository profileRepository,
                                         UserRepository userRepository, CategoryRepository categoryRepository,
-                                        MessageRepository messageRepository, ListingRepository listingRepository) {
+                                        MessageRepository messageRepository, ListingRepository listingRepository, ThreadsRepository threadsRepository) {
 
         return args -> {
 
@@ -45,26 +45,41 @@ public class InitializationConfig {
             Profile abas = profileRepository.findById(1L).orElseThrow(()->new ProfileNotFoundException(""));
             Profile james = profileRepository.findById(2L).orElseThrow(()->new ProfileNotFoundException(""));
 
+
             //conversation between Abas and james, abas seller james buyer
             // for the same conversation there will be a few message objects
             // each object represents a sender and the message
 
-            Message m1 = Message.builder()
-                    .senderId(james)
-                    .content("hi abas, could we negotiate the price down")
+
+
+//            Message m1 = Message.builder()
+//                    .senderId(james)
+//                    .content("hi abas, could we negotiate the price down")
+//                    .timestamp(LocalDateTime.now())
+//                    .thread(Threads.builder()
+//                            .buyer(james)
+//                            .seller(abas)
+//                            .isDeleted(false)
+//                            .listing(listingRepository.findById(153L).orElseThrow(()->new ListingNotFoundException("")))
+//                            .build())
+//                    .build();
+//
+//            /// it automatically persists the thread
+//            messageRepository.save(m1);
+//
+//
+            Threads thread = threadsRepository.findById(2L)
+                    .orElseThrow(() -> new RuntimeException("Thread not found"));
+
+            Message m2 = Message.builder()
+                    .senderId(abas)
+                    .content("hi james, yeah what price was you looking at")
                     .timestamp(LocalDateTime.now())
-                    .thread(Threads.builder()
-                            .buyer(james)
-                            .seller(abas)
-                            .isDeleted(false)
-                            .listing(listingRepository.findById(153L).orElseThrow(()->new ListingNotFoundException("")))
-                            .build())
+                    .thread(thread)
                     .build();
 
-            /// it automatically persists the thread
-            messageRepository.save(m1);
 
-
+            messageRepository.save(m2);
 
 
 //

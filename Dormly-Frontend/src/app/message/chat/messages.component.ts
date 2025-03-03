@@ -5,7 +5,7 @@ import { DashboardComponent } from '../../dashboard-navbar/dashboard-navbar.comp
 import { SidebarmessageComponent } from '../sidebarmessage/sidebarmessage.component';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '../../service/message/message.service';
-import { MessageDto } from '../../models/ThreadsDto';
+import { ThreadsDto } from '../../models/ThreadsDto';
 
 
 @Component({
@@ -16,22 +16,22 @@ import { MessageDto } from '../../models/ThreadsDto';
 })
 export class MessagesComponent implements OnInit{
 
-  messages : any = []
+  messages!:Array<any>
   recievedMessage:boolean = false
   returnedInbox = false
-  listingId !: number 
+  thread :Array<ThreadsDto> = []
+  newConversation:Boolean = false
+
   constructor(private webSocket:WebSocketApiService, private route:ActivatedRoute, private messageService:MessageService){}
 
   
   ngOnInit():void{
-    if(this.setupInboxWithSeller()!==null){
-      console.log("not null, calling the service")
-      ///we can fetch the chat history between a user and a seller for that specific listing
-      this.fetchUserBasedOnListingId(this.setupInboxWithSeller()as string)
+    //on every refresh the source of truth for the threads are represented by the active route
+    if(this.getPathVariable()){
+      this.ConversationThreadForListing(this.getPathVariable() as string)
     }
+   
       
-      
-    
     console.log("calling handshake")
   
   this.connect()
@@ -61,34 +61,50 @@ connect(){
   this.webSocket.connect()
 }
 
+ConversationThreadForListing(id:string){
+  ///fetches the thread associated between two users for a specific listing
+  ///if the length of the messages is 0, we know there is no existing chat and we pass the threadsDto to the startNew function
+  this.messageService.conversationThreadForListing(id).subscribe({
+  next:(threads:ThreadsDto)=>{
+  
+    this.returnedInbox = true
+    this.thread.push(threads)
+    console.log("rendering the threads", threads)
+
+    if(!threads.messages|| threads.messages?.length===0){
+      this.startNewConversation(threads)
+    }
+    
+  },
+  error:(err:Error)=>{
+    console.log(err.message)
+  }
+  })
+
+}
+
+startNewConversation(threads:ThreadsDto){
+  console.log("new conversation", threads)
+  this.newConversation = true
+}
+
+
+
+getPathVariable():string | null{
+  const listingId = this.route.snapshot.paramMap.get('listingId')
+  if(listingId!==null){
+    return listingId
+  }
+  return null
+  
+}
+
 
 disconnect(){
   this.webSocket.disconnect()
 }
 
 
-}
-
-fetchUserBasedOnListingId(id:string){
-  this.messageService.InboxHistoryForListing(id)
-  .subscribe({
-    next:(message:MessageDto)=>{
-    this.messages.push(message)
-    
-    if(this.messages){
-      this.returnedInbox = true
-      console.log(this.messages)
-    }
-    ///if both users have no messages, we make another call to fetch the information of the both seller and buyer and create a new chat
-    ///we create an alert or a pop up that allows the user to send a message
-
-  },
-  error:(err:Error)=>{
-    console.log(`error returning inbox with id : ${id}`, err.message)
-  }
-})
-
-}
 
 sendMessage(){
   ///create a sample message object
@@ -96,6 +112,7 @@ sendMessage(){
     "content"   : "hi james its abas, hope you are well!",
     "recipient" : "james@qmul.ac.uk",
   }
+
   this.webSocket.send(message)
 
 }

@@ -39,6 +39,7 @@ export class ProductCardComponent implements OnInit {
     this.listingService.fetchListingById(this.listingId).subscribe({
       next:(data:listingCard)=>{
       this.listingProduct = data
+      console.log(data.listingUrl)
       },
     
     error:(error:Error)=>{
@@ -50,7 +51,7 @@ export class ProductCardComponent implements OnInit {
   })
 }
 
-  messageSeller(listingId:string){
+  messageSeller(listingId:number){
     /**
      * this acts as our source of truth and we fetch the user associated with this specific listing
      * and only when the the user & the seller have had a previous conversation do we then navigate to the specific thread

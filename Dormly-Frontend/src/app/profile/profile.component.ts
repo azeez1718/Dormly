@@ -79,7 +79,7 @@ export class ProfileComponent implements OnInit{
         next:()=>{
           //real time update instead of user having to refresh the page
           this.profile.profileListings = this.profile.profileListings.filter(listing=> listing.listingId !== this.selectedListingId)
-          console.log("item deleteed successfully")
+          console.log("item deleted successfully")
           
         },
         error:(error:Error)=>{

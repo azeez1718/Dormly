@@ -32,7 +32,7 @@ public class Threads {
     private Profile buyer;
 
     /// we can persist the listing id as a foreign key
-    /// helps with data intergirty and makes it easier to query the listings
+    /// helps with data integrity and makes it easier to query the listings
     @ManyToOne
     @JoinColumn(name = "listing_id", nullable = false)
     private Listing listing;

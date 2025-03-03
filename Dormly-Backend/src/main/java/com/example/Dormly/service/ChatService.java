@@ -55,7 +55,17 @@ public class ChatService {
         Optional<Threads> findThreadsBetweenUsers = threadsRepository.findChatsByListingAndUsers(buyer, seller, listingId);
 
         if(findThreadsBetweenUsers.isEmpty()){
-            return new ThreadsDto(); //returns an empty object if no chats
+            /// if there is no conversation, we can create a threads object, and save it  to the db and return it
+        Threads newThread = Threads
+                .builder()
+                .buyer(profileRepository.findByEmail(buyer).orElseThrow(()->new ProfileNotFoundException("profile does not exist")))
+                .seller(seller)
+                .listing(listing)
+                .isDeleted(Boolean.FALSE)
+                .build();
+
+        threadsRepository.save(newThread);
+        return ThreadsDto.convertToDto(newThread);
         }
 
 
@@ -80,7 +90,6 @@ public class ChatService {
                 .orElseThrow(()->new ProfileNotFoundException("profile does not exist"));
 
         List<Threads> findUserChats = threadsRepository.findUserInbox(profile);
-
         if(findUserChats.isEmpty()){
             /// the user may not have any conversations yet
             return Collections.emptyList();
@@ -93,15 +102,13 @@ public class ChatService {
 
         /// we want to only call the s3 presigned service for the users that this authenticated user communicated with
         /// this prevents us from repeated aws api calls
-        for(ThreadsDto threads : inboxPreview){
-            if(threads.getSeller().getEmail().equals(userEmail)){
+        for(ThreadsDto threads : inboxPreview) {
+            if (threads.getSeller().getEmail().equals(userEmail)) {
                 threads.getBuyer()
                         .setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(threads.getBuyer().getEmail()));
-            }
-            else if(threads.getBuyer().getEmail().equals(userEmail)){
+            } else if (threads.getBuyer().getEmail().equals(userEmail)) {
                 threads.getSeller().setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(threads.getSeller().getEmail()));
-            }
-            else{
+            } else {
                 throw new RuntimeException("user must be either seller, buyer");
             }
         }

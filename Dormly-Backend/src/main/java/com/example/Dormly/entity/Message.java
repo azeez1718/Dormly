@@ -40,7 +40,7 @@ public class Message {
     private LocalDateTime timestamp;
 
     @ManyToOne()
-    @JoinColumn(name = "thread_id")
+    @JoinColumn(name = "thread_id", nullable = true)
     @JsonBackReference
     private Threads thread;
 

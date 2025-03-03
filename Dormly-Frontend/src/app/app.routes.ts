@@ -68,7 +68,7 @@ export const routes: Routes = [
     },
 
     {
-        path : "messages/:id",
+        path : "messages/:listingId",
         component: MessagesComponent
     }
 ];

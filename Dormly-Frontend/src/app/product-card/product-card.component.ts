@@ -50,12 +50,12 @@ export class ProductCardComponent implements OnInit {
   })
 }
 
-  messageSeller(id:string){
+  messageSeller(listingId:string){
     /**
      * this acts as our source of truth and we fetch the user associated with this specific listing
      * and only when the the user & the seller have had a previous conversation do we then navigate to the specific thread
      */
-    this.messageService.InboxHistoryForListing(id)
+    this.router.navigate(["/messages", listingId])
     
 
   }

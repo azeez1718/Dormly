@@ -1,10 +1,13 @@
 <app-dashboard-navbar></app-dashboard-navbar>
 <div class="flex h-[calc(100vh-64px)]">
   <!-- Sidebar Component -->
-  <app-sidebarmessage></app-sidebarmessage>
+  <div *ngFor = "let inbox of InboxProfiles">
+  <app-sidebarmessage class="h-full" *ngFor = "let inbox of InboxProfiles"
+    [inbox] = "inbox">
+  </app-sidebarmessage>
 
   <!-- Chat Content -->
-  <div class="flex-1 flex flex-col bg-white">
+  <div class="flex-1 flex flex-col h-full bg-white">
     <!-- Chat Header -->
     <div class="h-16 px-4 border-b flex items-center">
       <div class="flex items-center space-x-3">
@@ -23,51 +26,51 @@
       </div>
     </div>
 
-    <!-- Chat Messages -->
-    <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-     <div *ngIf = "returnedInbox">
-     <div *ngFor = "let message of thread.messages">
-    <ng-container *ngIf = "message.sender !== findUser(); else SentMessage"> <!--if the message does not equal to the authenticated user-->
-      <!-- Received Message -->
-      <div class="flex items-start space-x-2 max-w-xl">
-        <img
-          src="https://placehold.co/32x32"
-          alt="Alice"
-          class="w-8 h-8 rounded-full object-cover"
-        >
-        <div>
-          <div class="bg-white rounded-2xl p-3 shadow-sm">
-            <p class="text-gray-800">{{message.message}}</p>
+    <!-- Chat Messages Container -->
+    <div class="flex-1 overflow-y-auto">
+      <div class="h-full" *ngIf="returnedInbox">
+        <div class="p-4 space-y-4">
+          <div *ngFor="let message of thread.messages">
+            <ng-container *ngIf="message.sender !== findUser(); else SentMessage">
+              <!-- Received Message -->
+              <div class="flex items-start space-x-2 max-w-xl mb-4">
+                <img
+                  [src]="senderImage(message.sender)"
+                  alt="Alice"
+                  class="w-8 h-8 rounded-full object-cover"
+                >
+                <div>
+                  <div class="bg-white rounded-2xl p-3 shadow-sm">
+                    <p class="text-gray-800">{{message.message}}</p>
+                  </div>
+                  <span class="text-xs text-gray-500 ml-2 mt-1 inline-block">{{message.timestamp}}</span>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Sent Message -->
+            <ng-template #SentMessage>
+              <div class="flex items-start justify-end space-x-2 max-w-xl ml-auto mb-4">
+                <div class="flex flex-col items-end">
+                  <div class="bg-blue-500 text-white rounded-2xl p-3 shadow-sm">
+                    <p>{{message.message}}</p>
+                  </div>
+                  <span class="text-xs text-gray-500 mr-2 mt-1 inline-block">{{message.timestamp}}</span>
+                </div>
+                <img
+                  [src]="senderImage(message.sender)"
+                  alt="Me"
+                  class="w-8 h-8 rounded-full object-cover"
+                >
+              </div>
+            </ng-template>
           </div>
-          <span class="text-xs text-gray-500 ml-2 mt-1 inline-block">{{message.timestamp}}</span>
         </div>
       </div>
-    </ng-container>
-      <!-- Sent Message -->
-       <ng-template #SentMessage>
-      <div class="flex items-start justify-end space-x-2 max-w-xl ml-auto">
-        <div class="flex flex-col items-end">
-          <div class="bg-blue-500 text-white rounded-2xl p-3 shadow-sm">
-            <p>{{message.message}}</p>
-          </div>
-          <span class="text-xs text-gray-500 mr-2 mt-1 inline-block">{{message.timestamp}}</span>
-        </div>
-        <img
-          src="https://placehold.co/32x32"
-          alt="Me"
-          class="w-8 h-8 rounded-full object-cover"
-        >
-      </div>
-      </ng-template>
-
     </div>
-    </div>
-    
-
-   
 
     <!-- Chat Input -->
-    <div class="px-4 py-3 bg-white border-t">
+    <div class="px-4 py-3 bg-white border-t mt-auto">
       <div class="flex items-center space-x-2">
         <label for="file-upload" class="cursor-pointer p-2 hover:bg-gray-100 rounded-full text-gray-500 transition-colors">
           <input id="file-upload" type="file" class="hidden" multiple>
@@ -90,4 +93,4 @@
       </div>
     </div>
   </div>
-  </div>
+</div>

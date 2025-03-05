@@ -115,14 +115,23 @@ sendMessage(){
   ///create a sample message object
   const message = {
     "content"   : "hi james its abas, hope you are well!",
-    "recipient" : "james@qmul.ac.uk",
+    "recipient" : ""
   }
 
   this.webSocket.send(message)
 
 }
 
-
+senderImage(sender:string):URL|null{
+  console.log("message sender is", sender)
+  if(this.thread.buyer.email===sender){
+    return this.thread.buyer.image
+  }
+  else{
+  return this.thread.seller.image
+  }
+ 
+}
 findUser():string{
   ///find the current authenitcated user to allow us to differentiate which side of the ui the messages get displayed on
   

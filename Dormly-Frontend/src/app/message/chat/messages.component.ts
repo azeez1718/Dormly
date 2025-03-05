@@ -6,6 +6,7 @@ import { SidebarmessageComponent } from '../sidebarmessage/sidebarmessage.compon
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '../../service/message/message.service';
 import { ThreadsDto } from '../../models/ThreadsDto';
+import { TokenService } from '../../auth/token/token.service';
 
 
 @Component({
@@ -19,10 +20,14 @@ export class MessagesComponent implements OnInit{
   messages!:Array<any>
   recievedMessage:boolean = false
   returnedInbox = false
-  thread :Array<ThreadsDto> = []
+  thread !:ThreadsDto
   newConversation:Boolean = false
+  
+  
 
-  constructor(private webSocket:WebSocketApiService, private route:ActivatedRoute, private messageService:MessageService){}
+  constructor(private webSocket:WebSocketApiService, private route:ActivatedRoute, private messageService:MessageService,
+    private jwtService:TokenService
+  ){}
 
   
   ngOnInit():void{
@@ -68,7 +73,7 @@ ConversationThreadForListing(id:string){
   next:(threads:ThreadsDto)=>{
   
     this.returnedInbox = true
-    this.thread.push(threads)
+    this.thread = threads
     console.log("rendering the threads", threads)
 
     if(!threads.messages|| threads.messages?.length===0){
@@ -116,6 +121,19 @@ sendMessage(){
   this.webSocket.send(message)
 
 }
+
+
+findUser():string{
+  ///find the current authenitcated user to allow us to differentiate which side of the ui the messages get displayed on
+  
+  const user = this.jwtService.getTokenSubject()
+  if(user){
+  return user 
+  }
+  throw Error("user can not be Falsy")
+
+}
+
   
 
   

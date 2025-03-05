@@ -65,7 +65,11 @@ public class ChatService {
                 .build();
 
         threadsRepository.save(newThread);
-        return ThreadsDto.convertToDto(newThread);
+
+        ThreadsDto threadsDto = ThreadsDto.convertToDto(newThread);
+        threadsDto.getBuyer().setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(buyer));
+        threadsDto.getSeller().setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(seller.getUser().getEmail()));
+        return threadsDto;
         }
 
 

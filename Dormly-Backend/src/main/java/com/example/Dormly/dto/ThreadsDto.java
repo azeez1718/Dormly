@@ -6,6 +6,7 @@ import com.example.Dormly.entity.Message;
 import com.example.Dormly.entity.Threads;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;

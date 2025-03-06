@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit{
   ngOnInit(): void {
     this.activaedRoute.queryParamMap.subscribe(data=>{
       this.category = data.get('Category') as string
-      console.log(this.category)
+      console.log("im null initially, because no query was made", this.category)
       if(this.category == null){
         this.fetchAllListings()
         }

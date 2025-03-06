@@ -23,6 +23,7 @@ export class MessageService {
 
 
   getInbox():Observable<Array<ThreadsDto>>{
+    console.log("calling the getInbox")
     const inboxApi = `${this.chatUrl}/inbox/preview`
     return this.http.get<Array<ThreadsDto>>(inboxApi)
     

@@ -20,15 +20,17 @@
         </svg>
       </div>
     </div>
-  
+    
     <!-- Users List -->
     <div class="flex-1 overflow-y-auto">
+
+    <div *ngFor = "let i of Inbox">
       <!-- Active User -->
       <div class="p-4 bg-blue-50 hover:bg-blue-100 cursor-pointer">
         <div class="flex items-center space-x-3">
           <div class="relative">
             <img
-              [src]="imageOfOtherUser()"
+              [src]="imageOfOtherUser(i)"
               alt="userImage"
               class="w-10 h-10 rounded-full"
             >
@@ -36,13 +38,14 @@
           </div>
           <div class="flex-1 min-w-0">
             <div class="flex justify-between items-baseline">
-              <h3 class="text-sm font-semibold">{{name}}</h3> <!--name of user-->
-              <span class="text-xs text-gray-500">2m</span> <!--time since last message-->
+              <h3 class="text-sm font-semibold">{{nameOfEachUserInInbox(i)}}</h3> <!--name of user-->
+              <span class="text-xs text-gray-500">{{i.title}}</span> <!--time since last message--> <!--for now display listing title-->
             </div>
             <p class="text-sm text-gray-600 truncate"></p> <!--last message sent going to be added from ws last message if online-->
           </div>
         </div>
     </div>
-     
+</div>
     </div>
+  
   </div>

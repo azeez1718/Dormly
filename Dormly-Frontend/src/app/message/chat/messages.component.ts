@@ -33,10 +33,16 @@ export class MessagesComponent implements OnInit{
 
   
   ngOnInit():void{
+    ///we want to immediatley fetch the user inbox when the component is instantiated
+    this.getUserInbox()
+
+
+
     //on every refresh the source of truth for the threads are represented by the active route
     if(this.getPathVariable()){
       this.ConversationThreadForListing(this.getPathVariable() as string)
     }
+    
    
       
     console.log("calling handshake")
@@ -149,9 +155,9 @@ findUser():string{
 getUserInbox(){
   this.messageService.getInbox().subscribe({
     next:(inbox:Array<ThreadsDto>)=>{
-      console.log(inbox)
+      console.log("--------------------------", inbox)
       this.InboxProfiles = inbox
-    },
+    }, 
 
     error:(err:Error)=>{
       console.log(err.message)

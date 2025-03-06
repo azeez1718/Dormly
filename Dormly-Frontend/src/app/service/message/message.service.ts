@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, ObservedValueOf } from 'rxjs';
 import { ThreadsDto } from '../../models/ThreadsDto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
+
 
   constructor(private http:HttpClient) { }
   chatUrl:string = "http://localhost:8099/api/v1/Dormly/chats"
@@ -20,7 +21,14 @@ export class MessageService {
     return this.http.get<ThreadsDto>(chatsBylisting)
   }
 
-  
+
+  getInbox():Observable<Array<ThreadsDto>>{
+    const inboxApi = `${this.chatUrl}/inbox/preview`
+    return this.http.get<Array<ThreadsDto>>(inboxApi)
+    
+  }
+
+
 
 
 

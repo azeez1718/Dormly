@@ -22,6 +22,8 @@ export class MessagesComponent implements OnInit{
   returnedInbox = false
   thread !:ThreadsDto
   newConversation:Boolean = false
+
+  InboxProfiles!:Array<ThreadsDto> 
   
   
 
@@ -143,7 +145,19 @@ findUser():string{
 
 }
 
-  
+
+getUserInbox(){
+  this.messageService.getInbox().subscribe({
+    next:(inbox:Array<ThreadsDto>)=>{
+      console.log(inbox)
+      this.InboxProfiles = inbox
+    },
+
+    error:(err:Error)=>{
+      console.log(err.message)
+    }
+  })
+}
 
   
 

@@ -28,81 +28,21 @@
         <div class="flex items-center space-x-3">
           <div class="relative">
             <img
-              src="https://placehold.co/40x40"
-              alt="Alice"
+              [src]="imageOfOtherUser()"
+              alt="userImage"
               class="w-10 h-10 rounded-full"
             >
             <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
           </div>
           <div class="flex-1 min-w-0">
             <div class="flex justify-between items-baseline">
-              <h3 class="text-sm font-semibold">Alice Cooper</h3>
-              <span class="text-xs text-gray-500">2m</span>
+              <h3 class="text-sm font-semibold">{{name}}</h3> <!--name of user-->
+              <span class="text-xs text-gray-500">2m</span> <!--time since last message-->
             </div>
-            <p class="text-sm text-gray-600 truncate">Sure, I'll send it right away!</p>
+            <p class="text-sm text-gray-600 truncate"></p> <!--last message sent going to be added from ws last message if online-->
           </div>
         </div>
-      </div>
-  
-      <!-- Other Users -->
-      <div class="p-4 hover:bg-gray-50 cursor-pointer">
-        <div class="flex items-center space-x-3">
-          <div class="relative">
-            <img
-              src="https://placehold.co/40x40"
-              alt="Bob"
-              class="w-10 h-10 rounded-full"
-            >
-            <div class="absolute bottom-0 right-0 w-3 h-3 bg-gray-400 rounded-full border-2 border-white"></div>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex justify-between items-baseline">
-              <h3 class="text-sm font-semibold">Bob Smith</h3>
-              <span class="text-xs text-gray-500">1h</span>
-            </div>
-            <p class="text-sm text-gray-600 truncate">Let's meet tomorrow at 10</p>
-          </div>
-        </div>
-      </div>
-  
-      <div class="p-4 hover:bg-gray-50 cursor-pointer">
-        <div class="flex items-center space-x-3">
-          <div class="relative">
-            <img
-              src="https://placehold.co/40x40"
-              alt="Carol"
-              class="w-10 h-10 rounded-full"
-            >
-            <div class="absolute bottom-0 right-0 w-3 h-3 bg-yellow-500 rounded-full border-2 border-white"></div>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex justify-between items-baseline">
-              <h3 class="text-sm font-semibold">Carol Johnson</h3>
-              <span class="text-xs text-gray-500">2h</span>
-            </div>
-            <p class="text-sm text-gray-600 truncate">The meeting was rescheduled</p>
-          </div>
-        </div>
-      </div>
-  
-      <div class="p-4 hover:bg-gray-50 cursor-pointer">
-        <div class="flex items-center space-x-3">
-          <div class="relative">
-            <img
-              src="https://placehold.co/40x40"
-              alt="David"
-              class="w-10 h-10 rounded-full"
-            >
-            <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex justify-between items-baseline">
-              <h3 class="text-sm font-semibold">David Wilson</h3>
-              <span class="text-xs text-gray-500">3h</span>
-            </div>
-            <p class="text-sm text-gray-600 truncate">Great work on the project!</p>
-          </div>
-        </div>
-      </div>
+    </div>
+     
     </div>
   </div>

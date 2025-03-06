@@ -65,5 +65,8 @@ nameOfEachUserInInbox(inbox:ThreadsDto){
   throw Error("user can not be empty")
 }
 
+count(){
+  console.log("+1")
+}
 
 }

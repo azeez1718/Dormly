@@ -40,7 +40,7 @@ export class MessagesComponent implements OnInit{
 
     //on every refresh the source of truth for the threads are represented by the active route
     if(this.getPathVariable()){
-      this.ConversationThreadForListing(this.getPathVariable() as string)
+      this.ConversationThread(this.getPathVariable() as string)
     }
     
    
@@ -74,10 +74,10 @@ connect(){
   this.webSocket.connect()
 }
 
-ConversationThreadForListing(id:string){
-  ///fetches the thread associated between two users for a specific listing
+ConversationThread(threadId:string){
+  ///fetches the thread associated between two users, this id is fetched from the url
   ///if the length of the messages is 0, we know there is no existing chat and we pass the threadsDto to the startNew function
-  this.messageService.conversationThreadForListing(id).subscribe({
+  this.messageService.conversationThread(threadId).subscribe({
   next:(threads:ThreadsDto)=>{
   
     this.returnedInbox = true
@@ -97,6 +97,7 @@ ConversationThreadForListing(id:string){
 }
 
 startNewConversation(threads:ThreadsDto){
+  ///this will omit the messages as there is nothing there
   console.log("new conversation", threads)
   this.newConversation = true
 }
@@ -104,7 +105,7 @@ startNewConversation(threads:ThreadsDto){
 
 
 getPathVariable():string | null{
-  const listingId = this.route.snapshot.paramMap.get('listingId')
+  const listingId = this.route.snapshot.paramMap.get('id')
   if(listingId!==null){
     return listingId
   }
@@ -131,7 +132,6 @@ sendMessage(){
 }
 
 senderImage(sender:string):URL|null{
-  console.log("message sender is", sender)
   if(this.thread.buyer.email===sender){
     return this.thread.buyer.image
   }

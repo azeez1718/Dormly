@@ -4,6 +4,7 @@ import aj.org.objectweb.asm.commons.Remapper;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import java.util.*;
 
@@ -42,6 +43,7 @@ public class Threads {
     @OneToMany(mappedBy = "thread", fetch = FetchType.EAGER)
     @OrderBy("timestamp ASC")
     @JsonManagedReference
+    @Nullable  /// when users have no messages exchanged this can be null
     private List<Message> messages;
 
     //allow users to soft delete listings

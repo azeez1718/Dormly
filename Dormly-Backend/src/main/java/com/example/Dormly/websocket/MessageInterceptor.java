@@ -58,7 +58,7 @@ public class MessageInterceptor implements ChannelInterceptor {
                  UsernamePasswordAuthenticationToken authenticatedUser = new UsernamePasswordAuthenticationToken(userDetails,
                          null,
                          userDetails.getAuthorities());
-                 accessor.setUser(authenticatedUser);
+                 accessor.setUser(authenticatedUser); ///setting the context of the user as the principal
 
 
              }else{

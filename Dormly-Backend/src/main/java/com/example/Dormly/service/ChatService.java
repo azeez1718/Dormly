@@ -36,51 +36,24 @@ public class ChatService {
     private final ProfileRepository profileRepository;
 
     ///whenever a user clicks on 'message seller' ideally what we want is to check if these two users have a conversation
-    /// about that specific listing, if so we return the associated message object including the content.
+    /// this is done using the checkThreadExists function, the client side uses that thread to render the thread
     /// we want to persist the images in order of their created date
 
-    public ThreadsDto getConversationThreadForListing(String buyer, Long listingId) {
-        Listing listing  = listingRepository.findById(listingId)
-                .orElseThrow(()->new ListingNotFoundException("listing id does not exist"));
+    public ThreadsDto getConversationThread(String userEmail, Long ThreadId) {
+        Threads getThread = threadsRepository.findById(ThreadId)
+                .orElseThrow(()-> new ThreadNotFoundException("Thread not found"));
 
-        /// get the owner of the listing
-        Profile seller = listing.getProfile();
-
-        /// ensure the user is not trying to message himself as the seller
-        if(buyer.equals(seller.getUser().getEmail())){
-            throw new RuntimeException("users can not message themselves from the listings page");
-        }
-
-        ///this should only return a single object, a buyer and seller only have one thread FOR a specific listing
-        Optional<Threads> findThreadsBetweenUsers = threadsRepository.findChatsByListingAndUsers(buyer, seller, listingId);
-
-        if(findThreadsBetweenUsers.isEmpty()){
-            /// if there is no conversation, we can create a threads object, and save it  to the db and return it
-        Threads newThread = Threads
-                .builder()
-                .buyer(profileRepository.findByEmail(buyer).orElseThrow(()->new ProfileNotFoundException("profile does not exist")))
-                .seller(seller)
-                .listing(listing)
-                .isDeleted(Boolean.FALSE)
-                .build();
-
-        threadsRepository.save(newThread);
-
-        ThreadsDto threadsDto = ThreadsDto.convertToDto(newThread);
-        threadsDto.getBuyer().setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(buyer));
-        threadsDto.getSeller().setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(seller.getUser().getEmail()));
-        return threadsDto;
-        }
+        ///we return a dto of messages, and ensure they are in order of oldest to newest
+        ThreadsDto threadsDto = ThreadsDto.convertToDto(getThread);
 
 
-        /// we return a dto of messages, and ensure they are in order of oldest to newest
-            ThreadsDto threadsDto = ThreadsDto.convertToDto(findThreadsBetweenUsers.get());
-
-
-        /// we can set the profile pictures of the usesr for the thread
+        /// we can set the profile pictures of the user for the thread
         /// the buyer is the principal(the authenticated user) and the seller is the listing owner
-        threadsDto.getBuyer().setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(buyer));
-        threadsDto.getSeller().setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(seller.getUser().getEmail()));
+        threadsDto.getBuyer().setImage(preSignedUrlService.
+                generateProfilePreSignedUrlByEmail(threadsDto.getBuyer().getEmail()));
+        threadsDto.getSeller().setImage(preSignedUrlService.
+                generateProfilePreSignedUrlByEmail(threadsDto.getSeller().getEmail()));
+
         return threadsDto;
     }
 
@@ -107,6 +80,8 @@ public class ChatService {
         /// we want to only call the s3 presigned service for the users that this authenticated user communicated with
         /// this prevents us from repeated aws api calls
         for(ThreadsDto threads : inboxPreview) {
+            /// we set the messages to null as we dont want to return it, removed during serialization
+            threads.setMessages(null);
             if (threads.getSeller().getEmail().equals(userEmail)) {
                 threads.getBuyer()
                         .setImage(preSignedUrlService.generateProfilePreSignedUrlByEmail(threads.getBuyer().getEmail()));
@@ -119,6 +94,40 @@ public class ChatService {
         return inboxPreview;
     }
 
+
+    /// based on the listing id we check if two users have a conversation for a specific listing
+    /// if they do we return their existing thread id, if not we create a thread for the users and return a new thread id
+    /// the userEmail is the authenticated user or buyer in this sense
+    public Long checkThreadExists(String userEmail, Long listingId) {
+        Listing findListing = listingRepository.findById(listingId)
+                .orElseThrow(()->new ListingNotFoundException("listing id does not exist"));
+
+        Profile seller = findListing.getProfile();
+
+        /// ensure the user is not trying to message himself as the seller
+        if(userEmail.equals(seller.getUser().getEmail())){
+            throw new RuntimeException("users can not message themselves from the listings page");
+        }
+
+        ///this should only return a single object, a buyer and seller only have one thread FOR a specific listing
+        Optional<Threads> findThreadBetweenUsers = threadsRepository.
+                findChatsByListingAndUsers(userEmail, seller, listingId);
+
+        /// if the thread doesnt exist, we creae one and return the newly created threadId
+        if(findThreadBetweenUsers.isEmpty()){
+            Threads saveThread = Threads.builder()
+                    .buyer(profileRepository.findByEmail(userEmail).orElseThrow(()->new ProfileNotFoundException("A profile does not exist for this user")))
+                    .seller(seller)
+                    .listing(findListing)
+                    .isDeleted(Boolean.FALSE)
+                    .build();
+            threadsRepository.save(saveThread);
+            return saveThread.getId();
+        }
+        Threads existingThread = findThreadBetweenUsers.get();
+        return existingThread.getId();
+
+    }
 
 
 

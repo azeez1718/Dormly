@@ -31,7 +31,7 @@ public class ChatController {
     public ResponseEntity<ThreadsDto> chatHistory(@AuthenticationPrincipal UserDetails userdetails,
                                                   @PathVariable("id") Long listingId){
 
-        ThreadsDto chatHistory = chatService.getConversationThreadForListing(userdetails.getUsername(), listingId);
+        ThreadsDto chatHistory = chatService.getConversationThread(userdetails.getUsername(), listingId);
         return new ResponseEntity<>(chatHistory, HttpStatus.OK);
     }
 

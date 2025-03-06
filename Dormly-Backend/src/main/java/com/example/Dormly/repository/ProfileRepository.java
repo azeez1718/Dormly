@@ -16,7 +16,7 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     @Query("SELECT p FROM Profile p where p.user.email=:email")
     Optional<Profile> findByEmail(@Param("email") String email);
 
-    String user(Users user);
 
-    String user(Users user);
+
+
 }

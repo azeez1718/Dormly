@@ -5,6 +5,8 @@ import { Stomp } from '@stomp/stompjs';
 import { Message } from '../models/Message';
 import { MessagesComponent } from '../message/chat/messages.component';
 import { BehaviorSubject } from 'rxjs';
+import { MessageDto } from '../models/MessageDto';
+import { MessageService } from '../service/message/message.service';
 
 
 
@@ -14,7 +16,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class WebSocketApiService {
   //create a subject to communicate the responses back to the messages component
-  private subject = new BehaviorSubject(null)
+  private subject = new BehaviorSubject<MessageDto | null>(null)
   messageSubscription$ = this.subject.asObservable()
 
 
@@ -83,10 +85,12 @@ export class WebSocketApiService {
 
   onMessageRecieved(message:any) {
     if(message){
-    ///manual deserialization with websockets. using Json.parse() to convert the json into a javascript objecy
-    console.log("message recieved ", message)
-    this.subject.next(JSON.parse(message))
-    console.log("added message to the subject")
+    
+    console.log("message recieved before deserializing", message)
+    ///manual deserialization with websockets. using Json.parse() to convert the json into a javascript object
+    //message dto includes the content and the sender(the person who sent this message to our subscribed user)
+    const payload:MessageDto = JSON.parse(message)
+    this.subject.next(payload)
     }
  
 
@@ -101,6 +105,8 @@ export class WebSocketApiService {
     ///websocket does not serialize the object into a json like HTTP does, hence we do it manually
     console.log(message)
     this.stompClient.send("/app/chat/send", {}, JSON.stringify(message))
+   
+   
   }
 
 

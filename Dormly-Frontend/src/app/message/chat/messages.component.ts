@@ -9,6 +9,7 @@ import { ThreadsDto } from '../../models/ThreadsDto';
 import { TokenService } from '../../auth/token/token.service';
 import { Message } from '../../models/Message';
 import { FormsModule } from '@angular/forms';
+import { MessageDto } from '../../models/MessageDto';
 
 
 @Component({
@@ -62,11 +63,11 @@ export class MessagesComponent implements OnInit{
 
    onMessageRecieved(){
   this.webSocket.messageSubscription$.subscribe({
-    next:(message)=>{
+    next:(message:MessageDto | null)=>{
       if(message!==null){
         this.recievedMessage = true
         console.log("i got the message")
-        this.messages.push(message)
+        console.log(message)
       }
     },
     error:(error:Error)=>{
@@ -125,8 +126,12 @@ sendMessage(){
   if(this.thread){
     const recipient =  this.thread.buyer.email === user ? this.thread.seller.email : this.thread.buyer.email 
     console.log(recipient)
-    //const message = new Message(recipient, this.inputMessage)
-    //this.webSocket.send(message)
+    const message = new Message(recipient, this.inputMessage)
+    this.webSocket.send(message)
+
+    //persist the message, no need to subscribe as it returns void
+    this.messageService.persistMessages(message, this.thread.id)
+
   }
 
 }

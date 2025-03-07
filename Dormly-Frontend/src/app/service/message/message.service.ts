@@ -2,11 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ObservedValueOf } from 'rxjs';
 import { ThreadsDto } from '../../models/ThreadsDto';
+import { Message } from '../../models/Message';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
+  
   
 
   constructor(private http:HttpClient) { }
@@ -37,6 +39,18 @@ export class MessageService {
     const getThreadIdApi = `${this.chatUrl}/thread/listing/${id}`
     return this.http.get<number>(getThreadIdApi)
   }
+
+  /**
+   * 
+   * @param message - the message to persisted, returned to users if any messages were sent whilst they were disconnected
+   * @param id  - the thread id associated with each message
+   */
+  persistMessages(message: Message, id:number):Observable<void> {
+    const persistMessagesApi = `${this.chatUrl}/persist/message/${id}`
+    return this.http.post<void>(persistMessagesApi, message)
+    
+  }
+
 
 
 

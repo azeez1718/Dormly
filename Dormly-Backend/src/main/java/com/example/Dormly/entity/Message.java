@@ -39,7 +39,7 @@ public class Message {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "thread_id", nullable = true)
     @JsonBackReference
     private Threads thread;

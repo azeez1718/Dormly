@@ -7,15 +7,18 @@ import com.example.Dormly.entity.Profile;
 import com.example.Dormly.entity.Threads;
 import com.example.Dormly.exceptions.ListingNotFoundException;
 import com.example.Dormly.exceptions.ProfileNotFoundException;
+import com.example.Dormly.jwt.model.Users;
 import com.example.Dormly.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -35,15 +38,72 @@ public class InitializationConfig {
 
         return args -> {
 
+            /// test users
+        Profile amy = Profile.builder()
+                .listings(null)
+                .user((Users)userRepository.findByEmail("amyhilary@qmul.ac.uk").orElseThrow(()-> new UsernameNotFoundException("username not found")))
+                .bio("hi, im amy... just exploring and seeing what i like")
+                .Location("london")
+                .build();
+            /// test users
+            Profile jonathan = Profile.builder()
+                    .listings(null)
+                    .user((Users)userRepository.findByEmail("jonathanM@qmul.ac.uk").orElseThrow(()-> new UsernameNotFoundException("username not found")))
+                    .bio("hi, im jonathan... just exploring and seeing what i like")
+                    .Location("london")
+                    .build();
+
+            profileRepository.saveAll(List.of(amy,jonathan));
+
+
+
+
+
 
             /// abas and james begin conversing again over another listing
             /// this is to test whether the messages are returning from oldest to newest
-
-
 //
 //            /// lets create two default chat objects, between abas and james
             Profile abas = profileRepository.findById(1L).orElseThrow(()->new ProfileNotFoundException(""));
             Profile james = profileRepository.findById(2L).orElseThrow(()->new ProfileNotFoundException(""));
+
+
+            /// lets say jonathan and amy are communicating with Abas over his listings
+
+        Message Jonathan2Abas = Message.builder()
+                        .senderId(jonathan)
+                        .content("hi abas, is this still available")
+                        .timestamp(LocalDateTime.now())
+                .thread(Threads.builder()
+                        .buyer(jonathan)
+                        .seller(abas)
+                .listing(listingRepository.findById(160L).orElseThrow(()->new ListingNotFoundException("")))
+                .isDeleted(Boolean.FALSE)
+                .build())
+                .build();
+
+
+
+
+            Message amy2Abas = Message.builder()
+                    .senderId(amy)
+                    .content("hi abas, it is amy from qmul. i'd love to purchase this mouse if we can negotiate ;")
+                    .timestamp(LocalDateTime.now())
+                    .thread( Threads.builder()
+                            .buyer(jonathan)
+                            .seller(abas)
+                            .listing(listingRepository.findById(160L).orElseThrow(()->new ListingNotFoundException("")))
+                            .isDeleted(Boolean.FALSE)
+                            .build())
+                    .build();
+
+            messageRepository.saveAll(List.of(Jonathan2Abas,amy2Abas));
+
+
+
+
+
+
 
 
             //conversation between Abas and james, abas seller james buyer

@@ -39,9 +39,16 @@ public class ChatService {
     /// this is done using the checkThreadExists function, the client side uses that thread to render the thread
     /// we want to persist the images in order of their created date
 
-    public ThreadsDto getConversationThread(Long ThreadId) {
+    public ThreadsDto getConversationThread(String userEmail, Long ThreadId) {
         Threads getThread = threadsRepository.findById(ThreadId)
                 .orElseThrow(()-> new ThreadNotFoundException("Thread not found"));
+
+        /// check if the user who is trying to access the thread, is actually associated with the thread
+        if(!getThread.getBuyer().getUser().getEmail().equals(userEmail) &&
+                !getThread.getSeller().getUser().getEmail().equals(userEmail)) {
+            throw new ThreadNotFoundException("This thread does not belong to this profile");
+        }
+
 
         ///we return a dto of messages, and ensure they are in order of oldest to newest
         ThreadsDto threadsDto = ThreadsDto.convertToDto(getThread);

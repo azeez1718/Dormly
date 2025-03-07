@@ -27,13 +27,15 @@ public class ChatController {
     /**
      * We return the thread between two users
      * @param ThreadId - used to find the thread that will include the return of the messages between users
+     * @param userDetails - the user who is trying to access the thread
      * @return ThreadDTO- used to hide internals of our thread object
      */
 
     @GetMapping(value = "history/{id}")
-    public ResponseEntity<ThreadsDto> chatHistory(@PathVariable("id") Long ThreadId){
+    public ResponseEntity<ThreadsDto> chatHistory(@AuthenticationPrincipal UserDetails userDetails,
+                                                  @PathVariable("id") Long ThreadId){
 
-        ThreadsDto chatHistory = chatService.getConversationThread(ThreadId);
+        ThreadsDto chatHistory = chatService.getConversationThread(userDetails.getUsername(), ThreadId);
         return new ResponseEntity<>(chatHistory, HttpStatus.OK);
     }
 

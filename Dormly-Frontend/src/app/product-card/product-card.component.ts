@@ -62,7 +62,7 @@ export class ProductCardComponent implements OnInit {
     next:(threadId:number)=>{
       console.log("we got back the id which is", threadId)
         ///we navigate to the messages component to render the thread based on the id
-        this.router.navigate(["/messages:id", threadId])
+        this.router.navigate(["/messages", threadId])
       },
       error:(err:Error)=>{
         console.log(err.message)

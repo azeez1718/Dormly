@@ -26,7 +26,7 @@
 
     <div *ngFor = "let i of Inbox">
       <!-- Active User -->
-      <div class="p-4 bg-blue-50 hover:bg-blue-100 cursor-pointer " (click)="count()">
+      <div class="p-4 bg-blue-50 hover:bg-blue-100 cursor-pointer " (click)="findConversationById(i.id)">
         <div class="flex items-center space-x-3">
           <div class="relative">
             <img

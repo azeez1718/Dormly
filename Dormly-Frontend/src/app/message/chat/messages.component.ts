@@ -3,7 +3,7 @@ import { WebSocketApiService } from '../../websocket/web-socket-api.service';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from '../../dashboard-navbar/dashboard-navbar.component';
 import { SidebarmessageComponent } from '../sidebarmessage/sidebarmessage.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '../../service/message/message.service';
 import { ThreadsDto } from '../../models/ThreadsDto';
 import { TokenService } from '../../auth/token/token.service';
@@ -28,13 +28,16 @@ export class MessagesComponent implements OnInit{
   
 
   constructor(private webSocket:WebSocketApiService, private route:ActivatedRoute, private messageService:MessageService,
-    private jwtService:TokenService
+    private jwtService:TokenService , private router:Router
   ){}
 
   
   ngOnInit():void{
     ///we want to immediatley fetch the user inbox when the component is instantiated
     this.getUserInbox()
+    ///we also want to make the api call that renders the messages for the first inbox 
+    
+
 
 
 
@@ -75,6 +78,7 @@ connect(){
 }
 
 ConversationThread(threadId:string){
+  console.log(`i clicked on profile with id ${threadId} so this is what im calling`)
   ///fetches the thread associated between two users, this id is fetched from the url
   ///if the length of the messages is 0, we know there is no existing chat and we pass the threadsDto to the startNew function
   this.messageService.conversationThread(threadId).subscribe({
@@ -105,9 +109,9 @@ startNewConversation(threads:ThreadsDto){
 
 
 getPathVariable():string | null{
-  const listingId = this.route.snapshot.paramMap.get('id')
-  if(listingId!==null){
-    return listingId
+  const threadId = this.route.snapshot.paramMap.get('id')
+  if(threadId!==null){
+    return threadId
   }
   return null
   
@@ -157,6 +161,18 @@ getUserInbox(){
     next:(inbox:Array<ThreadsDto>)=>{
       console.log("--------------------------", inbox)
       this.InboxProfiles = inbox
+
+      if(inbox.length ===0){
+        console.log("user has no conversations")
+      }
+      ///fetch the message for the first profile returned. 
+      else{
+        if(this.route.snapshot.paramMap.get('id')===null){
+        ///this means the user navigated to the messages component without an id in the url
+        this.router.navigate(['/messages', inbox[0].id])
+      }
+    }
+
     }, 
 
     error:(err:Error)=>{

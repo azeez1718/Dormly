@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ThreadsDto } from '../../models/ThreadsDto';
 import { TokenService } from '../../auth/token/token.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebarmessage',
@@ -17,7 +18,7 @@ Inbox!:Array<ThreadsDto>
 
 
 
-constructor(private token:TokenService){}
+constructor(private token:TokenService,private router:Router){}
 
 
 ngOnInit(): void {
@@ -69,4 +70,10 @@ count(){
   console.log("+1")
 }
 
+findConversationById(id:number){
+  if(id){
+    this.router.navigate(['/messages',id])
+  }
+
+}
 }

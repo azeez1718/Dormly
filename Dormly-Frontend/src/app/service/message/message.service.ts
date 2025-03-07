@@ -17,7 +17,9 @@ export class MessageService {
   // the thread id is fetched from the url, which we navigated to after fetching the thread id
   //the id we pass in here is the thread id
   conversationThread(id:string):Observable<ThreadsDto>{
+
     const threadConversations = `${this.chatUrl}/history/${id}`
+    console.log("about to call conversation thread")
     return this.http.get<ThreadsDto>(threadConversations)
   }
 

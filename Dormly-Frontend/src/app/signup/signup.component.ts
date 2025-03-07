@@ -60,7 +60,9 @@ export class SignupComponent implements OnInit{
     })
 
     }else{
-      console.log('passwords do not match')
+      console.log(this.formgroup.controls['confirmPassword'].value)
+      console.log(this.formgroup.controls['password'].value)
+      console.log('form is not valid')
       //set a password dont match flag
     }
     

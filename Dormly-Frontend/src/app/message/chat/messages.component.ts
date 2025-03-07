@@ -7,16 +7,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '../../service/message/message.service';
 import { ThreadsDto } from '../../models/ThreadsDto';
 import { TokenService } from '../../auth/token/token.service';
+import { Message } from '../../models/Message';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-messages',
-  imports: [CommonModule, DashboardComponent, SidebarmessageComponent],
+  imports: [CommonModule, DashboardComponent, SidebarmessageComponent, FormsModule],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.css'
 })
 export class MessagesComponent implements OnInit{
 
+  inputMessage!:string
   messages!:Array<any>
   recievedMessage:boolean = false
   returnedInbox = false
@@ -40,11 +43,13 @@ export class MessagesComponent implements OnInit{
 
 
 
-
-    //on every refresh the source of truth for the threads are represented by the active route
-    if(this.getPathVariable()){
-      this.ConversationThread(this.getPathVariable() as string)
-    }
+    //subscribe to the param map to always listen to changes in the url
+    this.route.paramMap.subscribe(param=>{
+      const threadId = param.get("id")
+      if(threadId){
+        this.ConversationThread(threadId)
+      }
+    })
     
    
       
@@ -83,7 +88,6 @@ ConversationThread(threadId:string){
   ///if the length of the messages is 0, we know there is no existing chat and we pass the threadsDto to the startNew function
   this.messageService.conversationThread(threadId).subscribe({
   next:(threads:ThreadsDto)=>{
-  
     this.returnedInbox = true
     this.thread = threads
     console.log("rendering the threads", threads)
@@ -107,17 +111,6 @@ startNewConversation(threads:ThreadsDto){
 }
 
 
-
-getPathVariable():string | null{
-  const threadId = this.route.snapshot.paramMap.get('id')
-  if(threadId!==null){
-    return threadId
-  }
-  return null
-  
-}
-
-
 disconnect(){
   this.webSocket.disconnect()
 }
@@ -125,13 +118,16 @@ disconnect(){
 
 
 sendMessage(){
-  ///create a sample message object
-  const message = {
-    "content"   : "hi james its abas, hope you are well!",
-    "recipient" : ""
+  ///create a message object that will be deserialized and used in the backend
+  ///because the threads object returns the conversation between 2 users. from this we know who our principal is sending the message to
+  ///if we know the current logged in user, when he presses send we just set the email of other user in the conversation as the recipient
+  const user = this.findUser()
+  if(this.thread){
+    const recipient =  this.thread.buyer.email === user ? this.thread.seller.email : this.thread.buyer.email 
+    console.log(recipient)
+    //const message = new Message(recipient, this.inputMessage)
+    //this.webSocket.send(message)
   }
-
-  this.webSocket.send(message)
 
 }
 
@@ -159,7 +155,6 @@ findUser():string{
 getUserInbox(){
   this.messageService.getInbox().subscribe({
     next:(inbox:Array<ThreadsDto>)=>{
-      console.log("--------------------------", inbox)
       this.InboxProfiles = inbox
 
       if(inbox.length ===0){

@@ -2,9 +2,9 @@ package com.example.Dormly.service;
 
 
 import com.example.Dormly.aws.PreSignedUrlService;
-import com.example.Dormly.dto.MessageDto;
 import com.example.Dormly.dto.ThreadsDto;
 import com.example.Dormly.entity.Listing;
+import com.example.Dormly.entity.Message;
 import com.example.Dormly.entity.Profile;
 import com.example.Dormly.entity.Threads;
 import com.example.Dormly.exceptions.ListingNotFoundException;
@@ -14,10 +14,11 @@ import com.example.Dormly.repository.ListingRepository;
 import com.example.Dormly.repository.MessageRepository;
 import com.example.Dormly.repository.ProfileRepository;
 import com.example.Dormly.repository.ThreadsRepository;
+import com.example.Dormly.websocket.WsMessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +26,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class ChatService {
+public class ThreadService {
     /// we use this service to persist messages and render them to the user if the user received it when
     ///they were not connected to the websocket
 
@@ -141,9 +142,29 @@ public class ChatService {
 
     }
 
+    /***
+     * persist messages as the broker routes messages to the destination
+     * user receives persisted message on page refresh or on ws disconnect
+     * @param message - Message the user sends
+     * @param userEmail - user to send the message - used to validate they exist in the conversation
+     */
+    public void persistMessage(WsMessageDto message, String userEmail) {
+        Profile sender = profileRepository.findByEmail(userEmail).orElseThrow(()->
+                new ProfileNotFoundException("profile does not exist"));
 
+        Long ThreadId = message.getThreadId();
+        Threads thread = threadsRepository.findById(ThreadId).orElseThrow(()->new ThreadNotFoundException("thread not found"));
 
+        if(thread.getBuyer().getUser().getEmail().equals(sender.getUser().getEmail()) ||
+        thread.getSeller().getUser().getEmail().equals(sender.getUser().getEmail())){
+            Message persistMessage = Message.builder()
+                    .senderId(sender)
+                    .content(message.getContent())
+                    .timestamp(LocalDateTime.now())
+                    .thread(thread)
+                    .build();
+            messageRepository.save(persistMessage);
+        }
 
-
-
+    }
 }

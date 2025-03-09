@@ -7,8 +7,8 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Message {
-
+public class WsMessageDto {
     private String content;
     private String recipient;
+    private Long threadId;
 }

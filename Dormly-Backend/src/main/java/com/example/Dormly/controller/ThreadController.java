@@ -1,27 +1,24 @@
 package com.example.Dormly.controller;
 
-import ch.qos.logback.core.joran.conditional.ThenAction;
+import com.example.Dormly.dto.MessageDto;
 import com.example.Dormly.dto.ThreadsDto;
-import com.example.Dormly.service.ChatService;
+import com.example.Dormly.service.ThreadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/Dormly/chats")
-public class ChatController {
+public class ThreadController {
 
-    private final ChatService chatService;
+    private final ThreadService threadService;
 
 
     /**
@@ -35,7 +32,7 @@ public class ChatController {
     public ResponseEntity<ThreadsDto> chatHistory(@AuthenticationPrincipal UserDetails userDetails,
                                                   @PathVariable("id") Long ThreadId){
 
-        ThreadsDto chatHistory = chatService.getConversationThread(userDetails.getUsername(), ThreadId);
+        ThreadsDto chatHistory = threadService.getConversationThread(userDetails.getUsername(), ThreadId);
         return new ResponseEntity<>(chatHistory, HttpStatus.OK);
     }
 
@@ -47,7 +44,7 @@ public class ChatController {
     @GetMapping(path = "/inbox/preview")
     public ResponseEntity<List<ThreadsDto>> chatPreview(@AuthenticationPrincipal UserDetails userdetails){
         log.info(userdetails.getUsername());
-        List<ThreadsDto> chatHistory = chatService.FindInboxPreview(userdetails.getUsername());
+        List<ThreadsDto> chatHistory = threadService.FindInboxPreview(userdetails.getUsername());
         return new ResponseEntity<>(chatHistory, HttpStatus.OK);
     }
 
@@ -60,9 +57,11 @@ public class ChatController {
     @GetMapping(path= "thread/listing/{id}")
     public ResponseEntity<Long> findIfThreadExists(@AuthenticationPrincipal UserDetails userDetails,
                                                    @PathVariable("id") Long listingId){
-        Long ThreadId = chatService.checkThreadExists(userDetails.getUsername(), listingId);
+        Long ThreadId = threadService.checkThreadExists(userDetails.getUsername(), listingId);
         return new ResponseEntity<>(ThreadId, HttpStatus.OK);
     }
+
+
 
 
 

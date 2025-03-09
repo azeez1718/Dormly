@@ -1,5 +1,6 @@
 package com.example.Dormly.websocket;
 
+import com.example.Dormly.service.ThreadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 public class Controller {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final ThreadService threadService;
     ///
     /// The @MessageMapping is used to route all /app/placeholder destinations to their specific methods
     /// we use the principal to define the user who is the sender, and via a UI action
@@ -24,15 +26,13 @@ public class Controller {
     /// we then send this output message to the user
     /// The message object just has the recipient(to whom we send to) and the content, the sender is fetched from the principal
     @MessageMapping("/chat/send")
-    public void sendMessage(@Payload Message message , @AuthenticationPrincipal Principal principal){
-        log.info(message.toString());
-        log.info(principal.toString());
+    public void sendMessage(@Payload WsMessageDto message , @AuthenticationPrincipal Principal principal){
         OutputMessage outputMessage = new OutputMessage(
                 message.getContent(),
                 principal.getName(),
                 LocalDateTime.now()
         );
-        log.info(outputMessage.toString());
+        threadService.persistMessage(message, principal.getName());
         /// the server will send back something like '/user/james/queue/chat'
         simpMessagingTemplate.convertAndSendToUser(message.getRecipient(),"/queue/chat", outputMessage);
 

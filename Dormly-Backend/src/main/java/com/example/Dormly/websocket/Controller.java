@@ -8,6 +8,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 
 @org.springframework.stereotype.Controller
 @RequiredArgsConstructor
@@ -28,7 +29,8 @@ public class Controller {
         log.info(principal.toString());
         OutputMessage outputMessage = new OutputMessage(
                 message.getContent(),
-                principal.getName()
+                principal.getName(),
+                LocalDateTime.now()
         );
         log.info(outputMessage.toString());
         /// the server will send back something like '/user/james/queue/chat'

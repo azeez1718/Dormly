@@ -40,7 +40,7 @@ public class Threads {
 
 
     /// bidirectinal with messages, which allows us to fetch the messages from a thread
-    @OneToMany(mappedBy = "thread", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "thread", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @OrderBy("timestamp ASC")
     @JsonManagedReference
     @Nullable  /// when users have no messages exchanged this can be null

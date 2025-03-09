@@ -56,6 +56,10 @@ public class ChatService {
 
         /// we can set the profile pictures of the user for the thread
         /// the buyer is the principal(the authenticated user) and the seller is the listing owner
+
+
+            //TODO users may not always have a picture, hence this throws an exception
+
         threadsDto.getBuyer().setImage(preSignedUrlService.
                 generateProfilePreSignedUrlByEmail(threadsDto.getBuyer().getEmail()));
         threadsDto.getSeller().setImage(preSignedUrlService.
@@ -122,6 +126,7 @@ public class ChatService {
 
         /// if the thread doesnt exist, we creae one and return the newly created threadId
         if(findThreadBetweenUsers.isEmpty()){
+            System.out.println("creating a new thread cos one doesnt exist");
             Threads saveThread = Threads.builder()
                     .buyer(profileRepository.findByEmail(userEmail).orElseThrow(()->new ProfileNotFoundException("A profile does not exist for this user")))
                     .seller(seller)

@@ -65,9 +65,11 @@ export class MessagesComponent implements OnInit{
   this.webSocket.messageSubscription$.subscribe({
     next:(message:MessageDto | null)=>{
       if(message!==null){
-        this.recievedMessage = true
         console.log("i got the message")
         console.log(message)
+        this.thread.messages?.push(message)
+        this.recievedMessage = true
+        console.log("after appending", this.thread.messages)
       }
     },
     error:(error:Error)=>{
@@ -116,13 +118,25 @@ disconnect(){
   this.webSocket.disconnect()
 }
 
+appendSentMessageToUi(user:string, input:string){
+  ///append the message to the messages in the thread, so the user who sent the message has seen it in his own ui
+  ///first we must convert the input message into a DTO
+   const updateUi:MessageDto = {
+    "sender": user,
+    "message": input,
+    "timestamp": new Date()
+  }
+  //on the senders side, he sees it as the send message, and the reciever we update their ui to display their recieved message from subscription
+  this.thread.messages?.push(updateUi)
 
+}
 
 sendMessage(){
   ///create a message object that will be deserialized and used in the backend
   ///because the threads object returns the conversation between 2 users. from this we know who our principal is sending the message to
   ///if we know the current logged in user, when he presses send we just set the email of other user in the conversation as the recipient
   const user = this.findUser()
+  this.appendSentMessageToUi(user, this.inputMessage)
   if(this.thread){
     const recipient =  this.thread.buyer.email === user ? this.thread.seller.email : this.thread.buyer.email 
     console.log(recipient)

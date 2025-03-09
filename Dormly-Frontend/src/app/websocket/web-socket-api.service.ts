@@ -24,7 +24,6 @@ export class WebSocketApiService {
   brokerURL:string = "http://localhost:8099/ws"
   stompClient:any
   token!:string
-  username = "james@qmul.ac.uk"
 
   constructor(private tokenService:TokenService) {
     this.token = this.tokenService.token as string
@@ -103,7 +102,6 @@ export class WebSocketApiService {
     ///all messages are sent with the /app prefix and users are able to send messages
     ///the message object includes the recieptent and the message itself.
     ///websocket does not serialize the object into a json like HTTP does, hence we do it manually
-    console.log(message)
     this.stompClient.send("/app/chat/send", {}, JSON.stringify(message))
    
    

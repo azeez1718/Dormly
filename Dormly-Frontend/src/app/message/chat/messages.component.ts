@@ -57,26 +57,26 @@ export class MessagesComponent implements OnInit{
     console.log("calling handshake")
   
   this.connect()
-  this.onMessageRecieved()
+  //this.onMessageRecieved()
 
   }
 
-   onMessageRecieved(){
-  this.webSocket.messageSubscription$.subscribe({
-    next:(message:MessageDto | null)=>{
-      if(message!==null){
-        console.log("i got the message")
-        console.log(message)
-        this.thread.messages?.push(message)
-        this.recievedMessage = true
-        console.log("after appending", this.thread.messages)
-      }
-    },
-    error:(error:Error)=>{
-      console.log(error)
-    }
-  })
-}
+//    onMessageRecieved(){
+//   this.webSocket.messageSubscription$.subscribe({
+//     next:(message:MessageDto | null)=>{
+//       if(message!==null){
+//         console.log("i got the message")
+//         console.log(message)
+//         this.thread.messages?.push(message)
+//         this.recievedMessage = true
+//         console.log("after appending", this.thread.messages)
+//       }
+//     },
+//     error:(error:Error)=>{
+//       console.log(error)
+//     }
+//   })
+// }
 
 
 connect(){
@@ -89,16 +89,18 @@ ConversationThread(threadId:string){
   console.log(`i clicked on profile with id ${threadId} so this is what im calling`)
   ///fetches the thread associated between two users, this id is fetched from the url
   ///if the length of the messages is 0, we know there is no existing chat and we pass the threadsDto to the startNew function
-  this.messageService.conversationThread(threadId).subscribe({
-  next:(threads:ThreadsDto)=>{
+  this.messageService.conversationThread(threadId)
+  this.messageService.thread$.subscribe({
+  next:(threads:ThreadsDto | null)=>{
+    if(threads){
     this.returnedInbox = true
     this.thread = threads
-    console.log("rendering the threads", threads)
+    console.log("threads returned from behaviour subject", threads)
 
     if(!threads.messages|| threads.messages?.length===0){
       this.startNewConversation(threads)
     }
-    
+  }
   },
   error:(err:Error)=>{
     console.log(err.message)
@@ -121,13 +123,18 @@ disconnect(){
 appendSentMessageToUi(user:string, input:string){
   ///append the message to the messages in the thread, so the user who sent the message has seen it in his own ui
   ///first we must convert the input message into a DTO
-   const updateUi:MessageDto = {
+   const sentMessage:MessageDto = {
     "sender": user,
     "message": input,
     "timestamp": new Date()
   }
   //on the senders side, he sees it as the send message, and the reciever we update their ui to display their recieved message from subscription
-  this.thread.messages?.push(updateUi)
+  this.messageService.addNewMessage(sentMessage)
+  
+  setTimeout(()=>{
+    this.inputMessage = ''
+  })
+  3
 
 }
 

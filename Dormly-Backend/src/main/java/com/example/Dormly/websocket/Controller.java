@@ -32,7 +32,9 @@ public class Controller {
                 principal.getName(),
                 LocalDateTime.now()
         );
+        System.out.println("-------------------------------------" + message);
         threadService.persistMessage(message, principal.getName());
+
         /// the server will send back something like '/user/james/queue/chat'
         simpMessagingTemplate.convertAndSendToUser(message.getRecipient(),"/queue/chat", outputMessage);
 

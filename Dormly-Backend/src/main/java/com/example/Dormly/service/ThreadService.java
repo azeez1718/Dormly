@@ -15,7 +15,9 @@ import com.example.Dormly.repository.MessageRepository;
 import com.example.Dormly.repository.ProfileRepository;
 import com.example.Dormly.repository.ThreadsRepository;
 import com.example.Dormly.websocket.WsMessageDto;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -127,7 +129,6 @@ public class ThreadService {
 
         /// if the thread doesnt exist, we creae one and return the newly created threadId
         if(findThreadBetweenUsers.isEmpty()){
-            System.out.println("creating a new thread cos one doesnt exist");
             Threads saveThread = Threads.builder()
                     .buyer(profileRepository.findByEmail(userEmail).orElseThrow(()->new ProfileNotFoundException("A profile does not exist for this user")))
                     .seller(seller)
@@ -148,9 +149,12 @@ public class ThreadService {
      * @param message - Message the user sends
      * @param userEmail - user to send the message - used to validate they exist in the conversation
      */
+
+    @Transactional
     public void persistMessage(WsMessageDto message, String userEmail) {
         Profile sender = profileRepository.findByEmail(userEmail).orElseThrow(()->
                 new ProfileNotFoundException("profile does not exist"));
+
 
         Long ThreadId = message.getThreadId();
         Threads thread = threadsRepository.findById(ThreadId).orElseThrow(()->new ThreadNotFoundException("thread not found"));

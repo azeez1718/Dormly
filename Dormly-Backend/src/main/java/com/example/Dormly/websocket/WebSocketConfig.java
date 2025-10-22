@@ -27,7 +27,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     /// we define the prefix of the placeholder in the url as 'app' in which this will be binded to the
-    /// MessageMapping annotation methods, similar to how requestMapping routed the endpoint to the specific method
+    /// MeageMapping annotation methods, similar to how requestMapping routed the endpoint to the specific method
     /// the message broker is used to define the endpoint in which a user will be subscribed to
     /// we set the user as the prefix
     @Override

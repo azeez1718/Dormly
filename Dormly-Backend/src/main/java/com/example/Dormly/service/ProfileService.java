@@ -132,7 +132,6 @@ public class ProfileService {
 
     }
 
-
     /**
      * called when the user aims to view their profile pic in the homepage, called on NgOnInit
      * return the url from s3 and placed in our ui as a small icon
